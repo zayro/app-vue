@@ -30,6 +30,9 @@
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
     </ul>
   </div>
+  <div>
+  configuracion inicial
+  </div>
 </template>
 
 <script>
