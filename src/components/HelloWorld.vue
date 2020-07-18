@@ -60,13 +60,17 @@
         </v-row>
       </v-col>
     </v-row>
+
+    
+
+
+
   </v-container>
 </template>
 
 <script>
 export default {
   name: "HelloWorld",
-  store,
   props: {
     msg: String
   },
