@@ -1,44 +1,32 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import {stateUser, stateEvent, stateCategories} from './state/index';
+
 Vue.use(Vuex)
 
 
 export default new Vuex.Store({
   state: {
-    user: { id: 'aaa', name: 'Adsasas' },
-    events: [
-      {
-        id: 1,
-        title: 'title one',
-        organizer: 'a',
-        done: true
-      },
-      {
-        id: 2,
-        title: 'title two',
-        organizer: 'b',
-        done: false
-      },
-      {
-        id: 3,
-        title: 'title three',
-        organizer: 'c',
-        done: true
-      }
-    ],
-    categories: [
-      'sustainability',
-      'nature',
-      'animal welfare',
-      'housing',
-      'education',
-      'food',
-      'community'
-    ]
+    user: stateUser,
+    events: stateEvent,
+    categories: stateCategories,
+    color: "green",
   },
-  mutations: {},
-  actions: {},
+  mutations: {
+    ChangeColor(state, data) {
+      state.color = data
+    },
+    ADD_EVENT(state, payload) {
+      state.events.push(payload);
+    },
+  },
+  actions: {
+    createEvent ({commit, state}, payload) {
+      console.log(state.events);
+      commit('ADD_EVENT', payload)
+    },
+  },
   getters: {
     catLength: state => {
       return state.categories.length

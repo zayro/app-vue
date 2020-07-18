@@ -10,7 +10,11 @@
   </ul>
 <p>
 {{ getEventById(3) }}
+
+
 </p>
+
+<button v-on:click="createEvent('valor')">llenar</button>
 
 <hr>
 
@@ -27,13 +31,22 @@
 <script>
 // @ is an alias to /src
 
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
   name: "About",
+  mounted () {
+    // fetch cards
+    console.log('mounted');
+  },
+  methods: {
+    ...mapActions(['createEvent'])
+
+  },
   computed: {
     ...mapState(['user', 'categories']),
-    ...mapGetters(['getEventById', 'catLength', 'doneToDos'])
+    ...mapGetters(['getEventById', 'catLength', 'doneToDos']),
+
   }
 };
 </script>
