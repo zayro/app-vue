@@ -29,11 +29,11 @@
       </v-btn>
     </v-app-bar>
 
-    <v-content>
+    <v-main>
       <router-link to="/">Home</router-link>|
       <router-link to="/about">About</router-link>
       <router-view />
-    </v-content>
+    </v-main>
     
   </v-app>
 </template>
