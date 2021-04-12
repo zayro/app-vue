@@ -20,11 +20,7 @@ Vue.use(VueRouter)
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
-  {
-    path: '/socket',
-    name: 'Socket',
-    component: () => import('../views/Socket.vue')
-  },
+
   {
     path: '/websocket',
     name: 'Websocket',

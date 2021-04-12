@@ -20,5 +20,11 @@ npm run build
 npm run lint
 ```
 
+
+## init vue generall view
+```
+vue ui
+```
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
