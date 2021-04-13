@@ -1,0 +1,4 @@
+{
+    "vetur.trace.server": "messages",
+    "prettier.vueIndentScriptAndStyle": true
+}
