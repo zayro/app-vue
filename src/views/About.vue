@@ -1,52 +1,45 @@
 
 <template>
-<div>
-  <h1>Create Event {{ user.name }}</h1>
-  <p>There are {{catLength}} categories</p>
-  <ul>
-    <li v-for="cat in categories" :key="cat">
-        {{cat}}
-    </li>
-  </ul>
-<p>
-{{ getEventById(3) }}
+  <div>
+    <h1>Create Event {{ user.name }}</h1>
+    <p>There are {{ catLength }} categories</p>
+    <ul>
+      <li v-for="cat in categories" :key="cat">
+        {{ cat }}
+      </li>
+    </ul>
+    <p>
+      {{ getEventById(3) }}
+    </p>
 
+    <button v-on:click="createEvent('valor')">llenar</button>
 
-</p>
+    <hr />
 
-<button v-on:click="createEvent('valor')">llenar</button>
+    {{ doneToDos }}
 
-<hr>
-
-{{ doneToDos }}
-
-<hr>
-
-
-</div>
-
+    <hr />
+  </div>
 </template>
 
 
 <script>
 // @ is an alias to /src
 
-import { mapState, mapGetters, mapActions } from 'vuex'
+import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
   name: "About",
-  mounted () {
+  mounted() {
     // fetch cards
-    console.log('mounted');
+    console.log("mounted");
   },
   methods: {
-    ...mapActions(['createEvent'])
-
+    ...mapActions(["createEvent"]),
   },
   computed: {
-    ...mapState(['user', 'categories']),
-    ...mapGetters(['getEventById', 'catLength', 'doneToDos']),
-
-  }
+    ...mapState(["user", "categories"]),
+    ...mapGetters(["getEventById", "catLength", "doneToDos"]),
+  },
 };
 </script>

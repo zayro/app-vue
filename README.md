@@ -26,5 +26,20 @@ npm run lint
 vue ui
 ```
 
+
+```
+npm i @vue/cli-service -g
+```
+
+```
+npm install -g serve
+```
+
+```
+serve -s dist
+```
+ 
+
+ npm install workbox-cli --global
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).

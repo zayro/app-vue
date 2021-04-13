@@ -1,11 +1,17 @@
 import Vue from 'vue'
+// Main File Project
 import App from './App.vue'
+// Route to Project
 import router from './router'
+// Data Store
 import store from './store'
-import vuetify from './plugins/vuetify';
+// Pligin Material Design
+import vuetify from './plugins/vuetify'
+// PWA
 import './registerServiceWorker'
 
 Vue.config.productionTip = false
+
 
 new Vue({
   router,
