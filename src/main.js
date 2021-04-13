@@ -12,6 +12,11 @@ import './registerServiceWorker'
 
 Vue.config.productionTip = false
 
+Vue.mixin({
+  created() {
+    console.log("hello world!");
+  }
+});
 
 new Vue({
   router,
