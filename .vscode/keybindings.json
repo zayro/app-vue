@@ -1,0 +1,36 @@
+// Place your key bindings in this file to override the defaultsauto[]
+[
+    {
+        "key": "ctrl+numpad1",
+        "command": "editor.foldAll",
+        "when": "editorTextFocus && foldingEnabled"
+    },
+    {
+        "key": "ctrl+numpad2",
+        "command": "editor.unfoldAll",
+        "when": "editorTextFocus && foldingEnabled"
+    }, 
+    {
+        "key": "ctrl+numpad3",
+        "command": "editor.toggleFold",
+        "when": "editorTextFocus && foldingEnabled"
+    },
+    {
+        "key": "ctrl+numpad7",
+        "command": "turboConsoleLog.commentAllLogMessages"
+    },
+    {
+        "key": "ctrl+numpad8",
+        "command": "turboConsoleLog.deleteAllLogMessages"
+    },
+    {
+        "key": "ctrl+numpad6",
+        "command": "turboConsoleLog.displayLogMessage"
+    },
+    {
+        "key": "ctrl+numpad9",
+        "command": "turboConsoleLog.uncommentAllLogMessages"
+    }, 
+
+
+]

@@ -1,4 +1,9 @@
 {
     "vetur.trace.server": "messages",
-    "prettier.vueIndentScriptAndStyle": true
+    "prettier.vueIndentScriptAndStyle": true,
+    "turboConsoleLog.addSemicolonInTheEnd": true,
+    "turboConsoleLog.quote": "`",
+    "turboConsoleLog.logMessagePrefix": ":rocket:",
+    "editor.cursorStyle": "underline-thin",
+    "editor.cursorBlinking": "smooth",
 }

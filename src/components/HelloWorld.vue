@@ -61,14 +61,18 @@
       </v-col>
     </v-row>
 
-    
-
 
 
   </v-container>
 </template>
 
 <script>
+
+
+
+/**
+ * logic
+ */
 export default {
   name: "HelloWorld",
   props: {
