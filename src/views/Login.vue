@@ -17,7 +17,7 @@
             <v-row>
               <v-col cols="12" sm="12">
                 <v-text-field
-                  v-model="username"
+                  v-model="form.username"
                   label="User"
                   outlined
                   clearable
@@ -26,7 +26,7 @@
 
               <v-col cols="12" sm="12">
                 <v-text-field
-                  v-model="password"
+                  v-model="form.password"
                   label="Password"
                   outlined
                   clearable
@@ -57,6 +57,13 @@
 <script>
 export default {
   name: "Login",
+      data: () => ({
+        form: {
+              username: "",
+    passwrod: "",
+        }
+
+  }),
     computed:{
     theme(){
       return (this.$vuetify.theme.dark) ? 'dark' : 'light'

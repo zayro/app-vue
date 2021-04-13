@@ -21,3 +21,6 @@ debug.log
 *.njsproj
 *.sln
 *.sw?
+
+# Ignore File
+package-lock.json
