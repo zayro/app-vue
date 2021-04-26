@@ -8,55 +8,125 @@ import NotFound from '../views/NotFound.vue'
 
 Vue.use(VueRouter)
 
-const routes = [{
-    path: '*',
-    component: NotFound
-  },
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/home',
-    component: Home,
-    beforeEnter: (to, from, next) => {
-      // ...
-    }
-  },
-  {
-    path: '/Login',
-    name: 'Login',
-    component: Login
-  },
-  {
-    path: '/about',
-    //name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import( /* webpackChunkName: "about" */ '../views/About.vue')
-  },
+const originalPush = VueRouter.prototype.push
 
-  {
-    path: '/websocket',
-    name: 'Websocket',
-    component: () => import('../views/WebSocket.vue')
-  },
+VueRouter.prototype.push = function push(location) {
+
+    return originalPush.call(this, location).catch(err => err)
+
+}
+
+const routes = [{
+        path: '*',
+        component: NotFound
+    },
+    {
+        path: '/',
+        redirect: '/login',
+    },
+    {
+        path: '/home',
+        component: Home,
+        meta: {
+            authRequired: 'true',
+        },
+    },
+    {
+        path: '/login',
+        name: 'login',
+        component: Login,
+        props: true,
+    },
+    {
+        path: '/page-not-authorized',
+        name: 'page-not-authorized',
+        component: NotFound,
+        meta: {
+            authRequired: false,
+        },
+    },
+    {
+        path: '/about',
+        name: 'about',
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () => import( /* webpackChunkName: "about" */ '../views/About.vue'),
+        meta: {
+            authRequired: false,
+        },
+    },
+
+    {
+        path: '/websocket',
+        name: 'Websocket',
+        component: () => import('../views/WebSocket.vue')
+    },
 ]
 
 const router = new VueRouter({
-  routes
+    mode: 'history',
+    //base: process.env.BASE_URL,
+    routes
 })
 
 
+function hasAccess(namePermission) {
+
+    const permissions = localStorage.getItem("permissions")
+
+    switch (namePermission) {
+
+        case "home":
+            return true
+
+        case "users":
+            return permissions.includes("View All Users")
+
+        case "permissions":
+            return permissions.includes("View All Permissions")
+
+        case "roles":
+            return permissions.includes("View All Roles")
+
+        default:
+            return true
+    }
+}
+
 // GOOD
 router.beforeEach((to, from, next) => {
-  /*   if (to.name !== 'Login' && !isAuthenticated) next({
-      name: 'Login'
-    })
-    else next() */
-});
 
+    //A Logged-in user can't go to login page again
+    if (to.name === 'login' && localStorage.getItem("accessToken")) {
+
+        router.push({
+            name: 'home'
+        })
+
+        //the route requires authentication
+    } else if (to.meta.authRequired) {
+
+        if (!localStorage.getItem("accessToken")) {
+
+            //user not logged in, send them to login page
+            router.push({
+                name: 'login',
+                query: {
+                    to: to.name
+                }
+            })
+
+        } else {
+            if (!hasAccess(to.name)) {
+                router.push({
+                    name: 'page-not-authorized'
+                })
+            }
+        }
+    }
+
+    return next()
+})
 
 export default router

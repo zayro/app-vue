@@ -10,17 +10,28 @@ import vuetify from './plugins/vuetify'
 // PWA
 import './registerServiceWorker'
 
+// CASL
+/*
+import {
+    abilitiesPlugin
+} from '@casl/vue'
+import ability from './services/ability';
+
+
+Vue.use(abilitiesPlugin, ability)
+*/
+
 Vue.config.productionTip = false
 
 Vue.mixin({
-  created() {
-    console.log("hello world!");
-  }
+    mounted() {
+        console.log("hello world!");
+    }
 });
 
 new Vue({
-  router,
-  store,
-  vuetify,
-  render: h => h(App)
+    router,
+    store,
+    vuetify,
+    render: h => h(App)
 }).$mount('#app')
