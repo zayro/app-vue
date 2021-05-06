@@ -3,9 +3,7 @@
   <v-container fill-height fluid>
     <v-row align="center" justify="center">
       <v-card elevation="2">
-        <v-card-title
-          :style="{ background: $vuetify.theme.themes[theme].primary }"
-        >
+        <v-card-title :style="{ background: $vuetify.theme.themes[theme].primary }">
           <span class="title font-weight-light">Login</span>
         </v-card-title>
 
@@ -18,32 +16,16 @@
             </v-row> -->
             <v-row>
               <v-col cols="12" sm="12">
-                <v-text-field
-                  v-model="form.username"
-                  label="User"
-                  outlined
-                  clearable
-                ></v-text-field>
+                <v-text-field v-model="form.username" label="User" outlined clearable></v-text-field>
               </v-col>
 
               <v-col cols="12" sm="12">
-                <v-text-field
-                  v-model="form.password"
-                  label="Password"
-                  outlined
-                  clearable
-                ></v-text-field>
+                <v-text-field v-model="form.password" label="Password" outlined clearable></v-text-field>
               </v-col>
             </v-row>
             <v-row justify="space-around">
               <v-col>
-                <v-btn
-                  color="primary"
-                  :disabled="!validateForm"
-                  @click="login"
-                  block
-                  dark
-                >
+                <v-btn color="primary" :disabled="!validateForm" @click="login" block dark>
                   Accept
                   <v-icon dark right> mdi-checkbox-marked-circle </v-icon>
                 </v-btn>
@@ -61,27 +43,22 @@
   </v-container>
 </template>
 
-
 <script>
 //import  { http} from '../services/index.js';
-import axios from "axios";
 import jwt from "jsonwebtoken";
+import jwt_decode from "jwt-decode";
+import { mapState, mapGetters, mapMutations } from "vuex";
 
-import env from "../mixins/environment";
+import { http } from "../services/http-axios";
 
 const checkToken = (tokens) => {
-  const secret = `${process.env.TOKENSECRET}`;
-  console.log(
-    `:rocket: ~ file: Login.vue ~ line 67 ~ checkToken ~ secret`,
-    secret
-  );
-
+  const secret = `${process.env.VUE_APP_TOKEN_SECRET}`;
   return jwt.verify(tokens, secret) !== "undefined";
 };
 
 export default {
   name: "Login",
-  mixins: [env],
+
   data() {
     return {
       form: { username: "", password: "" },
@@ -95,8 +72,11 @@ export default {
     theme() {
       return this.$vuetify.theme.dark ? "dark" : "light";
     },
+    ...mapState(["user", "config"]),
+    ...mapGetters(["getEventById", "catLength", "doneToDos"]),
   },
   methods: {
+    ...mapMutations(["userAdd", "configAdd"]),
     login() {
       const payload = {
         username: this.form.username,
@@ -104,27 +84,25 @@ export default {
       };
 
       //post credentials and get access token from laravel backend
-      axios
-        .post("http://localhost:3000/api/v1/login", payload)
+      http
+        .post("login", payload)
         .then((response) => {
-          console.log(
-            `:rocket: ~ file: Login.vue ~ line 107 ~ .then ~ response`,
-            response
-          );
-          console.log(
-            `:rocket: ~ file: Login.vue ~ line 107 ~ .then ~ response`,
-            this.env
-          );
-          checkToken(response.data.token);
-          //we store the access token in localstorage, so that we can use it again.
-          localStorage.setItem("accessToken", response.data.access_token);
+          const validToken = checkToken(response.data.data.token);
+          if (validToken) {
+            const jwtDecode = jwt_decode(response.data.data.token);
 
-          //we also store the user permissions in localstore.
-          //This is needed to implement access control.
-          localStorage.setItem("userPermissions", response.data.permissions);
+            this.configAdd({ field: "menu", value: jwtDecode.data.menu });
+            this.configAdd({ field: "privileges", value: JSON.parse(jwtDecode.data.privileges[0].permission) });
+            this.userAdd({ field: "information", value: jwtDecode.data.information[0] });
 
-          //after storing token, send user to home page.
-          this.$router.push("/home");
+            //we store the access token in localstorage, so that we can use it again.
+            localStorage.setItem("accessToken", response.data.data.token);
+
+            //after storing token, send user to home page.
+            this.$router.push("/home");
+          } else {
+            console.log("******* error ********");
+          }
         })
         .catch((error) => {
           console.log(error);

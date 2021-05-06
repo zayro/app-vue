@@ -28,61 +28,49 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
 
-        <v-btn icon>
-          <v-icon>mdi-magnify</v-icon>
-        </v-btn>
+      <v-btn icon>
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
 
-        <v-btn icon>
-          <v-icon>mdi-filter</v-icon>
-        </v-btn>
+      <v-btn icon>
+        <v-icon>mdi-filter</v-icon>
+      </v-btn>
 
-        <v-btn icon>
-          <v-icon>mdi-dots-vertical</v-icon>
-        </v-btn>
-        <span class="mr-2">Latest Release</span>
+      <v-btn icon>
+        <v-icon>mdi-dots-vertical</v-icon>
+      </v-btn>
+      <span class="mr-2">{{ fullName }}</span>
+
+      <v-btn href="https://github.com/vuetifyjs/vuetify/releases/latest" target="_blank" text icon>
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
+
+      <v-icon @click="out">mdi-filter</v-icon>
     </v-app-bar>
 
     <!-- Menu Lateral-->
     <v-navigation-drawer v-model="drawer" absolute bottom temporary app>
       <v-list nav dense>
-        <v-list-item-group
-          v-model="group"
-          active-class="deep-purple--text text--accent-4"
-        >
-          <v-list-item>
+        <v-list-item-group v-model="group" active-class="deep-purple--text text--accent-4">
+          <v-list-item v-for="(item, i) in config.menu" :key="i">
             <v-list-item-title
-              ><router-link to="/">Home</router-link>|</v-list-item-title
+              ><router-link :to="item.link">{{ item.menu }}</router-link
+              >|</v-list-item-title
             >
           </v-list-item>
 
           <v-list-item>
-            <v-list-item-title
-              ><router-link to="/about">About</router-link></v-list-item-title
-            >
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-title>Buzz</v-list-item-title>
+            <v-list-item-title><router-link to="/about">About</router-link></v-list-item-title>
           </v-list-item>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
 
-
     <!-- Sizes your content based upon application components -->
     <v-main>
-
-        <router-view />
-
+      <router-view />
     </v-main>
 
     <v-footer app>
@@ -92,12 +80,24 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
+import { shutdown } from "./services/clear";
+
 export default {
   data: () => ({
     drawer: false,
     group: null,
   }),
-
+  computed: {
+    ...mapState(["user", "config"]),
+    fullName: function () {
+      return this.user.information.first_name + " " + this.user.information.last_name;
+    },
+  },
+  methods: {
+    out: shutdown,
+  },
   watch: {
     group() {
       this.drawer = false;

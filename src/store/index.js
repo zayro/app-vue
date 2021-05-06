@@ -1,32 +1,60 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from "vuex-persistedstate"
+import SecureLS from "secure-ls";
+var ls = new SecureLS({
+    encodingType: 'aes',
+    isCompression: false
+});
 
 import {
     stateUser,
     stateEvent,
-    stateCategories
+    stateCategories,
+    stateConfig
 } from './state/index';
 
 Vue.use(Vuex)
 
 
 export default new Vuex.Store({
-    plugins: [createPersistedState({
-        storage: window.sessionStorage
-    })],
+
     state: {
         user: stateUser,
+        config: stateConfig,
         events: stateEvent,
         categories: stateCategories,
-        color: "green",
     },
-    mutations: {
-        ChangeColor(state, data) {
-            state.color = data
+    plugins: [createPersistedState({
+        //storage: window.sessionStorage,
+        storage: {
+            getItem: (key) => ls.get(key),
+            setItem: (key, value) => ls.set(key, value),
+            removeItem: (key) => ls.remove(key),
         },
+    })],
+    mutations: {
+
         ADD_EVENT(state, payload) {
             state.events.push(payload);
+        },
+        configAdd(state, payload) {
+            state.config[payload.field] = payload.value;
+        },
+        configDelete(state, payload) {
+            delete state.config[payload.field];
+        },
+        configClear(state, payload = stateConfig) {
+            state.config = payload;
+        },
+        userAdd(state, payload) {
+            state.user[payload.field] = payload.value;
+        },
+        userDelete(state, payload) {
+            delete state.user[payload.field];
+        },
+        userClear(state, payload = stateUser) {
+            state.user = payload;
         },
     },
     actions: {
@@ -36,7 +64,7 @@ export default new Vuex.Store({
         }, payload) {
             console.log(state.events);
             commit('ADD_EVENT', payload)
-        },
+        }
     },
     getters: {
         catLength: state => {

@@ -13,7 +13,10 @@
     </p>
 
     <button v-on:click="createEvent('valor')">llenar</button>
-
+    <br />
+    <button v-on:click="userAdd({ field: 'autot', value: 'payload' })">autor</button>
+    <br />
+    <button v-on:click="userDelete({ field: 'autot' })">delete</button>
     <hr />
 
     {{ doneToDos }}
@@ -26,7 +29,7 @@
 <script>
 // @ is an alias to /src
 
-import { mapState, mapGetters, mapActions } from "vuex";
+import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
   name: "About",
@@ -36,6 +39,7 @@ export default {
   },
   methods: {
     ...mapActions(["createEvent"]),
+    ...mapMutations(["ADD_EVENT", "userAdd", "userDelete"]),
   },
   computed: {
     ...mapState(["user", "categories"]),

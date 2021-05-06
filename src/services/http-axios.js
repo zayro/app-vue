@@ -1,19 +1,28 @@
 import axios from 'axios';
 // import store from '@/store';
 
-//const URL = 'http://127.0.0.1:8000/';
-const URL = 'https://jsonplaceholder.typicode.com/';
-
-// Axios Configuration
-axios.defaults.headers.common.Accept = 'application/json'
+const URL = 'http://127.0.0.1:3000/api/v1/';
+//const URL = 'https://jsonplaceholder.typicode.com/';
 
 
 const http = axios.create({
     baseURL: URL,
     headers: {
-        'Authorization': `Bearer ${window.localStorage.getItem('_token')}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${window.localStorage.getItem('accessToken')}`,
     }
 });
+
+http.interceptors.response.use(
+    res => res,
+    err => {
+        if (err.response.status === 404) {
+            throw new Error(`${err.config.url} not found`);
+        }
+        throw err;
+    }
+);
 
 // Add a request interceptor
 http.interceptors.request.use((config) => {
@@ -35,29 +44,8 @@ http.interceptors.response.use((response) => {
     return Promise.reject(error);
 });
 
-class axioService {
-    axios
-    baseUrl
-
-    constructor(axios) {
-        this.axios = axios
-        this.baseUrl = 'https://jsonplaceholder.typicode.com'
-    }
-
-    getAll() {
-        let self = this;
-        return self.axios.get(`${self.baseUrl}/todos`);
-    }
-
-    get(id) {
-        let self = this;
-        return self.axios.get(`${self.baseUrl}todos/${id}`);
-    }
-}
 
 
 export {
     http,
-    URL,
-    axioService
 };

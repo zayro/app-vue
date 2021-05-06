@@ -4,7 +4,25 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import NotFound from '../views/NotFound.vue'
 
+import JwtService from '../services/jwt'
 
+import {
+    shutdown
+} from '../services/clear'
+
+const instance = new JwtService();
+
+
+console.log('************', instance.getTokenExpirationDate());
+console.log('************', instance.isTokenExpired());
+
+
+
+import SecureLS from "secure-ls";
+var ls = new SecureLS({
+    encodingType: 'aes',
+    isCompression: false
+});
 
 Vue.use(VueRouter)
 
@@ -26,6 +44,7 @@ const routes = [{
     },
     {
         path: '/home',
+        name: 'home',
         component: Home,
         meta: {
             authRequired: 'true',
@@ -34,8 +53,7 @@ const routes = [{
     {
         path: '/login',
         name: 'login',
-        component: Login,
-        props: true,
+        component: Login
     },
     {
         path: '/page-not-authorized',
@@ -73,22 +91,16 @@ const router = new VueRouter({
 
 function hasAccess(namePermission) {
 
-    const permissions = localStorage.getItem("permissions")
+    const permission = JSON.parse(ls.get('vuex')).config.privileges.permissions;
 
     switch (namePermission) {
 
-        case "home":
-            return true
+        case "home": {
+            const validHome = ["admin", "user", "developer", "guest"]
+            console.log(`:rocket: ~ file: index.js ~ line 86 ~ hasAccess ~ validHome`, validHome);
 
-        case "users":
-            return permissions.includes("View All Users")
-
-        case "permissions":
-            return permissions.includes("View All Permissions")
-
-        case "roles":
-            return permissions.includes("View All Roles")
-
+            return validHome.some(element => permission.includes(element))
+        }
         default:
             return true
     }
@@ -98,7 +110,7 @@ function hasAccess(namePermission) {
 router.beforeEach((to, from, next) => {
 
     //A Logged-in user can't go to login page again
-    if (to.name === 'login' && localStorage.getItem("accessToken")) {
+    if (to.name === 'login' && instance.isTokenExpired()) {
 
         router.push({
             name: 'home'
@@ -107,15 +119,10 @@ router.beforeEach((to, from, next) => {
         //the route requires authentication
     } else if (to.meta.authRequired) {
 
-        if (!localStorage.getItem("accessToken")) {
+        if (!instance.isTokenExpired()) {
 
-            //user not logged in, send them to login page
-            router.push({
-                name: 'login',
-                query: {
-                    to: to.name
-                }
-            })
+            shutdown()
+
 
         } else {
             if (!hasAccess(to.name)) {

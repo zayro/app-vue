@@ -1,9 +1,27 @@
 {
-    "vetur.trace.server": "messages",
-    "prettier.vueIndentScriptAndStyle": true,
-    "turboConsoleLog.addSemicolonInTheEnd": true,
-    "turboConsoleLog.quote": "`",
-    "turboConsoleLog.logMessagePrefix": ":rocket:",
-    "editor.cursorStyle": "underline-thin",
-    "editor.cursorBlinking": "smooth",
+  "vetur.trace.server": "messages",
+  "prettier.vueIndentScriptAndStyle": true,
+  "turboConsoleLog.addSemicolonInTheEnd": true,
+  "turboConsoleLog.quote": "`",
+  "turboConsoleLog.logMessagePrefix": ":rocket:",
+  "editor.cursorStyle": "underline-thin",
+  "editor.cursorBlinking": "smooth",
+  "prettier.printWidth": 120,
+  "prettier.semi": false,
+  "editor.wordWrapColumn": 120,
+  "vetur.format.defaultFormatterOptions": {
+    "prettier": {
+      "tabWidth": 2, // works
+      "printWidth": 120 // does not work
+    }
+  },
+  "workbench.colorCustomizations": {
+    "editorRuler.foreground": "#ff4081"
+  },
+  "workbench.editor.enablePreviewFromCodeNavigation": true,
+  "workbench.editor.enablePreviewFromQuickOpen": true,
+  "workbench.editor.highlightModifiedTabs": true,
+  "workbench.editor.limit.enabled": true,
+  "workbench.editor.limit.perEditorGroup": true,
+  "workbench.editor.wrapTabs": true
 }

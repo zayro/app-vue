@@ -6,14 +6,14 @@ var decoded = jwt_decode(token);
 console.log(decoded);
  */
 
-export class JwtService {
+export default class JwtService {
 
     /**
      * Obtine el token almacenado
      */
     getToken() {
-        if (sessionStorage.getItem('token')) {
-            return sessionStorage.getItem('token');
+        if (localStorage.getItem('accessToken')) {
+            return localStorage.getItem('accessToken');
         } else {
             return null;
         }
@@ -23,7 +23,7 @@ export class JwtService {
      * Almacena el token almacenado
      */
     setToken(token) {
-        sessionStorage.setItem('token', token);
+        localStorage.setItem('accessToken', token);
     }
 
     /**
@@ -43,6 +43,13 @@ export class JwtService {
 
                 const date = new Date(0);
                 date.setUTCSeconds(decoded.exp);
+
+                console.info('Token decoded :: ', decoded);
+                console.info('Token decoded :: ', decoded.exp);
+                console.info('Time Created Token :: ', new Date(decoded.iat * 1000).toLocaleString());
+                console.info('Time Expire Token :: ', new Date(decoded.exp * 1000).toLocaleString());
+                console.info('Time Actually :: ', new Date(Date.now()).toLocaleString());
+                console.info('Valid :: ', (date.getTime() > new Date().getTime()));
                 return date;
             }
         } catch (err) {
@@ -57,12 +64,12 @@ export class JwtService {
     isTokenExpired() {
         const date = this.getTokenExpirationDate();
         if (date === null) {
-            return true;
+            return false;
         } else {
             if (date === undefined) {
-                return true;
+                return false;
             }
-            return !(date.valueOf() > new Date().valueOf());
+            return (date.valueOf() > new Date().valueOf());
         }
     }
 }
