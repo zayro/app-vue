@@ -52,7 +52,7 @@ npm install -g @vue/cli @vue/cli-service-global
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-# delete cache
+# delete cache .env
 
 git rm env --cached
 git rm env.local --cached
