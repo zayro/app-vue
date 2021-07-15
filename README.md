@@ -56,3 +56,14 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 git rm env --cached
 git rm env.local --cached
+
+## Prueba de servidor remoto
+
+- npm i http-server ngrok -g
+- http-server ./dist
+- ngrok htpp 8080
+
+## Deploy
+
+- npm i serve -g
+- serve -s ./dist

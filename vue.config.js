@@ -1,17 +1,22 @@
 module.exports = {
-  "transpileDependencies": [
-    "vuetify"
-  ],
-  pwa: {
-    name: 'My App',
-    themeColor: '#4DBA87',
-    msTileColor: '#000000',
-    appleMobileWebAppCapable: 'yes',
-    appleMobileWebAppStatusBarStyle: 'black',
-    workboxPluginMode: 'InjectManifest',
-    workboxOptions: {
-      // swSrc is required in InjectManifest mode.
-      swSrc: 'src/service-worker.js',
+    transpileDependencies: ["vuetify"],
+    devServer: {
+        //open: process.platform === "darwin",
+        host: "0.0.0.0",
+        port: 8080, // CHANGE YOUR PORT HERE!
+        https: false,
+        hotOnly: true
+    },
+    pwa: {
+        name: "My App",
+        themeColor: "#4DBA87",
+        msTileColor: "#000000",
+        appleMobileWebAppCapable: "yes",
+        appleMobileWebAppStatusBarStyle: "black",
+        workboxPluginMode: "GenerateSW",
+        workboxOptions: {
+            skipWaiting: true,
+            exclude: [/_redirects/]
+        }
     }
-  }
-}
+};

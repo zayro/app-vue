@@ -70,6 +70,14 @@
 
     <!-- Sizes your content based upon application components -->
     <v-main>
+      <v-banner v-if="deferredPrompt" color="info" dark class="text-left">
+        Get our free app. It won't take up space on your phone and also works offline!
+        <template v-slot:actions>
+          <v-btn text @click="dismiss">Dismiss</v-btn>
+          <v-btn text @click="install">Install</v-btn>
+        </template>
+      </v-banner>
+
       <router-view />
     </v-main>
 
@@ -84,10 +92,13 @@ import { mapState } from "vuex";
 
 import { shutdown } from "./services/clear";
 
+import Cookies from "js-cookie";
+
 export default {
   data: () => ({
     drawer: false,
     group: null,
+    deferredPrompt: null,
   }),
   computed: {
     ...mapState(["user", "config"]),
@@ -95,13 +106,32 @@ export default {
       return this.user.information.first_name + " " + this.user.information.last_name;
     },
   },
-  methods: {
-    out: shutdown,
-  },
   watch: {
     group() {
       this.drawer = false;
     },
+  },
+  created() {
+    // ask about install
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      // Stash the event so it can be triggered later.
+      this.deferredPrompt = e;
+    });
+    // confirm install
+    window.addEventListener("appinstalled", () => {
+      this.deferredPrompt = null;
+    });
+  },
+  methods: {
+    dismiss() {
+      Cookies.set("add-to-home-screen", null, { expires: 5 });
+      this.deferredPrompt = null;
+    },
+    install() {
+      this.deferredPrompt.prompt();
+    },
+    out: shutdown,
   },
 };
 </script>
