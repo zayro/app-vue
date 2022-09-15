@@ -23,5 +23,6 @@
   "workbench.editor.highlightModifiedTabs": true,
   "workbench.editor.limit.enabled": true,
   "workbench.editor.limit.perEditorGroup": true,
-  "workbench.editor.wrapTabs": true
+  "workbench.editor.wrapTabs": true,
+  "recommendations": ["Vue.volar", "Vue.vscode-typescript-vue-plugin"]
 }

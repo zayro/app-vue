@@ -1,137 +1,85 @@
+<script setup>
+import { RouterLink, RouterView } from 'vue-router'
+import HelloWorld from './components/HelloWorld.vue'
+</script>
+
 <template>
-  <v-app>
-    <!-- <v-system-bar color="deep-purple darken-3"></v-system-bar> -->
+  <header>
+    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
-    <!-- Menu Toolbar -->
-    <v-app-bar app color="primary" dark>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+    <div class="wrapper">
+      <HelloWorld msg="You did it!" />
 
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
+      <nav>
+        <RouterLink to="/">Home</RouterLink>
+        <RouterLink to="/about">About</RouterLink>
+      </nav>
+    </div>
+  </header>
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
-
-      <v-spacer></v-spacer>
-
-      <v-spacer></v-spacer>
-
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-filter</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
-      <span class="mr-2">{{ fullName }}</span>
-
-      <v-btn href="https://github.com/vuetifyjs/vuetify/releases/latest" target="_blank" text icon>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-
-      <v-icon @click="out">mdi-filter</v-icon>
-    </v-app-bar>
-
-    <!-- Menu Lateral-->
-    <v-navigation-drawer v-model="drawer" absolute bottom temporary app>
-      <v-list nav dense>
-        <v-list-item-group v-model="group" active-class="deep-purple--text text--accent-4">
-          <v-list-item v-for="(item, i) in config.menu" :key="i">
-            <v-list-item-title
-              ><router-link :to="item.link">{{ item.menu }}</router-link
-              >|</v-list-item-title
-            >
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-title><router-link to="/about">About</router-link></v-list-item-title>
-          </v-list-item>
-        </v-list-item-group>
-      </v-list>
-    </v-navigation-drawer>
-
-    <!-- Sizes your content based upon application components -->
-    <v-main>
-      <v-banner v-if="deferredPrompt" color="info" dark class="text-left">
-        Get our free app. It won't take up space on your phone and also works offline!
-        <template v-slot:actions>
-          <v-btn text @click="dismiss">Dismiss</v-btn>
-          <v-btn text @click="install">Install</v-btn>
-        </template>
-      </v-banner>
-
-      <router-view />
-    </v-main>
-
-    <v-footer app>
-      <!-- -->
-    </v-footer>
-  </v-app>
+  <RouterView />
 </template>
 
-<script>
-import { mapState } from "vuex";
+<style scoped>
+header {
+  line-height: 1.5;
+  max-height: 100vh;
+}
 
-import { shutdown } from "./services/clear";
+.logo {
+  display: block;
+  margin: 0 auto 2rem;
+}
 
-import Cookies from "js-cookie";
+nav {
+  width: 100%;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 2rem;
+}
 
-export default {
-  data: () => ({
-    drawer: false,
-    group: null,
-    deferredPrompt: null,
-  }),
-  computed: {
-    ...mapState(["user", "config"]),
-    fullName: function () {
-      return this.user.information.first_name + " " + this.user.information.last_name;
-    },
-  },
-  watch: {
-    group() {
-      this.drawer = false;
-    },
-  },
-  created() {
-    // ask about install
-    window.addEventListener("beforeinstallprompt", (e) => {
-      e.preventDefault();
-      // Stash the event so it can be triggered later.
-      this.deferredPrompt = e;
-    });
-    // confirm install
-    window.addEventListener("appinstalled", () => {
-      this.deferredPrompt = null;
-    });
-  },
-  methods: {
-    dismiss() {
-      Cookies.set("add-to-home-screen", null, { expires: 5 });
-      this.deferredPrompt = null;
-    },
-    install() {
-      this.deferredPrompt.prompt();
-    },
-    out: shutdown,
-  },
-};
-</script>
+nav a.router-link-exact-active {
+  color: var(--color-text);
+}
+
+nav a.router-link-exact-active:hover {
+  background-color: transparent;
+}
+
+nav a {
+  display: inline-block;
+  padding: 0 1rem;
+  border-left: 1px solid var(--color-border);
+}
+
+nav a:first-of-type {
+  border: 0;
+}
+
+@media (min-width: 1024px) {
+  header {
+    display: flex;
+    place-items: center;
+    padding-right: calc(var(--section-gap) / 2);
+  }
+
+  .logo {
+    margin: 0 2rem 0 0;
+  }
+
+  header .wrapper {
+    display: flex;
+    place-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  nav {
+    text-align: left;
+    margin-left: -1rem;
+    font-size: 1rem;
+
+    padding: 1rem 0;
+    margin-top: 1rem;
+  }
+}
+</style>

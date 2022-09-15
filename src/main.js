@@ -1,26 +1,14 @@
-import Vue from "vue";
-// Main File Project
-import App from "./App.vue";
-// Route to Project
-import router from "./router";
-// Data Store
-import store from "./store";
-// Pligin Material Design
-import vuetify from "./plugins/vuetify";
-// PWA
-import "./registerServiceWorker";
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 
-Vue.config.productionTip = false;
+import App from './App.vue'
+import router from './router'
 
-Vue.mixin({
-    mounted() {
-        console.log("hello world!");
-    }
-});
+import './assets/main.css'
 
-new Vue({
-    router,
-    store,
-    vuetify,
-    render: h => h(App)
-}).$mount("#app");
+const app = createApp(App)
+
+app.use(createPinia())
+app.use(router)
+
+app.mount('#app')
