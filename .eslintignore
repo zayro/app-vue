@@ -1,0 +1,13 @@
+# /node_modules/* and /bower_components/* in the project root are ignored by default
+# Ignore built files except build/index.js
+
+
+mongoDB/*
+build/*
+public/**
+public/*.js
+src/lib/**
+src/lib/**/*.js
+src/service-worker.js
+node_modules/*
+bower_components/*
