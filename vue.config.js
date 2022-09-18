@@ -17,5 +17,8 @@ module.exports = {
       skipWaiting: true,
       exclude: [/_redirects/]
     }
+  },
+  configureWebpack: {
+    devtool: "source-map"
   }
 }

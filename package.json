@@ -14,7 +14,7 @@
   "dependencies": {
     "@vue/eslint-config-standard": "^8.0.1",
     "animate.css": "^4.1.1",
-    "axios": "^0.21.1",
+    "axios": "^0.27.2",
     "bootstrap": "^5.2.1",
     "crypto-js": "^4.1.1",
     "csshake": "^1.7.0",
@@ -34,6 +34,7 @@
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "numeral": "^2.0.6",
+    "oh-vue-icons": "^1.0.0-rc3",
     "pinia": "^2.0.21",
     "react-icons": "^4.4.0",
     "secure-ls": "^1.2.6",

@@ -4,24 +4,31 @@
             <div class="card">
                 <img :src="avatar" alt="..." class="card-img-login" width="150" />
                 <div class="card-body">
-                    <h3 class="card-title">Loging</h3>
+                    <h3 class="card-title">{{txt.COMPONENTS.login.title}}</h3>
                     <form>
                         <div class="form-group">
                             <label>Email address</label>
-                            <input type="email" id="username" name="username" class="form-control input" placeholder="Type email" />
+                            <div class="input-group mb-3">
+                                <span class="input-group-text input " id="basic-addon1">
+                                    <v-icon name="fa-user-alt" fill="#686868" scale="1.5" />
+                                </span>
+                                <input type="text" id="username" v-model="form.username" name="username" class="form-control input" placeholder="Type email" />
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label>Password</label>
-                            <input type="password" id="password" name="password" class="form-control input" placeholder="Type password" />
+                            <label>Password  </label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text input " id="basic-addon1">
+                                    <v-icon name="md-password" fill="#686868" scale="1.5" />
+                                </span>
+                                <input type="password" id="password" v-model="form.password" name="password" class="form-control input" autocomplete="on" placeholder="Type email" />
+                            </div>
                         </div>
                         <div class="form-group">
                             <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary">Send</button>
+                                <button type="button" class="btn btn-primary" :disabled="!validateForm" @click="login">{{txt.BUTTON.login}}</button>
                             </div>
                         </div>
-
-                        <hr>
-
                         <div class="d-flex">
                             <div class="p-2 flex-fill"><button type="submit" class=" form-control btn btn-link">Forgot your password ?</button></div>
                             <div class="p-2 flex-fill"><button type="submit" class=" form-control btn btn-outline-primary">Sign Up</button></div>

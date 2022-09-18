@@ -1,7 +1,7 @@
 import axios from 'axios'
 // import store from '@/store';
 
-const URL = 'http://127.0.0.1:3000/api/v1/'
+const URL = 'http://127.0.0.1:4000/api/v1/'
 // const URL = 'https://jsonplaceholder.typicode.com/';
 
 const http = axios.create({
@@ -10,7 +10,10 @@ const http = axios.create({
     'Content-Type': 'application/json',
     Accept: 'application/json',
     Authorization: `Bearer ${window.localStorage.getItem('accessToken')}`
-  }
+  },
+  responseType: 'json', // defecto
+  responseEncoding: 'utf8', // defecto
+  withCredentials: false,
 })
 
 http.interceptors.response.use(
