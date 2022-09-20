@@ -1,11 +1,9 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'animate.css';
 @import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap');
 
 /*   font-family: 'Roboto', sans-serif; */
-
-
-
 h1,
 h2,
 h3,

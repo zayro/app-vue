@@ -4,10 +4,12 @@ import swal from 'sweetalert'
 import { computed, ref } from 'vue'
 import { useConfigStoreRef } from '@/stores/config'
 import { useRouter } from 'vue-router'
+import  JwtService from '@/services/jwt'
 
 export default {
   setup () {
     try {
+      const jwt = new JwtService
       const txt = constant
       const title = 'Login User'
       const form = ref({ username: '', password: '' })
@@ -34,6 +36,7 @@ export default {
             console.log(`:rocket: ~ .then ~ response`, response.data)
             swal('Good job!', 'You clicked the button!', 'success')
             conf.setConfig(response.data)
+            jwt.setToken(response.data.token)
             router.push({ path: '/home' })
           })
           .catch((error) => {
@@ -55,5 +58,6 @@ export default {
     document.body.style.display = ''
     document.body.style.placeItems = ''
     document.body.style.color = ''
+    document.documentElement.style.setProperty('--animate-duration', '.9s');
   }
 }

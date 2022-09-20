@@ -2,6 +2,22 @@
 import { RouterLink } from "vue-router";
 
 import HelloWorld from "../../components/HelloWorld.vue";
+
+console.log("----------------------", import.meta.env.BASE_URL);
+console.log("----------------------", import.meta.env.VITE_DEBUG);
+
+document.title = "Home";
+document.body.style.display = "flex";
+document.body.style.placeItems = "center";
+document.body.style.minHeight = "100vh";
+document.body.style.background = "#181818";
+document.body.style.transition = "color 0.5s, background-color 0.5s";
+document.body.style.lineHeight = "1.6";
+document.body.style.fontFamily =
+  "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif";
+document.body.style.fontSize = "15px";
+document.body.style.textRendering = "optimizeLegibility";
+document.body.style.color = "rgba(235, 235, 235, 0.64)";
 </script>
 
 <style scoped src="../../assets/main.css"></style>
@@ -104,6 +120,16 @@ nav a:first-of-type {
     margin-top: 1rem;
   }
 }
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
 </style>
 
 <template>
@@ -128,26 +154,12 @@ nav a:first-of-type {
         </div>
       </header>
 
-      <router-view></router-view>
+      <router-view v-slot="{ Component }">
+        <!-- Use any custom transition and fallback to `fade` -->
+        <transition name="fade">
+          <component :is="Component" />
+        </transition>
+      </router-view>
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  created() {
-    document.title = "Home";
-    document.body.style.display = "flex";
-    document.body.style.placeItems = "center";
-    document.body.style.minHeight = "100vh";
-    document.body.style.background = "#181818";
-    document.body.style.transition = "color 0.5s, background-color 0.5s";
-    document.body.style.lineHeight = "1.6";
-    document.body.style.fontFamily =
-      "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif";
-    document.body.style.fontSize = "15px";
-    document.body.style.textRendering = "optimizeLegibility";
-    document.body.style.color = "rgba(235, 235, 235, 0.64)";
-  },
-};
-</script>
