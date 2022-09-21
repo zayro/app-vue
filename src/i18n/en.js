@@ -15,8 +15,9 @@ export const constant = {
     field_invalid: 'invalid field'
   },
   BUTTON: {
+    restore: 'restore password',
     login: 'Login',
-    send: 'ENVIAR',
+    send: 'send',
     cancel: 'CANCELAR',
     edit: 'editar',
     add: 'agregar',
@@ -29,6 +30,12 @@ export const constant = {
   COMPONENTS: {
     login: {
       title: 'Welcome'
+    },
+    recoveryPass: {
+      title: 'Recover Password'
+    },
+    session: {
+      title: 'Session'
     },
     changePass: {
       title: 'Cambiar Clave'

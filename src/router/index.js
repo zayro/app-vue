@@ -2,6 +2,10 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/Home/HomeView.vue'
 import NotFound from '../views/404/404.vue'
 import login from '../views/login/loginView.vue'
+import recoveryPass from '../views/login/retorePassword.vue'
+import sessionView from '../views/login/sessionView.vue'
+import createUserView from '../views/login/createUserView.vue'
+
 import InfoView from '../views/Home/InfoView.vue'
 
 import JwtService from '../services/jwt'
@@ -13,13 +17,28 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'login',
+      name: 'default',
       component: login
     },
     {
       path: '/login',
-      name: 'loginDefault',
+      name: 'login',
       component: login
+    },
+    {
+      path: '/recovery',
+      name: 'recoveryPass',
+      component: recoveryPass
+    },
+    {
+      path: '/session',
+      name: 'sessionView',
+      component: sessionView
+    },
+    {
+      path: '/createUser',
+      name: 'createUserView',
+      component: createUserView
     },
     {
       path: '/home',
@@ -87,11 +106,11 @@ router.beforeEach((to, from, next) => {
 
   console.log("router", to.name)
 
-  if (to.name === 'login' && instance.isTokenValid()) {
+  if ((to.name === 'login' || to.name === 'default' ) && instance.isTokenValid()) {
 
     //router.push({ name: 'home' })
     next({
-      name: 'home',
+      name: 'sessionView',
       replace: true
     })
 

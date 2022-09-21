@@ -1,43 +1,68 @@
 <div class="container">
-    <div class="container-login">
-        <div class="card-login p-3 mb-5 rounded">
-            <div class="card">
+  <div class="container-login">
+    <div class="card-login p-3 mb-5 rounded">
+      <div class="card animate__animated animate__face animate__delay-5s">
+        <img
+          :src="avatar"
+          alt="..."
+          class="card-img-login"
+          width="150"
+        />
 
-                <img :src="avatar" alt="..." class="animate__animated animate__bounce animate__delay-5s card-img-login" width="150" />
-
-                <div class="card-body">
-                    <h3 class="card-title">{{txt.COMPONENTS.login.title}}</h3>
-                    <form>
-                        <div class="form-group">
-                            <label>Email address</label>
-                            <div class="input-group mb-3">
-                                <span class="input-group-text input " id="basic-addon1">
-                                    <v-icon name="fa-user-alt" fill="#686868" scale="1.5" />
-                                </span>
-                                <input type="text" id="username" v-model="form.username" name="username" class="form-control input" placeholder="Type email" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Password  </label>
-                            <div class="input-group mb-3">
-                                <span class="input-group-text input " id="basic-addon1">
-                                    <v-icon name="md-password" fill="#686868" scale="1.5" />
-                                </span>
-                                <input type="password" id="password" v-model="form.password" name="password" class="form-control input" autocomplete="on" placeholder="Type email" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="d-grid gap-2">
-                                <button type="button" class="btn btn-primary" :disabled="!validateForm" @click="login">{{txt.BUTTON.login}}</button>
-                            </div>
-                        </div>
-                        <div class="d-flex">
-                            <div class="p-2 flex-fill"><button type="submit" class=" form-control btn btn-link">Forgot your password ?</button></div>
-                            <div class="p-2 flex-fill"><button type="submit" class=" form-control btn btn-outline-primary">Sign Up</button></div>
-                        </div>
-                    </form>
-                </div>
+        <div class="card-body">
+          <h3 class="card-title">{{txt.COMPONENTS.login.title}}</h3>
+          <form>
+            <div class="form-group">
+              <label>Email address</label>
+              <div class="input-group mb-3">
+                <span class="input-group-text input-icon" id="basic-addon1">
+                  <v-icon name="fa-user-alt" fill="#686868" scale="1.5" />
+                </span>
+                <input
+                  type="text"
+                  id="username"
+                  v-model.trim="form.username"
+                  name="username"
+                  class="input"
+                  placeholder="Type email"
+                />
+              </div>
             </div>
+            <div class="form-group">
+              <label>Password </label>
+              <div class="input-group mb-3">
+                <span class="input-group-text input-icon" id="basic-addon1">
+                  <v-icon name="md-password" fill="#686868" scale="1.5" />
+                </span>
+                <input
+                  type="password"
+                  id="password"
+                  v-model="form.password"
+                  name="password"
+                  class="input"
+                  autocomplete="on"
+                  placeholder="Type email"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="d-grid gap-2">
+                <button type="button" class="btn btn-secondary" :disabled="!validateForm" @click="login">
+                  {{txt.BUTTON.login}}
+                </button>
+              </div>
+            </div>
+            <div class="d-flex">
+              <div class="p-2 flex-fill">
+                <RouterLink to="/recovery"><button type="button" class="form-control btn btn-link">Forgot your password ?</button></RouterLink>
+              </div>
+              <div class="p-2 flex-fill">
+               <RouterLink to="/createUser"> <button type="button" class="form-control btn btn-outline-primary">Sign Up</button></RouterLink>
+              </div>
+            </div>
+          </form>
         </div>
+      </div>
     </div>
+  </div>
 </div>

@@ -14,7 +14,8 @@ export default {
       const title = 'Login User'
       const form = ref({ username: '', password: '' })
       const avatar = '/img/profile/avatar/user_256x256.png'
-      const img = '/img/background/y-so-serious-white.png'
+      const imgDark = '/img/background/congruent_outline.png'
+      const imgLight = '/img/background/y-so-serious-white.png'
 
       const conf = useConfigStoreRef()
       const router = useRouter()
@@ -45,19 +46,26 @@ export default {
           })
       }
 
-      return { login, validateForm, img, avatar, txt, title, form, conf }
+      return { login, validateForm, imgDark, imgLight,  avatar, txt, title, form, conf }
     } catch (error) {
       console.log(`:rocket: ~ setup ~ error`, error)
     }
   },
 
   mounted () {
+
+    document.body.style.overflowX = "hidden"
+    document.body.style.overflowY = "hidden"
+
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      document.body.style.backgroundImage = `url(${this.imgDark})`
+
+    } else {
+      // Viewport is greater than 700 pixels wide
+      document.body.style.backgroundImage = `url(${this.imgLight})`
+    }
     console.log(`the component is now mounted.`)
     document.title = 'Login'
-    document.body.style.backgroundImage = `url(${this.img})`
-    document.body.style.display = ''
-    document.body.style.placeItems = ''
-    document.body.style.color = ''
-    document.documentElement.style.setProperty('--animate-duration', '.9s');
+    //document.documentElement.style.setProperty('--animate-duration', '.9s');
   }
 }

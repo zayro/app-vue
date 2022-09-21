@@ -13,6 +13,7 @@ window.addEventListener("resize", () => {
 window.onload = function () {
   console.log(" window.onload ");
 };
+
 </script>
 
 <template>

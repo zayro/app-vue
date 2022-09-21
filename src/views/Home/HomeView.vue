@@ -3,32 +3,34 @@ import { RouterLink } from "vue-router";
 
 import HelloWorld from "../../components/HelloWorld.vue";
 
+import { onMounted, onUnmounted } from "vue";
+
+onMounted(() => {
+  document.title = "Home";
+  document.body.style.background = "#181818";
+  document.body.style.fontFamily =
+    "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif";
+  document.body.style.fontSize = "15px";
+  document.body.style.color = "rgba(235, 235, 235, 0.64)";
+  document.documentElement.style.setProperty("--animate-duration", "8s");
+});
+
+onUnmounted(() => {
+  document.body.style.background = "";
+  document.body.style.fontFamily = "";
+  document.body.style.fontSize = "15px";
+  document.body.style.color = "";
+  document.documentElement.style.setProperty("--animate-duration", "8s");
+});
+
 console.log("----------------------", import.meta.env.BASE_URL);
 console.log("----------------------", import.meta.env.VITE_DEBUG);
-
-document.title = "Home";
-document.body.style.display = "flex";
-document.body.style.placeItems = "center";
-document.body.style.minHeight = "100vh";
-document.body.style.background = "#181818";
-document.body.style.transition = "color 0.5s, background-color 0.5s";
-document.body.style.lineHeight = "1.6";
-document.body.style.fontFamily =
-  "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif";
-document.body.style.fontSize = "15px";
-document.body.style.textRendering = "optimizeLegibility";
-document.body.style.color = "rgba(235, 235, 235, 0.64)";
 </script>
 
 <style scoped src="../../assets/main.css"></style>
 
 <style scoped>
-#body {
-  max-width: 90%;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
-}
+@import "animate.css";
 
 a,
 .green {
@@ -37,23 +39,13 @@ a,
   transition: 0.4s;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
-
-@media (min-width: 1024px) {
-  #body {
-    display: flex;
-    place-items: center;
-  }
-
-  #home {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+#body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+  width: calc(100%);
+  height: 98vh;
 }
 
 /**
@@ -93,11 +85,30 @@ nav a {
 nav a:first-of-type {
   border: 0;
 }
+@media (hover: hover) {
+  a:hover {
+    background-color: hsla(160, 100%, 37%, 0.2);
+  }
+}
+
+@media (min-width: 1024px) {
+  #body {
+    display: flex;
+    place-items: center;
+  }
+
+  #home {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0 2rem;
+  }
+}
 
 @media (min-width: 1024px) {
   header {
     display: flex;
     place-items: center;
+    justify-content: center;
     padding-right: calc(160px / 2);
   }
 
@@ -119,16 +130,6 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
 }
 </style>
 
@@ -154,12 +155,7 @@ nav a:first-of-type {
         </div>
       </header>
 
-      <router-view v-slot="{ Component }">
-        <!-- Use any custom transition and fallback to `fade` -->
-        <transition name="fade">
-          <component :is="Component" />
-        </transition>
-      </router-view>
+      <router-view />
     </div>
   </div>
 </template>

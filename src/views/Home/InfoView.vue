@@ -1,5 +1,6 @@
 <script setup>
 import TheWelcome from "../../components/TheWelcome.vue";
+document.documentElement.style.setProperty("--animate-duration", "8s");
 </script>
 
 <style scoped src="../../assets/main.css"></style>
