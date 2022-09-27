@@ -6,6 +6,11 @@ import recoveryPass from '../views/login/retorePassword.vue'
 import sessionView from '../views/login/sessionView.vue'
 import createUserView from '../views/login/createUserView.vue'
 
+import CrudView from '../views/Crud/CrudView.vue'
+import DataView from '../views/Crud/DataView.vue'
+
+import MainView from '../views/Main/MainView.vue'
+
 import InfoView from '../views/Home/InfoView.vue'
 
 import JwtService from '../services/jwt'
@@ -41,6 +46,22 @@ const router = createRouter({
       component: createUserView
     },
     {
+      path: '/Crud',
+      name: 'crud',
+      component: CrudView
+    },
+    {
+      path: '/data',
+      name: 'data',
+      component: DataView
+    },
+    {
+      path: '/main',
+      name: 'main',
+      component: MainView
+    },
+
+    {
       path: '/home',
       name: 'home',
       component: HomeView,
@@ -51,7 +72,7 @@ const router = createRouter({
           path: '',
           name: 'info',
           component: InfoView,
-          meta: { authRequired: true },
+          meta: { authRequired: true }
         },
         {
           path: 'about',
@@ -72,7 +93,7 @@ const router = createRouter({
   ]
 })
 
-function hasAccess(namePermission) {
+function hasAccess (namePermission) {
   //const permission = JSON.parse(ls.get('vuex')).config.privileges.permissions;
 
   const permission = ['admin', 'user', 'developer', 'guest']
@@ -99,15 +120,13 @@ function hasAccess(namePermission) {
 router.beforeEach((to, from, next) => {
   //A Logged-in user can't go to login page again
 
+  console.log('🚧 - router.beforeEach - hasAccess(to.name)', hasAccess(to.name))
+  console.log('🚧 - router.beforeEach - to.meta.authRequired', to.meta.authRequired)
+  console.log('🚧 - router.beforeEach - instance.isTokenValid()', instance.isTokenValid())
 
-  console.log("🚧 - router.beforeEach - hasAccess(to.name)", hasAccess(to.name));
-  console.log("🚧 - router.beforeEach - to.meta.authRequired", to.meta.authRequired);
-  console.log("🚧 - router.beforeEach - instance.isTokenValid()", instance.isTokenValid());
+  console.log('router', to.name)
 
-  console.log("router", to.name)
-
-  if ((to.name === 'login' || to.name === 'default' ) && instance.isTokenValid()) {
-
+  if ((to.name === 'login' || to.name === 'default') && instance.isTokenValid()) {
     //router.push({ name: 'home' })
     next({
       name: 'sessionView',
@@ -118,30 +137,18 @@ router.beforeEach((to, from, next) => {
   }
 
   if (to.meta.authRequired) {
-
-    if(instance.isTokenValid() && hasAccess(to.name)) {
-
+    if (instance.isTokenValid() && hasAccess(to.name)) {
       return next()
-
     } else {
-
       next({
         path: '/',
         // save the location we were at to come back later
-        query: { redirect: to.fullPath },
+        query: { redirect: to.fullPath }
       })
-
-
-
     }
-
-
   }
 
-
-    return next()
-
-
+  return next()
 })
 
 export default router

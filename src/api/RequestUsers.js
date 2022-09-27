@@ -1,6 +1,6 @@
-import http from '../services/http'
+import {http} from '../services/http-axios'
 
-const url = '/general/select/prueba'
+const url = '/general/select/demo.prueba'
 
 // Request
 
