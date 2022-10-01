@@ -1,16 +1,19 @@
 <script>
 export default {
   props: {
-    title: String,
+    load: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props) {
-    console.log(props.title);
+    console.log(props.load);
   },
 };
 </script>
 
 <template>
-  <div class="backdrop">
+  <div class="backdrop" v-if="load">
     <div class="center-div">
       <div class="spinner"></div>
     </div>

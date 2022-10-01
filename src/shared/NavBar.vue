@@ -1,0 +1,199 @@
+<script setup>
+import { defineProps, defineEmits, ref } from "vue";
+
+const props = defineProps({
+  colorNavBackground: {
+    type: String,
+    default: "#b0b0b0",
+  },
+  colorNavText: {
+    type: String,
+    default: "#000000",
+  },
+});
+
+const width = ref(window.innerWidth);
+const height = ref(window.window.innerHeight);
+
+window.addEventListener("resize", () => {
+  width.value = window.innerWidth;
+  height.value = window.innerHeight;
+});
+
+const emit = defineEmits({
+  "open-sidebar": null,
+});
+
+function myFunction() {
+  var x = document.getElementById("navbar-vertical");
+  if (x.style.display === "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
+  }
+}
+</script>
+
+<template>
+  <!-- Top Navigation Menu  -->
+  <div class="navbar-top navbar-fixed-top bg-custom" v-if="width > 1024">
+    <div class="navbar-horizontal">
+      <a
+        v-if="width > 1024"
+        href="javascript:void(0);"
+        class="icon-left"
+        @click="emit('open-sidebar')"
+      >
+        <v-icon name="hi-menu" v-bind:fill="colorNavText" scale="1.3" />
+      </a>
+
+      <span class="brand">LOGO</span>
+
+      <div id="navbar-horizontal" class="navbar-horizontal">
+        <span class="navbar-item">
+          <a class="navbar-link" href="#"> Home</a>
+        </span>
+        <span class="navbar-item">
+          <a class="navbar-link" href="#">Features</a>
+        </span>
+        <span class="navbar-item">
+          <a class="navbar-link" href="#">Pricing</a>
+        </span>
+      </div>
+
+      <div class="navbar-icon-right">
+        <a href="javascript:void(0);" class="icon" @click="myFunction()">
+          <v-icon name="ri-shut-down-line" v-bind:fill="colorNavText" scale="1.3" />
+        </a>
+      </div>
+
+      <div v-if="width < 1024">
+        <a href="javascript:void(0);" class="icon" @click="myFunction()">
+          <v-icon name="hi-menu" v-bind:fill="colorNavText" scale="1.3" />
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="navbar-top bg-custom" v-if="width < 1024">
+    <div class="navbar-horizontal container">
+      <span class="brand">LOGO</span>
+
+      <div class="navbar-icon-right">
+        <a href="javascript:void(0);" class="icon" @click="myFunction()">
+          <v-icon name="hi-menu" v-bind:fill="colorNavText" scale="1.8" />
+        </a>
+      </div>
+    </div>
+    <div id="navbar-vertical">
+      <hr class="container" />
+      <div class="container">
+        <div class="navbar-vertical">
+          <span class="navbar-item">
+            <a class="navbar-link" href="#">Home</a>
+          </span>
+          <span class="navbar-item">
+            <a class="navbar-link" href="#">Features</a>
+          </span>
+          <span class="navbar-item">
+            <a class="navbar-link" href="#">Pricing</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+/* @import "~bootstrap/scss/bootstrap.scss"; */
+
+.navbar-icon-right {
+  display: flex;
+  flex-grow: 1;
+  justify-content: flex-end;
+}
+.navbar-horizontal {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+#navbar-vertical {
+  display: none;
+}
+.navbar-vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+.navbar-vertical > .navbar-item {
+  margin-top: 3px;
+  margin-bottom: 6px;
+}
+.navbar-item {
+  flex: auto;
+}
+/* Style the navigation menu */
+.navbar-top {
+  overflow: hidden;
+  position: relative;
+}
+
+/* Style navigation menu links */
+.navbar-top a {
+  padding: 5px 25px 5px 25px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.brand {
+  text-decoration: none;
+  font-size: 23px;
+  color: v-bind("props.colorNavText");
+  padding: 15px 25px;
+}
+
+.brand:hover {
+  color: black;
+}
+
+a.icon-left {
+  padding: 20px;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+/* Add a grey background color on mouse-over */
+.navbar-top a:hover {
+  background-color: #ddd;
+  color: black;
+  border-radius: 25px;
+}
+
+/* Style the active link (or home/logo) */
+
+.navbar-top {
+  font-family: "Open Sans", sans-serif;
+  -webkit-box-shadow: 0px 6px 10px-1px rgba(191, 191, 191, 0.53);
+  -moz-box-shadow: 0px 6px 10px-1px rgba(191, 191, 191, 0.53);
+  box-shadow: 0px 6px 10px-1px rgba(191, 191, 191, 0.53);
+}
+
+.bg-custom {
+  opacity: 0.9;
+  background-color: v-bind("props.colorNavBackground");
+}
+
+.navbar-link {
+  color: v-bind("props.colorNavText");
+}
+
+.navbar-fixed-top {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 10;
+}
+</style>

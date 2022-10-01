@@ -9,6 +9,7 @@ import { conf } from './services/conf'
 
 import './assets/global.css'
 
+import "~bootstrap/dist/css/bootstrap.min.css";
 //import './registerServiceWorker'
 
 import { OhVueIcon, addIcons } from 'oh-vue-icons'
@@ -21,10 +22,16 @@ import {
   MdEmailRound,
   MdArrowbackiosnew,
   MdKeyboardbackspace,
-  HiMenu
+  HiMenu,
+  RiShutDownLine,
+  FaExpand,
+  FaCamera,
+  FaBan
 } from 'oh-vue-icons/icons'
 
-addIcons(FaFlag, RiZhihuFill, FaUserAlt, MdPassword, CoMinutemailer, MdEmailRound, MdArrowbackiosnew, MdKeyboardbackspace, HiMenu)
+
+  addIcons(FaFlag, RiZhihuFill, FaUserAlt, MdPassword, CoMinutemailer, MdEmailRound, MdArrowbackiosnew, MdKeyboardbackspace, HiMenu, RiShutDownLine,
+  FaExpand, FaBan, FaCamera)
 
 const app = createApp(App)
 
