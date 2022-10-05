@@ -173,18 +173,41 @@ onMounted(() => {
 
 <template>
   <div class="container fluid">
-    <div class="botonera"></div>
-    <hr />
-    <div class="filter"></div>
-    <hr />
-    <DataTable :data="records" :columns="columns" :options="options" class="table">
-    </DataTable>
+    <div class="card mb-3">
+      <!-- <div class="card-header">Config Color</div> -->
+      <div class="card-body">
+        <div class="card-title">Datatable.net</div>
+        <hr />
+        <div class="column">
+          <div class="col">
+            <div class="botonera"></div>
+          </div>
+
+          <div class="col">
+            <div class="filter"></div>
+          </div>
+          <div class="col mb-3">
+            <DataTable
+              :data="records"
+              :columns="columns"
+              :options="options"
+              class="table table-sm"
+            >
+            </DataTable>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
-@import "~bootstrap/dist/css/bootstrap.css";
-@import "datatables.net-bs5/css/dataTables.bootstrap5.min.css";
-@import "datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css";
 @import "animate.css";
+
+.botonera {
+  display: flex;
+  justify-content: space-around;
+  justify-items: space-around;
+  align-items: stretch;
+}
 </style>

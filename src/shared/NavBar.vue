@@ -181,7 +181,6 @@ a.icon-left {
 }
 
 .bg-custom {
-  opacity: 0.9;
   background-color: v-bind("props.colorNavBackground");
 }
 

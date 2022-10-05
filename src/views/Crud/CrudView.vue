@@ -153,7 +153,6 @@ onMounted(() => {});
 </template>
 
 <style scoped>
-@import "bootstrap/dist/css/bootstrap.min.css";
 @import "animate.css";
 @import "datatables.net-bs5/css/dataTables.bootstrap5.min.css";
 @import "datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css";

@@ -1,4 +1,4 @@
-@import 'bootstrap/dist/css/bootstrap.min.css';
+
 @import 'animate.css';
 @import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap');
@@ -19,16 +19,19 @@ h6 {
 .container-login {
   margin: 0 auto;
   font-family: 'Open Sans', sans-serif;
+  height: 100vh;
+  display: flex;
+  align-items: center;
 }
 
 .card {
-  background: rgba(255, 255, 255, 0.5);
-
+  background: rgba(255, 255, 255, 0.6);
+  color: #4e4e4e;
   background: linear-gradient(
     to bottom,
-    rgba(255, 255, 255, 0.5) 0%,
-    rgba(246, 246, 246, 0.5) 47%,
-    rgba(237, 237, 237, 0.5) 100%
+    rgba(255, 255, 255, 0.774) 0%,
+    rgba(246, 246, 246, 0.692) 47%,
+    rgba(237, 237, 237, 0.589) 100%
   );
 
   padding: 40px;
@@ -41,11 +44,7 @@ h6 {
 }
 
 .card-login {
-  width: 60%;
-  height: 100%;
   margin: 0 auto;
-  margin-top: 15%;
-  color: rgb(221, 221, 221);
 }
 
 .card-img-login {
@@ -53,8 +52,8 @@ h6 {
   left: 50%;
   padding: 10px;
 }
+
 .card-title {
-  text-transform: uppercase;
   text-align: center;
 }
 
@@ -95,13 +94,6 @@ label {
   outline: none;
 }
 
-.full-width {
-  width: 100%;
-}
-
-.width-90 {
-  width: 80%;
-}
 
 @media (prefers-color-scheme: light) {
   .input {
@@ -113,13 +105,14 @@ label {
     /*background:rgba(246, 246, 246, 0.50);*/
     background: none;
     height: 50px;
-    color: black;
+    color: #4e4e4e;
+
   }
 }
 
 @media (prefers-color-scheme: dark) {
   .input {
-    border-radius: 5px;
+    border-radius: 0px;
     border-left: none;
     border-right: none;
     border-top: none;
@@ -127,12 +120,12 @@ label {
     /*background:rgba(246, 246, 246, 0.50);*/
     background: none;
     height: 50px;
-    color: white;
+    color: #4e4e4e;
+
   }
 
   ::placeholder {
     /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: white;
     opacity: 1; /* Firefox */
   }
 }

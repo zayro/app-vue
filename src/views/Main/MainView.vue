@@ -38,7 +38,7 @@ function changeColorSideNav(color) {
 let load = ref();
 
 let colorNavBackground = ref("#b0b0b0");
-let colorNavText = ref("#000000");
+let colorNavText = ref("#4e4e4e");
 let backgroundSidenav = ref("");
 let colordSidenav = ref("#000000");
 
@@ -88,31 +88,59 @@ onMounted(() => {
     </div>
 
     <!-- ROUTING -->
-    <div id="main" class="container">
-      <div class="d-flex justify-content-around">
+    <div id="main">
+      <div class="d-flex flex-column justify-content-around">
         <div class="flex-item">
-          <div class="card border-secondary mb-3">
-            <div class="card-header">Config Color</div>
+          <div class="card mb-3">
+            <!-- <div class="card-header">Config Color</div> -->
             <div class="card-body">
+              <div class="card-title">Config Navbar</div>
+              <hr />
               <div class="row">
-                <div class="col">
-                  <p><label for="colorNavBackground">colorNavBackground</label></p>
+                <div class="col mb-3">
+                  <p><label for="colorNavBackground">Nav Background</label></p>
                   <input
                     id="colorNavBackground"
                     v-model="colorNavBackground"
+                    class="form-control form-control-color"
                     type="color"
                   />
                   <p>{{ colorNavBackground }}</p>
                 </div>
-                <div class="col">
-                  <p><label for="colorNavText">colorNavText</label></p>
-                  <input v-model="colorNavText" type="color" />
+                <div class="col mb-3">
+                  <p><label for="colorNavText">Nav Text</label></p>
+                  <input
+                    v-model="colorNavText"
+                    type="color"
+                    class="form-control form-control-color"
+                  />
                   <p>{{ colorNavText }}</p>
                 </div>
+                <div class="col">
+                  <label for="customRange3" class="form-label">Navbar opacity</label>
+                  <input
+                    type="range"
+                    class="form-range"
+                    min="0"
+                    max="5"
+                    step="0.5"
+                    id="customRange3"
+                  />
+                </div>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex-item">
+          <div class="card mb-3">
+            <!-- <div class="card-header">Config Color</div> -->
+            <div class="card-body">
+              <div class="card-title">Config SIDEBAR</div>
+              <hr />
 
               <div class="row">
-                <div class="text-center">SIDEBAR COLOR</div>
+                <div class="card-subtitle">COLOR</div>
 
                 <div class="col point">
                   <div class="point-blue" @click="changeColorSideNav('#35495e')"></div>
@@ -124,7 +152,7 @@ onMounted(() => {
               </div>
 
               <div class="row">
-                <div class="text-center">SIDEBAR IMAGES</div>
+                <div class="card-subtitle">IMAGES</div>
 
                 <div class="d-flex flex-row flex-wrap mb-3 justify-content-around">
                   <div class="text-center" v-for="(item, index) in sidebar" :key="index">
@@ -141,22 +169,13 @@ onMounted(() => {
                       class="rounded-img"
                     >
                       <v-icon label="No Photos">
-                        <v-icon name="fa-camera" scale="4" />
-                        <v-icon name="fa-ban" scale="5" fill="#fC644d" />
+                        <v-icon name="fa-camera" scale="2.5" />
+                        <v-icon name="fa-ban" scale="4" fill="#fC644d" />
                       </v-icon>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex-item" style="width: 50%">
-          <div class="card border-secondary mb-3">
-            <div class="card-header">Config User</div>
-            <div class="card-body text-secondary">
-              <div class="d-flex justify-content-around"></div>
             </div>
           </div>
         </div>
@@ -166,6 +185,10 @@ onMounted(() => {
 </template>
 
 <style lang="css" scoped>
+.card-body {
+  padding: 40px;
+}
+
 #mySidenav {
   width: 0%;
 }
@@ -238,12 +261,15 @@ onMounted(() => {
   align-items: center;
   align-self: center;
   justify-content: center;
+  align-content: space-around;
   height: 98vh;
 }
 
-#flex-container > .flex-item {
+.flex-item {
+  /*
   -webkit-flex: auto;
   flex: auto;
+  */
 }
 
 .sidenav-content {

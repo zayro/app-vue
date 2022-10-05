@@ -50,7 +50,7 @@ if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
           </div>
           <div class="d-flex justify-content-center">
             <div class="div-rounded-circle">
-              <v-icon name="fa-user-alt" fill="#686868" scale="5" />
+              <v-icon name="fa-user-alt" fill="#686868" scale="3" />
             </div>
           </div>
 
@@ -96,7 +96,6 @@ if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
 
 <style scoped>
 #body {
-
   width: calc(100%);
   height: 98vh;
 }
