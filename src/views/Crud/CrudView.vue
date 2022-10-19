@@ -154,8 +154,7 @@ onMounted(() => {});
 
 <style scoped>
 @import "animate.css";
-@import "datatables.net-bs5/css/dataTables.bootstrap5.min.css";
-@import "datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css";
+
 .fluid {
   margin-top: 250px;
 }

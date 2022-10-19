@@ -1,174 +1,189 @@
 <script setup>
-import { onMounted } from "vue";
-import $ from "jquery";
+import { onMounted, ref, computed, watch } from "vue";
 
-import "datatables.net";
-
-import bootstrap5 from "datatables.net-bs5/js/dataTables.bootstrap5.min.js";
-
-import buttons from "datatables.net-buttons-bs5";
-
-import fixedheader from "datatables.net-fixedheader-bs5";
-import colreorder from "datatables.net-colreorder-bs5";
-import Scroll from "datatables.net-scroller-bs5";
-import Select from "datatables.net-select-bs5";
-import html5 from "datatables.net-buttons/js/buttons.html5.min.js";
-import print from "datatables.net-buttons/js/buttons.print.min.js";
-import colVis from "datatables.net-buttons/js/buttons.colVis.min.js";
-import flash from "datatables.net-buttons/js/buttons.flash.min.js";
-import staterestore from "datatables.net-staterestore-bs5";
 import { getUsers } from "../../api/RequestUsers";
 
-import DataTable from "datatables.net-vue3";
+//SECTION - Logic
 
-import "jszip/dist/jszip.min.js";
-import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+//ANCHOR -  Data Handler State of View
+let records = ref([]);
+let recordsFiltered = ref([]);
+let recordsShowTable = ref([]);
+let search = ref("");
+let paginationLimit = ref(20);
+let paginationPage = ref([]);
+let paginationPageTotal = ref(0);
+let paginationPagePosition = ref({});
 
-DataTable.use(Select);
-DataTable.use(buttons);
-DataTable.use(Scroll);
-DataTable.use(colreorder);
-DataTable.use(fixedheader);
-DataTable.use(html5);
-DataTable.use(print);
-DataTable.use(flash);
-DataTable.use(colVis);
-DataTable.use(staterestore);
-DataTable.use(bootstrap5);
-
-let records = [
-  {
-    id: 1,
-    name: "Tiger Nixon",
-    position: "System Architect",
-    salary: "$3,120",
-    start_date: "2011/04/25",
-    office: "Edinburgh",
-    extn: 5421,
+const pageLimit = computed({
+  // getter
+  get() {
+    return paginationLimit.value;
   },
-  {
-    id: 2,
-    name: "Garrett Winters",
-    position: "Director",
-    salary: "5300",
-    start_date: "2011/07/25",
-    office: "Edinburgh",
-    extn: "8422",
+  // setter
+  set(newValue) {
+    // Note: we are using destructuring assignment syntax here.
+    paginationLimit.value = newValue.split(" ");
   },
-];
+});
 
-const columns = [
-  {
-    visible: true,
-    searchable: false,
-    className: "dt-center",
-    // width: '80px',
-    render: function (data, type, full) {
-      return `
-          <div class="text-center">
-          <button class="btn btn-outline-primary btn-sm edit">
-          <span class="material-icons material-icons-outlined">edit</span>
-          </button>
-          <button class="btn btn-outline-danger btn-sm delete">
-          <span class="material-icons material-icons-outlined">delete</span>
-          </button>
-          </div>
-          `;
-    },
-  },
-  { title: "id", data: "id" },
-  { title: "name", data: "name" },
-];
+const column = ["uid", "name", "phone", "address"];
 
-const options = {
-  destroy: true,
-  responsive: true,
-  stateSave: true,
-  order: [[1, "desc"]],
-  pagingType: "full_numbers",
-  paging: true,
-  info: true,
-  ordering: true,
-  processing: false,
-  searching: true,
-  colReorder: true,
-  fixedHeader: true,
-  scrollY: 500,
-  dom:
-    "<'row'<'col-sm-6'B><'col-sm-6'f>>" +
-    "<'row'<'col-sm-12'tr>>" +
-    "<'row'<'col-sm-4'i><'col-sm-4 text-center'l><'col-sm-4'p>>",
-  // dom: 'Bfrtilp',
-  buttons: [
-    {
-      extend: "copy",
-      titleAttr: "Copiar",
-      className: "btn ",
-    },
-    {
-      extend: "excel",
-      className: "btn ",
-    },
-    {
-      extend: "csv",
-      className: "btn ",
-    },
-    {
-      extend: "pdfHtml5",
-      className: "btn ",
-    },
-    {
-      extend: "print",
-      className: "btn ",
-    },
-    {
-      extend: "colvis",
-      className: "btn ",
-    },
-    {
-      extend: "createState",
-      className: "btn ",
-    },
-    {
-      extend: "savedStates",
-      className: "btn ",
-    },
+//ANCHOR - Observable to input Search
 
-    {
-      text: '<a><i  class="fa fa-print"></i><a/> Documento',
-      className: "btn ",
-      action: function (dt) {
-        console.log("* ~ file: table.js ~ line 684 ~ dt", dt);
-      },
-    },
-  ],
-  rowCallback: (row, data, index) => {
-    // console.log('* ~ file: table.js ~ line 210 ~ data', data)
-    // console.log('* ~ file: table.js ~ line 721 ~ row', row)
-    // Unbind first in order to avoid any duplicate handler
-    // $('td', row).unbind('click');
+watch(search, async (newValue, oldValue) => {
+  console.log("🚧 - watch - newValue", newValue);
+  console.log("🚧 - watch - oldValue", oldValue);
+  if (newValue !== "") {
+    try {
+      const filterColumn = records.value.map((x, index) => {
+        return Object.keys(x)
+          .filter((key) => column.includes(key))
+          .reduce((cur, key) => {
+            return Object.assign(cur, { [key]: records.value[index][key] });
+          }, []);
+      });
 
-    return row;
-  },
-};
+      recordsFiltered.value = filterColumn.filter((value) => {
+        return (
+          Object.values(value).filter((item) => item.toString().includes(search.value))
+            .length > 0
+        );
+      });
+      console.log(
+        "🚧 - recordsFiltered.value=filterColumn.filter - recordsFiltered.value ",
+        recordsFiltered.value
+      );
 
+      displayPageNav(recordsFiltered.value.length, paginationLimit.value);
+      displayItems(0, "filtered");
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    console.log("not rows");
+    recordsFiltered.value = records.value;
+    displayPageNav(records.value.length, paginationLimit.value);
+    displayItems();
+  }
+});
+
+//ANCHOR - API CONECTION
 getUsers()
   .then((result) => {
     console.log("🚧 - getUsers.then - result", result);
-    records = result.data;
+    records.value = result.data;
+    recordsFiltered.value = result.data;
+    displayPageNav(records.value.length, paginationLimit.value);
+    displayItems();
   })
   .catch((err) => {
     console.log("🚧 - getUsers.then - err", err);
   });
 
-onMounted(() => {
-  //table.buttons().container().appendTo($(".botonera", table.table().container()));
+//ANCHOR - Methods
+const displayPageNavNext = () => {
+  const data = paginationPagePosition.value;
+  console.log("🚧 - displayPageNavNext - data", data);
+  let n = 0;
+  let acum = [];
 
-  $(".dt-buttons").appendTo(".botonera");
-  $(".dataTables_filter").appendTo(".filter");
-});
+  while (n < paginationPageTotal.value) {
+    n++;
+    acum.push(n);
+  }
+  console.log("🚧 - displayPageNavNext - acum", acum);
+  const from = parseInt(data.index);
+  const to = from + 6;
+  console.log("🚧 - displayPageNavNext - to", to);
+  paginationPage.value = acum.slice(from, to);
+  console.log("🚧 - displayPageNavNext - paginationPage.value", paginationPage.value);
+
+  displayItems(data.index + 1);
+};
+
+const displayPageNavPrev = () => {
+  const data = paginationPagePosition.value;
+  console.log("🚧 - displayPageNavNext - data", data);
+  let n = 0;
+  let acum = [];
+
+  while (n < paginationPageTotal.value) {
+    n++;
+    acum.push(n);
+  }
+
+  const from = parseInt(data.index) < 6 ? 6 : parseInt(data.index);
+  const to = from - 6;
+
+  paginationPage.value = acum.slice(to < 0 ? 0 : to, from);
+  displayItems(data.index - 1);
+};
+
+const displayPageNav = (totalItems, perPage) => {
+  perPage = perPage ? perPage : 1;
+  const totalItemsPage = Math.ceil(totalItems / perPage);
+  paginationPageTotal.value = totalItemsPage;
+  paginationPage.value = paginationPageTotal.value > 6 ? 6 : totalItemsPage;
+};
+
+const displayItems = (perPage = 0, type = "default") => {
+  let index, offSet;
+
+  offSet = paginationLimit.value * perPage;
+  index = offSet - paginationLimit.value;
+
+  paginationPagePosition.value = {
+    index: perPage === 0 ? 1 : perPage,
+    from: index,
+    to: offSet,
+  };
+
+  if (perPage === 0 && type == "default") {
+    recordsShowTable.value = records.value.slice(0, paginationLimit.value);
+  }
+
+  if (perPage === 0 && type !== "default") {
+    recordsShowTable.value = recordsFiltered.value.slice(0, paginationLimit.value);
+  }
+
+  if (perPage !== 0) {
+    recordsShowTable.value = recordsFiltered.value.slice(index, offSet);
+  }
+};
+
+/*
+const filteredItemsAll = () => {
+  if (search.value === "") {
+    return records.value.length;
+  } else {
+    const filterColumn = records.value.map((x, index) => {
+      return Object.keys(x)
+        .filter((key) => column.includes(key))
+        .reduce((cur, key) => {
+          return Object.assign(cur, { [key]: records.value[index][key] });
+        }, []);
+    });
+
+    return filterColumn.filter((value) => {
+      return (
+        Object.values(value).filter((item) => item.toString().includes(search.value))
+          .length > 0
+      );
+    });
+  }
+};
+
+*/
+/*
+const filteredItems = (key, value) => {
+  return records.value.filter((item) => {
+    return item[key] === value;
+  });
+};
+*/
+
+onMounted(() => {});
 </script>
 
 <template>
@@ -183,17 +198,78 @@ onMounted(() => {
             <div class="botonera"></div>
           </div>
 
-          <div class="col">
-            <div class="filter"></div>
-          </div>
-          <div class="col mb-3">
-            <DataTable
-              :data="records"
-              :columns="columns"
-              :options="options"
-              class="table table-sm"
+          <div class="col mb-5">
+            <button
+              class="btn btn-outline-dark"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseExample"
+              aria-expanded="false"
+              aria-controls="collapseExample"
             >
-            </DataTable>
+              Search All Fields
+            </button>
+            <div class="collapse" id="collapseExample">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th class="text-center align-middle" style="width: 10%">Search:</th>
+                    <th style="width: 90%">
+                      <input type="text" class="form-control" v-model="search" />
+                    </th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
+
+          <div class="col mb-3">
+            <table class="table table-sm table-striped">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>#</th>
+                  <th v-for="item in column" :key="item">{{ item }}</th>
+                </tr>
+              </thead>
+              <tbody class="table-group-divider">
+                <tr v-for="(item, index) in recordsShowTable" :key="item.id">
+                  <td>
+                    <div>
+                      <v-icon name="fa-edit" fill="#686868" title="Edit" scale="1" />
+                      <v-icon name="md-delete" fill="#686868" title="Edit" scale="1" />
+                    </div>
+                  </td>
+                  <td>{{ index + 1 }}</td>
+                  <td>{{ item.uid }}</td>
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.phone }}</td>
+                  <td>{{ item.address }}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div id="pagination">
+              <button type="button" class="btn" @click="displayPageNavPrev()">
+                atras
+              </button>
+              <div v-for="item in paginationPage" :key="item">
+                <button
+                  type="button"
+                  class="btn"
+                  :class="
+                    paginationPagePosition.index == item ? 'btn-primary' : 'btn-light'
+                  "
+                  @click="displayItems(item)"
+                >
+                  {{ item }}
+                </button>
+              </div>
+              <button type="button" class="btn" @click="displayPageNavNext()">
+                adelante
+              </button>
+
+              total rows {{ recordsFiltered.length }}
+            </div>
           </div>
         </div>
       </div>
@@ -204,10 +280,34 @@ onMounted(() => {
 <style scoped>
 @import "animate.css";
 
+table th {
+  text-transform: uppercase;
+}
+
 .botonera {
   display: flex;
   justify-content: space-around;
   justify-items: space-around;
   align-items: stretch;
+}
+
+#pagination {
+  display: flex;
+  padding: 10px;
+  text-align: center;
+  flex-direction: row;
+}
+
+#pagination div button {
+  margin: 5px;
+}
+
+#pagination > div button:last-child {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+#pagination > div button:hover {
+  background: rgba(0, 0, 0, 0.03);
+  color: #1a7beb;
 }
 </style>

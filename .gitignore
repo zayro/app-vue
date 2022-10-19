@@ -29,3 +29,7 @@ coverage
 
 # Ignore File
 package-lock.json
+
+
+# Ignore Folder
+dev-dist

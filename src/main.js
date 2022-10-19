@@ -20,18 +20,34 @@ import {
   MdPassword,
   CoMinutemailer,
   MdEmailRound,
+  MdDelete,
   MdArrowbackiosnew,
   MdKeyboardbackspace,
   HiMenu,
   RiShutDownLine,
   FaExpand,
   FaCamera,
-  FaBan
+  FaBan,
+  FaEdit,
+
 } from 'oh-vue-icons/icons'
 
 
-  addIcons(FaFlag, RiZhihuFill, FaUserAlt, MdPassword, CoMinutemailer, MdEmailRound, MdArrowbackiosnew, MdKeyboardbackspace, HiMenu, RiShutDownLine,
-  FaExpand, FaBan, FaCamera)
+  addIcons(FaFlag,
+  RiZhihuFill,
+  FaUserAlt,
+  MdPassword,
+  CoMinutemailer,
+  MdEmailRound,
+  MdArrowbackiosnew,
+  MdKeyboardbackspace,
+  MdDelete,
+  HiMenu,
+  RiShutDownLine,
+  FaExpand,
+  FaBan,
+  FaEdit,
+  FaCamera)
 
 const app = createApp(App)
 
