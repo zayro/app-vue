@@ -1,63 +1,62 @@
 <script setup>
-import "bootstrap";
+import 'bootstrap'
 
-import { ref, onMounted, onBeforeMount, getCurrentInstance, inject } from "vue";
+import { ref, onMounted, onBeforeMount, getCurrentInstance, inject } from 'vue'
 
-import Spinner from "../../shared/Spinner.vue";
-import NavBar from "../../shared/NavBar.vue";
-import BackDrop from "../../shared/BackDrop.vue";
+import Spinner from '../../shared/Spinner.vue'
+import NavBar from '../../shared/NavBar.vue'
+import BackDrop from '../../shared/BackDrop.vue'
 
-const txt = inject("txt");
-console.log("🚧 - txt", txt);
-const conf = inject("conf");
+const txt = inject('txt')
+console.log('🚧 - txt', txt)
+const conf = inject('conf')
 
-const sidebar = Object.keys(import.meta.globEager("/public/img/sidebar/*.jpg"));
+const sidebar = Object.keys(import.meta.globEager('/public/img/sidebar/*.jpg'))
 
-function openNav() {
-  console.log("openNav");
-  document.getElementById("mySidenav").style.width = "35% ";
-  //document.getElementById("main").style.marginLeft = "35% ";
-  document.getElementById("myCanvasNav").style.width = "100%";
-  document.getElementById("myCanvasNav").style.opacity = "0.6";
+function openNav () {
+  console.log('openNav')
+  document.getElementById('mySidenav').style.width = '35% '
+  // document.getElementById("main").style.marginLeft = "35% ";
+  document.getElementById('myCanvasNav').style.width = '100%'
+  document.getElementById('myCanvasNav').style.opacity = '0.6'
 }
 
-function closeNav() {
-  document.getElementById("mySidenav").style.width = "0";
-  //document.getElementById("main").style.marginLeft = "0";
-  document.getElementById("myCanvasNav").style.width = "0%";
-  document.getElementById("myCanvasNav").style.opacity = "0";
+function closeNav () {
+  document.getElementById('mySidenav').style.width = '0'
+  // document.getElementById("main").style.marginLeft = "0";
+  document.getElementById('myCanvasNav').style.width = '0%'
+  document.getElementById('myCanvasNav').style.opacity = '0'
 }
 
-function changeBackgroundSideNav(img) {
-  backgroundSidenav.value = `url("${img}")`;
+function changeBackgroundSideNav (img) {
+  backgroundSidenav.value = `url("${img}")`
 }
-function changeColorSideNav(color) {
-  colordSidenav.value = `${color}`;
+function changeColorSideNav (color) {
+  colordSidenav.value = `${color}`
 }
 
-let load = ref();
+const load = ref()
 
-let colorNavBackground = ref("#b0b0b0");
-let colorNavText = ref("#4e4e4e");
-let backgroundSidenav = ref("");
-let colordSidenav = ref("#000000");
+const colorNavBackground = ref('#b0b0b0')
+const colorNavText = ref('#4e4e4e')
+const backgroundSidenav = ref('')
+const colordSidenav = ref('#000000')
 
-const app = getCurrentInstance();
-const progressBar = app.appContext.config.globalProperties.msg;
+const app = getCurrentInstance()
+const progressBar = app.appContext.config.globalProperties.msg
 
-console.log(progressBar);
+console.log(progressBar)
 
 onBeforeMount(() => {
-  load.value = false;
-});
+  load.value = false
+})
 
 onMounted(() => {
-  load.value = true;
-  document.body.style.overflowX = "hidden";
-  document.body.style.overflowY = "hidden";
-
-  document.body.style.backgroundImage = `url(${conf.body.background.imgMain})`;
-});
+  load.value = true
+  document.body.style.overflowX = 'hidden'
+  document.body.style.overflowY = 'hidden'
+  document.body.style.backgroundImage = `url(${conf.body.background.imgMain})`
+})
 </script>
 
 <template>
@@ -69,8 +68,8 @@ onMounted(() => {
 
   <!-- NAVIGATION BAR -->
   <NavBar
-    :colorNavBackground="colorNavBackground"
-    :colorNavText="colorNavText"
+    :color-nav-background="colorNavBackground"
+    :color-nav-text="colorNavText"
     @open-sidebar="openNav"
   />
 
@@ -119,12 +118,12 @@ onMounted(() => {
                 <div class="col">
                   <label for="customRange3" class="form-label">Navbar opacity</label>
                   <input
+                    id="customRange3"
                     type="range"
                     class="form-range"
                     min="0"
                     max="5"
                     step="0.5"
-                    id="customRange3"
                   />
                 </div>
               </div>
@@ -155,18 +154,18 @@ onMounted(() => {
                 <div class="card-subtitle">IMAGES</div>
 
                 <div class="d-flex flex-row flex-wrap mb-3 justify-content-around">
-                  <div class="text-center" v-for="(item, index) in sidebar" :key="index">
+                  <div v-for="(item, index) in sidebar" :key="index" class="text-center">
                     <img
-                      v-bind:src="item"
+                      :src="item"
                       class="rounded-img"
+                      :alt="index"
                       @click="changeBackgroundSideNav(item)"
-                      v-bind:alt="index"
                     />
 
                     <div
                       v-if="index === 0"
-                      @click="changeBackgroundSideNav('')"
                       class="rounded-img"
+                      @click="changeBackgroundSideNav('')"
                     >
                       <v-icon label="No Photos">
                         <v-icon name="fa-camera" scale="2.5" />

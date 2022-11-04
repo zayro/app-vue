@@ -1,5 +1,4 @@
 {
-
   "prettier.vueIndentScriptAndStyle": false,
   "turboConsoleLog.addSemicolonInTheEnd": true,
   "turboConsoleLog.quote": "\"",
@@ -30,6 +29,15 @@
       "printWidth": 120 // does not work
     }
   },
-  "vue3snippets.enable-compile-vue-file-on-did-save-code": true,
-  "turboConsoleLog.delimiterInsideMessage": "-"
+  "vue3snippets.enable-compile-vue-file-on-did-save-code": false,
+  "turboConsoleLog.delimiterInsideMessage": "-",
+  "errorLens.onSave": true,
+  "eslint.run": "onSave",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "typescript.tsc.autoDetect": "off",
+  "typescript.suggest.objectLiteralMethodSnippets.enabled": false,
+  "eslint.alwaysShowStatus": true
 }

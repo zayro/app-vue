@@ -1,18 +1,18 @@
 <script setup>
-import { RouterView } from "vue-router";
+import { RouterView } from 'vue-router'
 
-window.addEventListener("offline", () => {
-  console.log("offline");
-});
-window.addEventListener("online", () => {
-  console.log("online");
-});
-window.addEventListener("resize", () => {
-  console.log("innerWidth", window.innerWidth, "innerHeight", window.innerHeight);
-});
+window.addEventListener('offline', () => {
+  console.log('offline')
+})
+window.addEventListener('online', () => {
+  console.log('online')
+})
+window.addEventListener('resize', () => {
+  console.log('innerWidth', window.innerWidth, 'innerHeight', window.innerHeight)
+})
 window.onload = function () {
-  console.log(" window.onload ");
-};
+  console.log(' window.onload ')
+}
 
 </script>
 

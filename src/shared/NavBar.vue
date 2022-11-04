@@ -1,42 +1,42 @@
 <script setup>
-import { defineProps, defineEmits, ref } from "vue";
+import { defineProps, defineEmits, ref } from 'vue'
 
 const props = defineProps({
   colorNavBackground: {
     type: String,
-    default: "#b0b0b0",
+    default: '#b0b0b0'
   },
   colorNavText: {
     type: String,
-    default: "#000000",
-  },
-});
+    default: '#000000'
+  }
+})
 
-const width = ref(window.innerWidth);
-const height = ref(window.window.innerHeight);
+const width = ref(window.innerWidth)
+const height = ref(window.window.innerHeight)
 
-window.addEventListener("resize", () => {
-  width.value = window.innerWidth;
-  height.value = window.innerHeight;
-});
+window.addEventListener('resize', () => {
+  width.value = window.innerWidth
+  height.value = window.innerHeight
+})
 
 const emit = defineEmits({
-  "open-sidebar": null,
-});
+  'open-sidebar': null
+})
 
-function myFunction() {
-  var x = document.getElementById("navbar-vertical");
-  if (x.style.display === "block") {
-    x.style.display = "none";
+function myFunction () {
+  const x = document.getElementById('navbar-vertical')
+  if (x.style.display === 'block') {
+    x.style.display = 'none'
   } else {
-    x.style.display = "block";
+    x.style.display = 'block'
   }
 }
 </script>
 
 <template>
   <!-- Top Navigation Menu  -->
-  <div class="navbar-top navbar-fixed-top bg-custom" v-if="width > 1024">
+  <div v-if="width > 1024" class="navbar-top navbar-fixed-top bg-custom">
     <div class="navbar-horizontal">
       <a
         v-if="width > 1024"
@@ -44,7 +44,7 @@ function myFunction() {
         class="icon-left"
         @click="emit('open-sidebar')"
       >
-        <v-icon name="hi-menu" v-bind:fill="colorNavText" scale="1.3" />
+        <v-icon name="hi-menu" :fill="colorNavText" scale="1.3" />
       </a>
 
       <span class="brand">LOGO</span>
@@ -63,25 +63,25 @@ function myFunction() {
 
       <div class="navbar-icon-right">
         <a href="javascript:void(0);" class="icon" @click="myFunction()">
-          <v-icon name="ri-shut-down-line" v-bind:fill="colorNavText" scale="1.3" />
+          <v-icon name="ri-shut-down-line" :fill="colorNavText" scale="1.3" />
         </a>
       </div>
 
       <div v-if="width < 1024">
         <a href="javascript:void(0);" class="icon" @click="myFunction()">
-          <v-icon name="hi-menu" v-bind:fill="colorNavText" scale="1.3" />
+          <v-icon name="hi-menu" :fill="colorNavText" scale="1.3" />
         </a>
       </div>
     </div>
   </div>
 
-  <div class="navbar-top bg-custom" v-if="width < 1024">
+  <div v-if="width < 1024" class="navbar-top bg-custom">
     <div class="navbar-horizontal container">
       <span class="brand">LOGO</span>
 
       <div class="navbar-icon-right">
         <a href="javascript:void(0);" class="icon" @click="myFunction()">
-          <v-icon name="hi-menu" v-bind:fill="colorNavText" scale="1.8" />
+          <v-icon name="hi-menu" :fill="colorNavText" scale="1.8" />
         </a>
       </div>
     </div>

@@ -6,7 +6,7 @@ module.exports = {
   env: {
     node: true
   },
-  extends: ['plugin:vue/vue3-essential', 'eslint:recommended'],
+  extends: ['eslint:recommended', 'plugin:vue/vue3-recommended', 'prettier', 'standard'],
   overrides: [
     {
       files: ['**/__tests__/*.{cy,spec}.{js,ts,jsx,tsx}', 'cypress/e2e/**.{cy,spec}.{js,ts,jsx,tsx}'],

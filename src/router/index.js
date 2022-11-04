@@ -94,7 +94,7 @@ const router = createRouter({
 })
 
 function hasAccess (namePermission) {
-  //const permission = JSON.parse(ls.get('vuex')).config.privileges.permissions;
+  // const permission = JSON.parse(ls.get('vuex')).config.privileges.permissions;
 
   const permission = ['admin', 'user', 'developer', 'guest']
 
@@ -103,13 +103,13 @@ function hasAccess (namePermission) {
       const validHome = ['admin', 'user', 'developer', 'guest']
       const returnAccess = permission.filter((x) => validHome.includes(x)).length > 0
       return returnAccess
-      //return validHome.some((element) => permission.includes(element))
+      // return validHome.some((element) => permission.includes(element))
     }
     case 'info': {
       const validHome = ['admin', 'user', 'developer', 'guest']
       const returnAccess = permission.filter((x) => validHome.includes(x)).length > 0
       return returnAccess
-      //return validHome.some((element) => permission.includes(element))
+      // return validHome.some((element) => permission.includes(element))
     }
     default:
       return true
@@ -118,7 +118,7 @@ function hasAccess (namePermission) {
 
 // GOOD
 router.beforeEach((to, from, next) => {
-  //A Logged-in user can't go to login page again
+  // A Logged-in user can't go to login page again
 
   console.log('🚧 - router.beforeEach - hasAccess(to.name)', hasAccess(to.name))
   console.log('🚧 - router.beforeEach - to.meta.authRequired', to.meta.authRequired)
@@ -127,13 +127,13 @@ router.beforeEach((to, from, next) => {
   console.log('router', to.name)
 
   if ((to.name === 'login' || to.name === 'default') && instance.isTokenValid()) {
-    //router.push({ name: 'home' })
+    // router.push({ name: 'home' })
     next({
       name: 'sessionView',
       replace: true
     })
 
-    //the route requires authentication
+    // the route requires authentication
   }
 
   if (to.meta.authRequired) {

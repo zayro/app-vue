@@ -1,17 +1,17 @@
 <script setup>
-import { defineEmits } from "vue";
+import { defineEmits } from 'vue'
 
 const emit = defineEmits({
-  "close-sidebar": null,
-});
+  'close-sidebar': null
+})
 </script>
 
 <template>
   <div
     id="myCanvasNav"
     class="backdrop"
-    @click="emit('close-sidebar')"
     style="width: 0%; opacity: 0"
+    @click="emit('close-sidebar')"
   ></div>
 </template>
 
