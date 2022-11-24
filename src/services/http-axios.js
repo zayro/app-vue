@@ -13,12 +13,12 @@ const http = axios.create({
   },
   responseType: 'json', // defecto
   responseEncoding: 'utf8', // defecto
-  withCredentials: false,
+  withCredentials: false
 })
 
 http.interceptors.response.use(
-  res => res,
-  err => {
+  (res) => res,
+  (err) => {
     if (err.response.status === 404) {
       throw new Error(`${err.config.url} not found`)
     }
@@ -27,25 +27,29 @@ http.interceptors.response.use(
 )
 
 // Add a request interceptor
-http.interceptors.request.use((config) => {
-  // Do something before request is sent
-  return config
-}, (error) => {
-  // Do something with request error
+http.interceptors.request.use(
+  (config) => {
+    // Do something before request is sent
+    return config
+  },
+  (error) => {
+    // Do something with request error
 
-  return Promise.reject(error)
-})
+    return Promise.reject(error)
+  }
+)
 
 // Add a response interceptor
-http.interceptors.response.use((response) => {
-  // Do something with response data
-  return response
-}, (error) => {
-  // Do something with response error
+http.interceptors.response.use(
+  (response) => {
+    // Do something with response data
+    return response
+  },
+  (error) => {
+    // Do something with response error
 
-  return Promise.reject(error)
-})
+    return Promise.reject(error)
+  }
+)
 
-export {
-  http
-}
+export { http }

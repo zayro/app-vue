@@ -3,17 +3,11 @@ import path from 'path'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { VitePWA } from 'vite-plugin-pwa'
-import commonjs from 'vite-plugin-commonjs'
-import { viteCommonjs } from '@originjs/vite-plugin-commonjs'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-
   plugins: [
     vue(),
-    commonjs(),
-    viteCommonjs(),
-
     VitePWA({
       injectRegister: 'auto',
       registerType: 'autoUpdate',
@@ -34,10 +28,7 @@ export default defineConfig({
         lang: 'es-Es',
         orientation: 'portrait',
         prefer_related_application: false,
-        display_override: [
-          'standalone',
-          'fullscreen'
-        ],
+        display_override: ['standalone', 'fullscreen'],
         icons: [
           {
             src: 'img/icons/icons/ios/16.png',

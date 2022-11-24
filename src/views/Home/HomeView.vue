@@ -1,31 +1,58 @@
 <script setup>
-import { RouterLink } from "vue-router";
+import { RouterLink } from 'vue-router'
+import HelloWorld from '../../components/HelloWorld.vue'
 
-import HelloWorld from "../../components/HelloWorld.vue";
+import { onMounted, onUnmounted } from 'vue'
 
-import { onMounted, onUnmounted } from "vue";
+console.log('----------------------', import.meta.env.BASE_URL)
+console.log('----------------------', import.meta.env.VITE_DEBUG)
 
 onMounted(() => {
-  document.title = "Home";
-  document.body.style.background = "#181818";
+  document.title = 'Home'
+  document.body.style.background = '#181818'
   document.body.style.fontFamily =
-    "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif";
-  document.body.style.fontSize = "15px";
-  document.body.style.color = "rgba(235, 235, 235, 0.64)";
-  document.documentElement.style.setProperty("--animate-duration", "8s");
-});
+    "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif"
+  document.body.style.fontSize = '15px'
+  document.body.style.color = 'rgba(235, 235, 235, 0.64)'
+  document.documentElement.style.setProperty('--animate-duration', '8s')
+})
 
 onUnmounted(() => {
-  document.body.style.background = "";
-  document.body.style.fontFamily = "";
-  document.body.style.fontSize = "15px";
-  document.body.style.color = "";
-  document.documentElement.style.setProperty("--animate-duration", "8s");
-});
+  document.body.style.background = ''
+  document.body.style.fontFamily = ''
+  document.body.style.fontSize = '15px'
+  document.body.style.color = ''
+  document.documentElement.style.setProperty('--animate-duration', '8s')
+})
 
-console.log("----------------------", import.meta.env.BASE_URL);
-console.log("----------------------", import.meta.env.VITE_DEBUG);
 </script>
+
+<template>
+  <div id="body">
+    <div id="home">
+      <header>
+        <img
+          alt="Vue logo"
+          class="logo"
+          src="@/assets/logo.svg"
+          width="125"
+          height="125"
+        />
+
+        <div class="wrapper">
+          <HelloWorld msg="You did it!" />
+
+          <nav>
+            <RouterLink to="/home">Home</RouterLink>
+            <RouterLink to="/home/about">About</RouterLink>
+          </nav>
+        </div>
+      </header>
+
+      <router-view />
+    </div>
+  </div>
+</template>
 
 <style scoped src="../../assets/main.css"></style>
 
@@ -132,30 +159,3 @@ nav a:first-of-type {
   }
 }
 </style>
-
-<template>
-  <div id="body">
-    <div id="home">
-      <header>
-        <img
-          alt="Vue logo"
-          class="logo"
-          src="@/assets/logo.svg"
-          width="125"
-          height="125"
-        />
-
-        <div class="wrapper">
-          <HelloWorld msg="You did it!" />
-
-          <nav>
-            <RouterLink to="/home">Home</RouterLink>
-            <RouterLink to="/home/about">About</RouterLink>
-          </nav>
-        </div>
-      </header>
-
-      <router-view />
-    </div>
-  </div>
-</template>

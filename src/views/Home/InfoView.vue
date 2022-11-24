@@ -1,7 +1,48 @@
 <script setup>
-import TheWelcome from "../../components/TheWelcome.vue";
-document.documentElement.style.setProperty("--animate-duration", "8s");
+import TheWelcome from '../../components/TheWelcome.vue'
+import { onMounted, onUnmounted } from 'vue'
+import { SocketService } from '@/services/socket.js'
+document.documentElement.style.setProperty('--animate-duration', '8s')
+
+// client-side
+const socket = SocketService.socket
+
+onMounted(() => {
+  console.log(' ----------- onMounted -----------')
+
+  socket.on('connect', () => {
+    console.log(socket.id)
+  })
+
+  SocketService.join('userHome', 'home')
+  SocketService.messageRoom({ to: 'home', content: 'hola home' })
+
+  socket.on('message', message => {
+    console.log('🚧 - message', message)
+  })
+
+  socket.on('users', message => {
+    console.log('🚧 - users', message)
+    console.log('🚧 - users about length', message.filter(item => item.room === 'about').length)
+  })
+
+  socket.on('disconnect', () => {
+    console.log(socket.connected) // false
+  })
+})
+
+onUnmounted(() => {
+  console.log(' ----------- onUnmounted -----------')
+  socket.disconnect()
+})
+
 </script>
+
+<template>
+  <main>
+    <TheWelcome />
+  </main>
+</template>
 
 <style scoped src="../../assets/main.css"></style>
 
@@ -104,9 +145,3 @@ nav a:first-of-type {
   }
 }
 </style>
-
-<template>
-  <main>
-    <TheWelcome />
-  </main>
-</template>

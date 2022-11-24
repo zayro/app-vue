@@ -1,4 +1,4 @@
-import {http} from '../services/http-axios'
+import { http } from '../services/http-axios'
 
 const url = '/general/select/demo.prueba'
 
@@ -9,7 +9,7 @@ export const getUsers = async () => {
   return data
 }
 
-export const postUsers = async data => {
+export const postUsers = async (data) => {
   const sentInfo = {
     insert: 'prueba',
     values: data
@@ -18,7 +18,7 @@ export const postUsers = async data => {
   return await http.post('/general/insertIncrement', sentInfo)
 }
 
-export const putUsers = async data => {
+export const putUsers = async (data) => {
   const sentInfo = {
     update: 'prueba',
     set: data,
@@ -28,7 +28,7 @@ export const putUsers = async data => {
   return await http.put('/general/update', sentInfo)
 }
 
-export const deleteUsers = async deleteCondition => {
+export const deleteUsers = async (deleteCondition) => {
   // const sentInfo = { data: { delete: "prueba", condition: { id: "12" } } }
 
   const sentInfo = {

@@ -9,8 +9,8 @@ import { conf } from './services/conf'
 
 import './assets/global.css'
 
-import "~bootstrap/dist/css/bootstrap.min.css";
-//import './registerServiceWorker'
+import '~bootstrap/dist/css/bootstrap.min.css'
+// import './registerServiceWorker'
 
 import { OhVueIcon, addIcons } from 'oh-vue-icons'
 import {
@@ -28,12 +28,11 @@ import {
   FaExpand,
   FaCamera,
   FaBan,
-  FaEdit,
-
+  FaEdit
 } from 'oh-vue-icons/icons'
 
-
-  addIcons(FaFlag,
+addIcons(
+  FaFlag,
   RiZhihuFill,
   FaUserAlt,
   MdPassword,
@@ -47,7 +46,8 @@ import {
   FaExpand,
   FaBan,
   FaEdit,
-  FaCamera)
+  FaCamera
+)
 
 const app = createApp(App)
 
@@ -56,15 +56,12 @@ app.config.globalProperties.msg = 'hello'
 app.config.globalProperties.$globalVariable = 'Jimmy'
 
 // Inject of Dependencies
-app.provide('txt',constant)
-app.provide('conf',conf)
-
-
-
+app.provide('txt', constant)
+app.provide('conf', conf)
 
 app.use(createPinia())
 app.use(router)
 
-app.component('v-icon', OhVueIcon)
+app.component('VIcon', OhVueIcon)
 
 app.mount('#app')

@@ -222,11 +222,6 @@ onMounted(() => {})
                 </button>
               </div>
 
-              <div>
-                <button class="btn btn-outline-dark" @click="jsonToCsv()">
-                  Copy to Csv
-                </button>
-              </div>
             </div>
 
             <div id="collapseExample" class="collapse">
