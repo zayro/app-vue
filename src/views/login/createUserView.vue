@@ -1,50 +1,50 @@
 <script setup>
-import { constant } from "../../i18n/en";
-import { http } from "../../services/http-axios";
-import swal from "sweetalert";
+import { constant } from '../../i18n/en'
+import { http } from '../../services/http-axios'
+import swal from 'sweetalert'
 
-import { computed, ref } from "vue";
-import { useRouter } from "vue-router";
+import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
-const form = ref({ username: "", password: "", email: "" });
+const form = ref({ username: '', password: '', email: '' })
 
-const txt = constant;
+const txt = constant
 
-const router = useRouter();
+const router = useRouter()
 
-const imgDark = "/img/background/congruent_outline.png";
-const imgLight = "/img/background/y-so-serious-white.png";
+const imgDark = '/img/background/congruent_outline.png'
+const imgLight = '/img/background/y-so-serious-white.png'
 
 const validateForm = computed(() => {
-  return form.value.username != "" && form.value.password != "" && form.value.email != "";
-});
+  return form.value.username !== '' && form.value.password !== '' && form.value.email != ''
+})
 
-if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-  document.body.style.backgroundImage = `url(${imgDark})`;
+if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  document.body.style.backgroundImage = `url(${imgDark})`
 } else {
   // Viewport is greater than 700 pixels wide
-  document.body.style.backgroundImage = `url(${imgLight})`;
+  document.body.style.backgroundImage = `url(${imgLight})`
 }
 
 const create = () => {
   const payload = {
     username: form.value.username,
     password: form.value.password,
-    email: form.value.email,
-  };
+    email: form.value.email
+  }
   http
-    .post("new/user", payload)
+    .post('new/user', payload)
     .then((response) => {
-      console.log(`:rocket: ~ .then ~ response`, response.data);
-      swal("Good job!", "You clicked the button!", "success");
+      console.log(':rocket: ~ .then ~ response', response.data)
+      swal('Good job!', 'You clicked the button!', 'success')
 
-      router.push({ path: "/login" });
+      router.push({ path: '/login' })
     })
     .catch((error) => {
-      console.log(error);
-      swal("Wrong!", "You clicked the button!", "error");
-    });
-};
+      console.log(error)
+      swal('Wrong!', 'You clicked the button!', 'error')
+    })
+}
 </script>
 
 <template>
@@ -79,13 +79,13 @@ const create = () => {
               <div class="form-group">
                 <label>Email address</label>
                 <div class="input-group mb-3">
-                  <span class="input-group-text input-icon" id="basic-addon1">
+                  <span id="basic-addon1" class="input-group-text input-icon">
                     <v-icon name="md-email-round" fill="#686868" scale="1.5" />
                   </span>
                   <input
-                    type="email"
                     id="email"
                     v-model.trim="form.email"
+                    type="email"
                     name="username"
                     class="input"
                     placeholder="Type email"
@@ -96,13 +96,13 @@ const create = () => {
               <div class="form-group">
                 <label>Username</label>
                 <div class="input-group mb-3">
-                  <span class="input-group-text input-icon" id="basic-addon1">
+                  <span id="basic-addon1" class="input-group-text input-icon">
                     <v-icon name="fa-user-alt" fill="#686868" scale="1.5" />
                   </span>
                   <input
-                    type="text"
                     id="username"
                     v-model.trim="form.username"
+                    type="text"
                     name="username"
                     class="input"
                     placeholder="Type username"
@@ -113,13 +113,13 @@ const create = () => {
               <div class="form-group">
                 <label>Password </label>
                 <div class="input-group mb-3">
-                  <span class="input-group-text input-icon" id="basic-addon1">
+                  <span id="basic-addon1" class="input-group-text input-icon">
                     <v-icon name="md-password" fill="#686868" scale="1.5" />
                   </span>
                   <input
-                    type="password"
                     id="password"
                     v-model="form.password"
+                    type="password"
                     name="password"
                     class="input"
                     autocomplete="on"

@@ -38,14 +38,9 @@ function myFunction () {
   <!-- Top Navigation Menu  -->
   <div v-if="width > 1024" class="navbar-top navbar-fixed-top bg-custom">
     <div class="navbar-horizontal">
-      <a
-        v-if="width > 1024"
-        href="javascript:void(0);"
-        class="icon-left"
-        @click="emit('open-sidebar')"
-      >
+      <span v-if="width > 1024" class="menu icon-left" @click="emit('open-sidebar')">
         <v-icon name="hi-menu" :fill="colorNavText" scale="1.3" />
-      </a>
+      </span>
 
       <span class="brand">LOGO</span>
 
@@ -151,7 +146,7 @@ function myFunction () {
 .brand {
   text-decoration: none;
   font-size: 23px;
-  color: v-bind("props.colorNavText");
+  color: v-bind('props.colorNavText');
   padding: 15px 25px;
 }
 
@@ -164,6 +159,13 @@ a.icon-left {
   margin-right: 5px;
   margin-left: 5px;
 }
+
+span.icon-left {
+  padding: 20px;
+  margin-right: 5px;
+  margin-left: 5px;
+  cursor: pointer;
+}
 /* Add a grey background color on mouse-over */
 .navbar-top a:hover {
   background-color: #ddd;
@@ -171,21 +173,26 @@ a.icon-left {
   border-radius: 25px;
 }
 
+.navbar-top menu:hover {
+  background-color: #ddd;
+  color: black;
+}
+
 /* Style the active link (or home/logo) */
 
 .navbar-top {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   -webkit-box-shadow: 0px 6px 10px-1px rgba(191, 191, 191, 0.53);
   -moz-box-shadow: 0px 6px 10px-1px rgba(191, 191, 191, 0.53);
   box-shadow: 0px 6px 10px-1px rgba(191, 191, 191, 0.53);
 }
 
 .bg-custom {
-  background-color: v-bind("props.colorNavBackground");
+  background-color: v-bind('props.colorNavBackground');
 }
 
 .navbar-link {
-  color: v-bind("props.colorNavText");
+  color: v-bind('props.colorNavText');
 }
 
 .navbar-fixed-top {

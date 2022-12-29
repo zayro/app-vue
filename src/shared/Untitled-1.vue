@@ -8,13 +8,12 @@
         class="icon-left"
         @click="emit('open-sidebar')"
       >
-        <v-icon name="hi-menu" v-bind:fill="colorNavText" scale="1.3" />
+        <v-icon name="hi-menu" :fill="colorNavText" scale="1.3" />
       </a>
-
 
         <v-icon
           name="hi-menu"
-          v-bind:fill="colorNavText"
+          :fill="colorNavText"
           scale="1.3"
           @click="emit('open-sidebar')"
         />
@@ -30,7 +29,7 @@
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarText">
+        <div id="navbarText" class="collapse navbar-collapse">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="#"> Home</a>
@@ -46,7 +45,7 @@
           <span class="navbar-text pe-4">
             <v-icon
               name="fa-expand"
-              v-bind:fill="colorNavText"
+              :fill="colorNavText"
               scale="1.3"
               @click="openNav"
             />
@@ -54,7 +53,7 @@
           <span class="navbar-text">
             <v-icon
               name="ri-shut-down-line"
-              v-bind:fill="colorNavText"
+              :fill="colorNavText"
               scale="1.3"
               @click="openNav"
             />

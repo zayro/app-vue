@@ -4,12 +4,12 @@ import swal from 'sweetalert'
 import { computed, ref } from 'vue'
 import { useConfigStoreRef } from '@/stores/config'
 import { useRouter } from 'vue-router'
-import  JwtService from '@/services/jwt'
+import JwtService from '@/services/jwt'
 
 export default {
   setup () {
     try {
-      const jwt = new JwtService
+      const jwt = new JwtService()
       const txt = constant
       const title = 'Login User'
       const form = ref({ username: '', password: '' })
@@ -19,11 +19,10 @@ export default {
 
       const conf = useConfigStoreRef()
       const router = useRouter()
-      // const route = useRoute()
 
-      //check if both password and email have been set for enabling login button
+      // check if both password and email have been set for enabling login button
       const validateForm = computed(() => {
-        return form.value.username != '' && form.value.password != ''
+        return form.value.username !== '' && form.value.password !== ''
       })
 
       const login = () => {
@@ -34,38 +33,35 @@ export default {
         http
           .post('login', payload)
           .then((response) => {
-            console.log(`:rocket: ~ .then ~ response`, response.data)
-            swal('Good job!', 'You clicked the button!', 'success')
+            swal('Good job!', 'Welcome to App!', 'success')
             conf.setConfig(response.data)
             jwt.setToken(response.data.token)
             router.push({ path: '/home' })
           })
           .catch((error) => {
             console.log(error)
-            swal('Wrong!', 'You clicked the button!', 'error')
+            swal('Wrong!', 'Somthing is Wrong!', 'error')
           })
       }
 
-      return { login, validateForm, imgDark, imgLight,  avatar, txt, title, form, conf }
+      return { login, validateForm, imgDark, imgLight, avatar, txt, title, form, conf }
     } catch (error) {
-      console.log(`:rocket: ~ setup ~ error`, error)
+      console.log(':rocket: ~ setup ~ error', error)
     }
   },
 
   mounted () {
+    document.body.style.overflowX = 'hidden'
+    document.body.style.overflowY = 'hidden'
 
-    document.body.style.overflowX = "hidden"
-    document.body.style.overflowY = "hidden"
-
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
       document.body.style.backgroundImage = `url(${this.imgDark})`
-
     } else {
       // Viewport is greater than 700 pixels wide
       document.body.style.backgroundImage = `url(${this.imgLight})`
     }
-    console.log(`the component is now mounted.`)
+    console.log('the component is now mounted.')
     document.title = 'Login'
-    //document.documentElement.style.setProperty('--animate-duration', '.9s');
+    // document.documentElement.style.setProperty('--animate-duration', '.9s');
   }
 }

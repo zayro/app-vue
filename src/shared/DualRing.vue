@@ -3,13 +3,13 @@ export default {
   props: {
     load: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
-  setup(props) {
-    console.log(props.load);
-  },
-};
+  setup (props) {
+    console.log(props.load)
+  }
+}
 </script>
 <template>
   <div class="lds-dual-ring"></div>

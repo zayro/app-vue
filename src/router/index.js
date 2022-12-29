@@ -10,10 +10,17 @@ import CrudView from '../views/Crud/CrudView.vue'
 import DataView from '../views/Crud/DataView.vue'
 
 import MainView from '../views/Main/MainView.vue'
+import Avatar from '../views/Main/Avatar/AvatarComponent.vue'
+import Upload from '../views/Main/Avatar/uploadComponent.vue'
+import Config from '../views/config/configView.vue'
 
 import InfoView from '../views/Home/InfoView.vue'
 
 import JwtService from '../services/jwt'
+
+import { LocalService } from '../services/secureStorage'
+
+const localService = new LocalService()
 
 const instance = new JwtService()
 
@@ -58,14 +65,35 @@ const router = createRouter({
     {
       path: '/main',
       name: 'main',
-      component: MainView
+      component: MainView,
+      meta: { transition: 'slide-right' },
+      children: [
+        {
+          path: 'avatar',
+          name: 'avatar',
+          component: Avatar,
+          meta: { transition: 'slide-right' }
+        },
+        {
+          path: 'upload',
+          name: 'upload',
+          component: Upload,
+          meta: { transition: 'slide-right' }
+        },
+        {
+          path: 'config',
+          name: 'config',
+          component: Config,
+          meta: { transition: 'slide-right' }
+        }
+      ]
     },
 
     {
       path: '/home',
       name: 'home',
       component: HomeView,
-      meta: { authRequired: true },
+      meta: { authRequired: true, transition: 'slide-left' },
       // only authenticated users can create posts
       children: [
         {
@@ -94,9 +122,17 @@ const router = createRouter({
 })
 
 function hasAccess (namePermission) {
-  // const permission = JSON.parse(ls.get('vuex')).config.privileges.permissions;
+  let permission = ['admin', 'user', 'developer', 'guest']
 
-  const permission = ['admin', 'user', 'developer', 'guest']
+  if (localService.getJsonValue('config') && Object.keys(localService.getJsonValue('config')).length !== 0) {
+    const localStorage = localService.getJsonValue('config')
+
+    console.log('🚧 - hasAccess - permission', Object.keys(localStorage).length)
+
+    permission = localStorage.data.payload.permissions
+    console.log('🚧 - hasAccess - permission', permission)
+  }
+  // const permission = JSON.parse(ls.get('vuex')).config.privileges.permissions;
 
   switch (namePermission) {
     case 'home': {

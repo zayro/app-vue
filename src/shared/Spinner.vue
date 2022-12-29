@@ -3,17 +3,17 @@ export default {
   props: {
     load: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
-  setup(props) {
-    console.log(props.load);
-  },
-};
+  setup (props) {
+    console.log(props.load)
+  }
+}
 </script>
 
 <template>
-  <div class="backdrop" v-if="load">
+  <div v-if="load" class="backdrop">
     <div class="center-div">
       <div class="spinner"></div>
     </div>

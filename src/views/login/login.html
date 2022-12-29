@@ -2,12 +2,7 @@
   <div class="container-login">
     <div class="card-login p-3 mb-5 rounded">
       <div class="card animate__animated animate__face animate__delay-5s">
-        <img
-          :src="avatar"
-          alt="..."
-          class="card-img-login"
-          width="150"
-        />
+        <img :src="avatar" alt="..." class="card-img-login" width="150" />
 
         <div class="card-body">
           <h3 class="card-title">{{txt.COMPONENTS.login.title}},
@@ -19,14 +14,7 @@
                 <span class="input-group-text input-icon" id="basic-addon1">
                   <v-icon name="fa-user-alt" fill="#686868" scale="1.5" />
                 </span>
-                <input
-                  type="text"
-                  id="username"
-                  v-model.trim="form.username"
-                  name="username"
-                  class="input"
-                  placeholder="Type email"
-                />
+                <input type="text" id="username" v-model.trim="form.username" name="username" class="input" placeholder="Type email" />
               </div>
             </div>
             <div class="form-group">
@@ -35,15 +23,7 @@
                 <span class="input-group-text input-icon" id="basic-addon1">
                   <v-icon name="md-password" fill="#686868" scale="1.5" />
                 </span>
-                <input
-                  type="password"
-                  id="password"
-                  v-model="form.password"
-                  name="password"
-                  class="input"
-                  autocomplete="on"
-                  placeholder="Type email"
-                />
+                <input type="password" id="password" v-model="form.password" name="password" class="input" autocomplete="on" placeholder="Type email" />
               </div>
             </div>
             <div class="form-group">
@@ -58,7 +38,7 @@
                 <RouterLink to="/recovery"><button type="button" class="form-control btn btn-link">Forgot your password ?</button></RouterLink>
               </div>
               <div class="p-2 flex-fill">
-               <RouterLink to="/createUser"> <button type="button" class="form-control btn btn-outline-primary">Sign Up</button></RouterLink>
+                <RouterLink to="/createUser"> <button type="button" class="form-control btn btn-outline-primary">Sign Up</button></RouterLink>
               </div>
             </div>
           </form>
