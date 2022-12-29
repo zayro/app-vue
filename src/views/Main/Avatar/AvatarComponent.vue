@@ -1,20 +1,19 @@
 <template>
-  <div class="container-avatar">
-    <div>
-      <!-- Select a picture for cropping -->
-      <section class="section">
-        <!-- Set a button that invokes selecting an image -->
-        <button class="select-picture">
-          <span> Abrir imagen</span>
-          <input
-            ref="uploadInput"
-            type="file"
-            accept="image/jpg, image/jpeg, image/png, image/gif"
-            @change="selectFile"
-          />
-        </button>
-      </section>
-
+  <div id="flex-container">
+    <!-- Select a picture for cropping -->
+    <section class="section">
+      <!-- Set a button that invokes selecting an image -->
+      <button class="select-picture">
+        <span> Abrir imagen</span>
+        <input
+          ref="uploadInput"
+          type="file"
+          accept="image/jpg, image/jpeg, image/png, image/gif"
+          @change="selectFile"
+        />
+      </button>
+    </section>
+    <div class="container-avatar">
       <!-- Crop result preview -->
       <section v-if="result.dataURL && result.blobURL" class="section">
         <p>Preview dataURL</p>
@@ -146,11 +145,20 @@ export default defineComponent({
 </script>
 
 <style scoped>
+#flex-container {
+  margin-top: 80px;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  align-items: center;
+
+  /* height: 98vh; */
+}
 .container-avatar {
   margin-top: 20px;
   margin: 0 auto;
-  font-family: 'Open Sans', sans-serif;
-  height: 100vh;
+  /* height: 100vh; */
   display: flex;
   align-items: center;
   flex-direction: column;

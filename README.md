@@ -67,3 +67,8 @@ git rm env.local --cached
 
 - npm i serve -g
 - serve -s ./dist
+
+### Bibliografia
+
+- Background design subtlepatterns (<https://www.toptal.com/designers/subtlepatterns/>)
+- Background Texturas (<https://www.transparenttextures.com/>)

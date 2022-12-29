@@ -13,6 +13,8 @@ const appStore = useAppStoreRef()
 
 const sidebar = Object.keys(import.meta.globEager('@/assets/img/sidebar/*.jpg'))
 
+const background = Object.keys(import.meta.globEager('@/assets/img/background/*'))
+
 function changeBackgroundSideNav (img) {
   backgroundSidenav.value = `url("${img}")`
   appStore.setConfig({ backgroundSidenav: `url("${img}")` })
@@ -32,6 +34,18 @@ const colorSidenav = ref(appStore.conf.colorSidenav)
 const app = getCurrentInstance()
 const progressBar = app.appContext.config.globalProperties.msg
 
+function hiddenCard (id) {
+  const x = document.getElementsByClassName(id)
+  const styleIcon = x[1].style.display || 'flex'
+  if (styleIcon === 'flex') {
+    x[0].innerHTML = 'expand_less'
+    x[1].style.display = 'none'
+  } else {
+    x[0].innerHTML = 'expand_more'
+    x[1].style.display = 'flex'
+  }
+}
+
 watch(colorNavBackground, async (newValue, old) => {
   appStore.setConfig({ colorNavBackground: newValue })
 })
@@ -48,9 +62,6 @@ onBeforeMount(() => {
 
 onMounted(() => {
   load.value = true
-  /*   document.body.style.overflowX = 'hidden'
-  document.body.style.overflowY = 'hidden' */
-  document.body.style.backgroundImage = `url(${conf.body.background.imgMain})`
 })
 </script>
 
@@ -64,9 +75,14 @@ onMounted(() => {
             <div class="card mb-3">
               <!-- <div class="card-header">Config Color</div> -->
               <div class="card-body">
-                <div class="card-title">Config Navbar</div>
+                <div class="card-tools">
+                  <div class="card-title">Config Navbar</div>
+
+                  <span class="material-icons configNavbar" @click="hiddenCard('configNavbar')">expand_more</span>
+                </div>
+
                 <hr />
-                <div class="row">
+                <div class="configNavbar row">
                   <div class="col mb-3">
                     <p><label for="colorNavBackground">Nav Background</label></p>
                     <input
@@ -95,30 +111,82 @@ onMounted(() => {
             <div class="card mb-3">
               <!-- <div class="card-header">Config Color</div> -->
               <div class="card-body">
-                <div class="card-title">Config SIDEBAR</div>
-                <hr />
-
-                <div class="row">
-                  <div class="card-subtitle">COLOR</div>
-
-                  <div class="col point">
-                    <div class="point-blue" @click="changeColorSideNav('#35495e')"></div>
-
-                    <div class="point-red" @click="changeColorSideNav('#fb404b')"></div>
-
-                    <div class="point-green" @click="changeColorSideNav('#87cb16')"></div>
-                  </div>
+                <div class="card-tools">
+                  <div class="card-title">Config SIDEBAR</div>
+                  <span class="material-icons configSidebar" @click="hiddenCard('configSidebar')">expand_more</span>
                 </div>
 
-                <div class="row">
+                <hr />
+
+                <div class="configSidebar">
+                  <div class="row">
+                    <div class="card-subtitle">COLOR</div>
+
+                    <div class="col point">
+                      <div class="point-blue" @click="changeColorSideNav('#35495e')"></div>
+
+                      <div class="point-red" @click="changeColorSideNav('#fb404b')"></div>
+
+                      <div class="point-green" @click="changeColorSideNav('#87cb16')"></div>
+                    </div>
+                  </div>
+
+                  <hr />
+
+                  <div class="row">
+                    <div class="card-subtitle">IMAGES</div>
+
+                    <div class="d-flex flex-row flex-wrap mb-3 justify-content-around">
+                      <div v-for="(item, index) in sidebar" :key="index" class="text-center">
+                        <img :src="item" class="rounded-img" :alt="index" @click="changeBackgroundSideNav(item)" />
+
+                        <div v-if="index === 0" class="rounded-img" @click="changeBackgroundSideNav('')">
+                          <v-icon label="No Photos">
+                            <v-icon name="fa-camera" scale="2.5" />
+                            <v-icon name="fa-ban" scale="4" fill="#fC644d" />
+                          </v-icon>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex-item">
+            <div class="card mb-3">
+              <!-- <div class="card-header">Config Color</div> -->
+              <div class="card-body">
+                <div class="card-tools">
+                  <div class="card-title">Config Background</div>
+                  <span class="material-icons configBackground" @click="hiddenCard('configBackground')"
+                    >expand_more</span
+                  >
+                </div>
+                <hr />
+
+                <div class="row configBackground">
                   <div class="card-subtitle">IMAGES</div>
 
-                  <div class="d-flex flex-row flex-wrap mb-3 justify-content-around">
-                    <div v-for="(item, index) in sidebar" :key="index" class="text-center">
-                      <img :src="item" class="rounded-img" :alt="index" @click="changeBackgroundSideNav(item)" />
+                  <div class="d-flex flex-row flex-wrap mb-3">
+                    <div v-for="(item, index) in background" :key="index" class="text-center">
+                      <img
+                        :src="item"
+                        class="rounded-img"
+                        :alt="index + item"
+                        width="100"
+                        height="100"
+                        @click="changeBackgroundSideNav(item)"
+                      />
 
-                      <div v-if="index === 0" class="rounded-img" @click="changeBackgroundSideNav('')">
-                        <v-icon label="No Photos">
+                      <div
+                        v-if="index === Object.keys(background).length - 1"
+                        label="No Photos"
+                        class="rounded-img"
+                        @click="changeBackgroundSideNav('')"
+                      >
+                        <v-icon>
                           <v-icon name="fa-camera" scale="2.5" />
                           <v-icon name="fa-ban" scale="4" fill="#fC644d" />
                         </v-icon>
@@ -195,6 +263,7 @@ onMounted(() => {
 }
 
 #flex-container {
+  margin-top: 80px;
   display: -webkit-flex;
   display: flex;
   -webkit-flex-direction: row;
@@ -203,7 +272,7 @@ onMounted(() => {
   align-self: center;
   justify-content: center;
   align-content: space-around;
-  height: 98vh;
+  /* height: 98vh; */
 }
 
 .flex-item {
@@ -216,5 +285,15 @@ onMounted(() => {
 #main {
   transition: margin-left 0.5s;
   padding: 16px;
+}
+
+.card-tools {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.material-icons {
+  cursor: pointer;
 }
 </style>

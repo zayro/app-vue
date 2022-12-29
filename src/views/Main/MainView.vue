@@ -71,7 +71,7 @@ onMounted(() => {
       @close-sidebar="closeNav"
     />
 
-    <div v-show="load" id="flex-container">
+    <div v-show="load">
       <!-- ROUTING -->
       <router-view />
     </div>
