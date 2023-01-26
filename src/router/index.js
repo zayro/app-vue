@@ -125,11 +125,14 @@ function hasAccess (namePermission) {
   let permission = ['admin', 'user', 'developer', 'guest']
 
   if (localService.getJsonValue('config') && Object.keys(localService.getJsonValue('config')).length !== 0) {
+    const getTokenDecode = instance.getTokenDecode()
+
     const localStorage = localService.getJsonValue('config')
 
     console.log('🚧 - hasAccess - permission', Object.keys(localStorage).length)
 
-    permission = localStorage.data.payload.permissions
+    // permission = localStorage.data.payload.permissions
+    permission = getTokenDecode.permissions
     console.log('🚧 - hasAccess - permission', permission)
   }
   // const permission = JSON.parse(ls.get('vuex')).config.privileges.permissions;

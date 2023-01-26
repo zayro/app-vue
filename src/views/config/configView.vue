@@ -8,6 +8,7 @@ import { useAppStoreRef } from '@/stores/app'
 const txt = inject('txt')
 console.log('🚧 - txt', txt)
 const conf = inject('conf')
+console.log('🚧 - conf', conf)
 
 const appStore = useAppStoreRef()
 

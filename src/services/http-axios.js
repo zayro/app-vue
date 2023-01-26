@@ -16,6 +16,27 @@ const http = axios.create({
   withCredentials: false
 })
 
+const data = new FormData()
+
+const httpFormData = axios.create({
+  baseURL: URL,
+  headers: {
+    'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
+    Authorization: `Bearer ${window.localStorage.getItem('accessToken')}`
+  },
+  responseType: 'json' // defecto
+})
+
+const httpDownload = axios.create({
+  baseURL: URL,
+  headers: {
+    'Content-Type': 'multipart/form-data;',
+    Authorization: `Bearer ${window.localStorage.getItem('accessToken')}`
+  },
+  responseType: 'blob',
+  timeout: 30000
+})
+
 http.interceptors.response.use(
   (res) => res,
   (err) => {
@@ -52,4 +73,4 @@ http.interceptors.response.use(
   }
 )
 
-export { http }
+export { http, httpFormData, httpDownload, axios }

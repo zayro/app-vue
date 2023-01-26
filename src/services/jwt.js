@@ -57,6 +57,23 @@ export default class JwtService {
   }
 
   /**
+   * Valida el tiempo del token almacenado
+   */
+  getTokenDecode () {
+    try {
+      if (this.getToken() === null) {
+        return null
+      } else {
+        const decoded = jwt_decode(this.getToken())
+
+        return decoded
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  /**
    * Valida el token ha caducado
    */
   isTokenExpired () {

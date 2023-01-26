@@ -80,7 +80,7 @@ const props = defineProps({
 
 .closebtn:hover {
   cursor: pointer;
-  border: 1px solid;
+  /*border: 1px solid;*/
   border-radius: 5px;
   opacity: 0.8;
   border-color: hls(0, 0%, 0%);

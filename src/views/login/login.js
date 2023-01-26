@@ -6,6 +6,11 @@ import { useConfigStoreRef } from '@/stores/config'
 import { useRouter } from 'vue-router'
 import JwtService from '@/services/jwt'
 
+// IMAGE IMPORT
+
+import imgDark from '@/assets/img/background/congruent_outline.png'
+import imgLight from '@/assets/img/background/y-so-serious-white.png'
+
 export default {
   setup () {
     try {
@@ -13,9 +18,8 @@ export default {
       const txt = constant
       const title = 'Login User'
       const form = ref({ username: '', password: '' })
+
       const avatar = '/img/profile/avatar/user_256x256.png'
-      const imgDark = '/img/background/congruent_outline.png'
-      const imgLight = '/img/background/y-so-serious-white.png'
 
       const conf = useConfigStoreRef()
       const router = useRouter()
