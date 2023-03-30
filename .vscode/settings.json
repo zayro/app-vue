@@ -39,5 +39,6 @@
   },
   "typescript.tsc.autoDetect": "off",
   "typescript.suggest.objectLiteralMethodSnippets.enabled": false,
-  "eslint.alwaysShowStatus": true
+  "eslint.alwaysShowStatus": true,
+  "html.format.wrapLineLength": 160
 }

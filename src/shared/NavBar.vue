@@ -42,27 +42,16 @@ function myFunction () {
         <v-icon name="hi-menu" :fill="colorNavText" scale="1.3" />
       </span>
 
-      <span class="brand">LOGO</span>
-
-      <div id="navbar-horizontal" class="navbar-horizontal">
-        <span class="navbar-item">
-          <a class="navbar-link" href="#"> Home</a>
-        </span>
-        <span class="navbar-item">
-          <a class="navbar-link" href="#">Features</a>
-        </span>
-        <span class="navbar-item">
-          <a class="navbar-link" href="#">Pricing</a>
-        </span>
-      </div>
+      <span class="brand">Edificio Torres de San Valentin </span>
 
       <div class="navbar-icon-right">
+        <a href="javascript:void(0);" class="icon"> <strong> Nombre Apellidos </strong></a>
         <a href="javascript:void(0);" class="icon" @click="myFunction()">
           <v-icon name="ri-shut-down-line" :fill="colorNavText" scale="1.3" />
         </a>
       </div>
 
-      <div v-if="width < 1024">
+      <div v-if="width < 1024" id="mini">
         <a href="javascript:void(0);" class="icon" @click="myFunction()">
           <v-icon name="hi-menu" :fill="colorNavText" scale="1.3" />
         </a>
@@ -75,33 +64,15 @@ function myFunction () {
       <span class="brand">LOGO</span>
 
       <div class="navbar-icon-right">
-        <a href="javascript:void(0);" class="icon" @click="myFunction()">
+        <a href="javascript:void(0);" class="icon" @click="emit('open-sidebar')">
           <v-icon name="hi-menu" :fill="colorNavText" scale="1.8" />
         </a>
-      </div>
-    </div>
-    <div id="navbar-vertical">
-      <hr class="container" />
-      <div class="container">
-        <div class="navbar-vertical">
-          <span class="navbar-item">
-            <a class="navbar-link" href="#">Home</a>
-          </span>
-          <span class="navbar-item">
-            <a class="navbar-link" href="#">Features</a>
-          </span>
-          <span class="navbar-item">
-            <a class="navbar-link" href="#">Pricing</a>
-          </span>
-        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-/* @import "~bootstrap/scss/bootstrap.scss"; */
-
 .navbar-icon-right {
   display: flex;
   flex-grow: 1;
@@ -182,9 +153,9 @@ span.icon-left {
 
 .navbar-top {
   font-family: 'Open Sans', sans-serif;
-  -webkit-box-shadow: 0px 6px 10px-1px rgba(191, 191, 191, 0.53);
-  -moz-box-shadow: 0px 6px 10px-1px rgba(191, 191, 191, 0.53);
-  box-shadow: 0px 6px 10px-1px rgba(191, 191, 191, 0.53);
+  -webkit-box-shadow: 0px 6px 10px -1px rgba(191, 191, 191, 0.53);
+  -moz-box-shadow: 0px 6px 10px -1px rgba(191, 191, 191, 0.53);
+  box-shadow: 0px 6px 10px -1px rgba(191, 191, 191, 0.53);
 }
 
 .bg-custom {

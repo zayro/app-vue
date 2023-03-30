@@ -6,13 +6,16 @@ import recoveryPass from '../views/login/retorePassword.vue'
 import sessionView from '../views/login/sessionView.vue'
 import createUserView from '../views/login/createUserView.vue'
 
-import CrudView from '../views/Crud/CrudView.vue'
 import DataView from '../views/Crud/DataView.vue'
 
 import MainView from '../views/Main/MainView.vue'
 import Avatar from '../views/Main/Avatar/AvatarComponent.vue'
 import Upload from '../views/Main/Avatar/uploadComponent.vue'
 import Config from '../views/config/configView.vue'
+
+import User from '../views/Main/User/UserView.vue'
+import reportPayment from '../views/Main/Report/reportPayment.vue'
+import Balance from '../views/Main/Balance/Balance.vue'
 
 import InfoView from '../views/Home/InfoView.vue'
 
@@ -52,11 +55,7 @@ const router = createRouter({
       name: 'createUserView',
       component: createUserView
     },
-    {
-      path: '/Crud',
-      name: 'crud',
-      component: CrudView
-    },
+
     {
       path: '/data',
       name: 'data',
@@ -84,6 +83,24 @@ const router = createRouter({
           path: 'config',
           name: 'config',
           component: Config,
+          meta: { transition: 'slide-right' }
+        },
+        {
+          path: 'addPayment',
+          name: 'addPayment',
+          component: User,
+          meta: { transition: 'slide-right' }
+        },
+        {
+          path: 'reportPayment',
+          name: 'reportPayment',
+          component: reportPayment,
+          meta: { transition: 'slide-right' }
+        },
+        {
+          path: 'balance',
+          name: 'balance',
+          component: Balance,
           meta: { transition: 'slide-right' }
         }
       ]
@@ -122,7 +139,8 @@ const router = createRouter({
 })
 
 function hasAccess (namePermission) {
-  let permission = ['admin', 'user', 'developer', 'guest']
+  // let permission = ['admin', 'user', 'developer', 'guest']
+  let permission = ''
 
   if (localService.getJsonValue('config') && Object.keys(localService.getJsonValue('config')).length !== 0) {
     const getTokenDecode = instance.getTokenDecode()
@@ -139,8 +157,8 @@ function hasAccess (namePermission) {
 
   switch (namePermission) {
     case 'home': {
-      const validHome = ['admin', 'user', 'developer', 'guest']
-      const returnAccess = permission.filter((x) => validHome.includes(x)).length > 0
+      const valid = ['admin', 'user', 'developer', 'guest']
+      const returnAccess = permission.filter((x) => valid.includes(x)).length > 0
       return returnAccess
       // return validHome.some((element) => permission.includes(element))
     }

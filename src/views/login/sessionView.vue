@@ -1,5 +1,5 @@
 <script setup>
-import { constant } from '../../i18n/en'
+import { constant } from '@/i18n/en'
 import { useRouter } from 'vue-router'
 
 const txt = constant
@@ -44,13 +44,7 @@ const clearSession = () => {
                 <RouterLink to="/home">
                   <button type="button" class="btn btn-primary btn-lg">CONTINUE</button>
                 </RouterLink>
-                <button
-                  type="button"
-                  class="btn btn-danger btn-lg"
-                  @click="clearSession()"
-                >
-                  CLOSE
-                </button>
+                <button type="button" class="btn btn-danger btn-lg" @click="clearSession()">CLOSE</button>
               </div>
             </form>
           </div>

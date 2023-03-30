@@ -1,9 +1,9 @@
-import { constant } from '../../i18n/en'
-import { http } from '../../services/http-axios'
-import swal from 'sweetalert'
 import { computed, ref } from 'vue'
-import { useConfigStoreRef } from '@/stores/config'
 import { useRouter } from 'vue-router'
+import swal from 'sweetalert'
+import { constant } from '@/i18n/en'
+import { http } from '@/services/http-axios'
+import { useConfigStoreRef } from '@/stores/config'
 import JwtService from '@/services/jwt'
 
 // IMAGE IMPORT

@@ -1,10 +1,10 @@
 <script setup>
-import { constant } from '../../i18n/en'
-import { http } from '../../services/http-axios'
 import swal from 'sweetalert'
 
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { constant } from '@/i18n/en'
+import { http } from '@/services/http-axios'
 
 const form = ref({ username: '', password: '', email: '' })
 
@@ -55,12 +55,7 @@ const create = () => {
           <div class="d-flex justify-content-start align-items-center">
             <RouterLink to="/login">
               <div>
-                <v-icon
-                  name="md-keyboardbackspace"
-                  fill="#686868"
-                  title="Back Home"
-                  scale="2"
-                />
+                <v-icon name="md-keyboardbackspace" fill="#686868" title="Back Home" scale="2" />
               </div>
             </RouterLink>
 
@@ -130,11 +125,7 @@ const create = () => {
               </div>
               <div class="form-group">
                 <div class="d-grid gap-2">
-                  <button
-                    type="submit"
-                    class="btn btn-secondary"
-                    :disabled="!validateForm"
-                  >
+                  <button type="submit" class="btn btn-secondary" :disabled="!validateForm">
                     {{ txt.BUTTON.send }}
                   </button>
                 </div>

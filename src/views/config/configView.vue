@@ -5,6 +5,8 @@ import { ref, onMounted, onBeforeMount, getCurrentInstance, inject, watch } from
 
 import { useAppStoreRef } from '@/stores/app'
 
+import { useConfigStoreRef } from '@/stores/config'
+
 const txt = inject('txt')
 console.log('🚧 - txt', txt)
 const conf = inject('conf')
@@ -12,14 +14,17 @@ console.log('🚧 - conf', conf)
 
 const appStore = useAppStoreRef()
 
+const configStore = useConfigStoreRef()
+
 const sidebar = Object.keys(import.meta.globEager('@/assets/img/sidebar/*.jpg'))
 
 const background = Object.keys(import.meta.globEager('@/assets/img/background/*'))
 
-function changeBackgroundSideNav (img) {
-  backgroundSidenav.value = `url("${img}")`
-  appStore.setConfig({ backgroundSidenav: `url("${img}")` })
+function changeBackgroundImageSideNav (img) {
+  backgroundImageSidenav.value = `url("${img}")`
+  appStore.setConfig({ backgroundImageSidenav: `url("${img}")` })
 }
+
 function changeColorSideNav (color) {
   colorSidenav.value = `${color}`
   appStore.setConfig({ colorSidenav: `${color}` })
@@ -31,6 +36,7 @@ const colorNavBackground = ref(appStore.conf.colorNavBackground)
 const colorNavText = ref(appStore.conf.colorNavText)
 const backgroundSidenav = ref(appStore.conf.backgroundSidenav)
 const colorSidenav = ref(appStore.conf.colorSidenav)
+const backgroundImageSidenav = ref(appStore.conf.backgroundImageSidenav)
 
 const app = getCurrentInstance()
 const progressBar = app.appContext.config.globalProperties.msg
@@ -55,6 +61,10 @@ watch(colorNavText, async (newValue, old) => {
   appStore.setConfig({ colorNavText: newValue })
 })
 
+watch(backgroundSidenav, async (newValue, old) => {
+  appStore.setConfig({ backgroundSidenav: newValue })
+})
+
 console.log(progressBar)
 
 onBeforeMount(() => {
@@ -74,7 +84,6 @@ onMounted(() => {
         <div class="d-flex flex-column">
           <div class="flex-item">
             <div class="card mb-3">
-              <!-- <div class="card-header">Config Color</div> -->
               <div class="card-body">
                 <div class="card-tools">
                   <div class="card-title">Config Navbar</div>
@@ -110,7 +119,6 @@ onMounted(() => {
 
           <div class="flex-item">
             <div class="card mb-3">
-              <!-- <div class="card-header">Config Color</div> -->
               <div class="card-body">
                 <div class="card-tools">
                   <div class="card-title">Config SIDEBAR</div>
@@ -132,6 +140,17 @@ onMounted(() => {
                     </div>
                   </div>
 
+                  <div class="row">
+                    <div class="card-subtitle">BACKGROUND</div>
+
+                    <input
+                      id="colorNavBackground"
+                      v-model="backgroundSideNav"
+                      class="form-control form-control-color"
+                      type="color"
+                    />
+                  </div>
+
                   <hr />
 
                   <div class="row">
@@ -139,9 +158,9 @@ onMounted(() => {
 
                     <div class="d-flex flex-row flex-wrap mb-3 justify-content-around">
                       <div v-for="(item, index) in sidebar" :key="index" class="text-center">
-                        <img :src="item" class="rounded-img" :alt="index" @click="changeBackgroundSideNav(item)" />
+                        <img :src="item" class="rounded-img" :alt="index" @click="changeBackgroundImageSideNav(item)" />
 
-                        <div v-if="index === 0" class="rounded-img" @click="changeBackgroundSideNav('')">
+                        <div v-if="index === 0" class="rounded-img" @click="changeBackgroundImageSideNav('')">
                           <v-icon label="No Photos">
                             <v-icon name="fa-camera" scale="2.5" />
                             <v-icon name="fa-ban" scale="4" fill="#fC644d" />
@@ -157,7 +176,6 @@ onMounted(() => {
 
           <div class="flex-item">
             <div class="card mb-3">
-              <!-- <div class="card-header">Config Color</div> -->
               <div class="card-body">
                 <div class="card-tools">
                   <div class="card-title">Config Background</div>
@@ -178,20 +196,22 @@ onMounted(() => {
                         :alt="index + item"
                         width="100"
                         height="100"
-                        @click="changeBackgroundSideNav(item)"
+                        @click="changeBackgroundImageSideNav(item)"
                       />
+                    </div>
+                  </div>
 
-                      <div
-                        v-if="index === Object.keys(background).length - 1"
-                        label="No Photos"
-                        class="rounded-img"
-                        @click="changeBackgroundSideNav('')"
-                      >
-                        <v-icon>
-                          <v-icon name="fa-camera" scale="2.5" />
-                          <v-icon name="fa-ban" scale="4" fill="#fC644d" />
-                        </v-icon>
-                      </div>
+                  <div class="d-flex flex-row flex-wrap mb-3">
+                    <div
+                      v-if="index === Object.keys(background).length - 1"
+                      label="No Photos"
+                      class="rounded-img"
+                      @click="changeBackgroundImageSideNav('')"
+                    >
+                      <v-icon>
+                        <v-icon name="fa-camera" scale="2.5" />
+                        <v-icon name="fa-ban" scale="4" fill="#fC644d" />
+                      </v-icon>
                     </div>
                   </div>
                 </div>
