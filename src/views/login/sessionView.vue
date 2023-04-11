@@ -4,18 +4,6 @@ import { useRouter } from 'vue-router'
 
 const txt = constant
 
-// const avatar = "/img/profile/avatar/user_256x256.png";
-
-const imgDark = '/img/background/congruent_outline.png'
-const imgLight = '/img/background/y-so-serious-white.png'
-
-if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-  document.body.style.backgroundImage = `url(${imgDark})`
-} else {
-  // Viewport is greater than 700 pixels wide
-  document.body.style.backgroundImage = `url(${imgLight})`
-}
-
 const router = useRouter()
 
 const clearSession = () => {

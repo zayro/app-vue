@@ -12,19 +12,9 @@ const txt = constant
 
 const router = useRouter()
 
-const imgDark = '/img/background/congruent_outline.png'
-const imgLight = '/img/background/y-so-serious-white.png'
-
 const validateForm = computed(() => {
   return form.value.username !== '' && form.value.password !== '' && form.value.email != ''
 })
-
-if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-  document.body.style.backgroundImage = `url(${imgDark})`
-} else {
-  // Viewport is greater than 700 pixels wide
-  document.body.style.backgroundImage = `url(${imgLight})`
-}
 
 const create = () => {
   const payload = {
@@ -53,7 +43,7 @@ const create = () => {
       <div class="card-login p-3 mb-5 rounded">
         <div class="card">
           <div class="d-flex justify-content-start align-items-center">
-            <RouterLink to="/login">
+            <RouterLink to="/app/login">
               <div>
                 <v-icon name="md-keyboardbackspace" fill="#686868" title="Back Home" scale="2" />
               </div>

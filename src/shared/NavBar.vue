@@ -1,6 +1,14 @@
 <script setup>
 import { defineProps, defineEmits, ref } from 'vue'
 
+import { useConfigStoreRef } from '@/stores/config'
+
+const confStore = useConfigStoreRef()
+
+const conf = confStore.getInformation[0]
+
+console.log('🚧 - confStore:', conf)
+
 const props = defineProps({
   colorNavBackground: {
     type: String,
@@ -45,7 +53,9 @@ function myFunction () {
       <span class="brand">Edificio Torres de San Valentin </span>
 
       <div class="navbar-icon-right">
-        <a href="javascript:void(0);" class="icon"> <strong> Nombre Apellidos </strong></a>
+        <a href="javascript:void(0);" class="icon">
+          <strong> {{ conf.first_name + ' ' + conf.last_name }}</strong></a
+        >
         <a href="javascript:void(0);" class="icon" @click="myFunction()">
           <v-icon name="ri-shut-down-line" :fill="colorNavText" scale="1.3" />
         </a>

@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/Home/HomeView.vue'
 import NotFound from '../views/404/404.vue'
+
+import app from '../views/login/appView.vue'
 import login from '../views/login/loginView.vue'
 import recoveryPass from '../views/login/retorePassword.vue'
 import sessionView from '../views/login/sessionView.vue'
 import createUserView from '../views/login/createUserView.vue'
-
-import DataView from '../views/Crud/DataView.vue'
 
 import MainView from '../views/Main/MainView.vue'
 import Avatar from '../views/Main/Avatar/AvatarComponent.vue'
@@ -15,6 +15,8 @@ import Config from '../views/config/configView.vue'
 
 import User from '../views/Main/User/UserView.vue'
 import reportPayment from '../views/Main/Report/reportPayment.vue'
+import reportApt from '../views/Main/Report/reportApt.vue'
+
 import Balance from '../views/Main/Balance/Balance.vue'
 
 import InfoView from '../views/Home/InfoView.vue'
@@ -36,30 +38,31 @@ const router = createRouter({
       component: login
     },
     {
-      path: '/login',
-      name: 'login',
-      component: login
-    },
-    {
-      path: '/recovery',
-      name: 'recoveryPass',
-      component: recoveryPass
-    },
-    {
-      path: '/session',
-      name: 'sessionView',
-      component: sessionView
-    },
-    {
-      path: '/createUser',
-      name: 'createUserView',
-      component: createUserView
-    },
-
-    {
-      path: '/data',
-      name: 'data',
-      component: DataView
+      path: '/app',
+      name: 'app',
+      component: app,
+      children: [
+        {
+          path: 'login',
+          name: 'login',
+          component: login
+        },
+        {
+          path: 'recovery',
+          name: 'recoveryPass',
+          component: recoveryPass
+        },
+        {
+          path: 'session',
+          name: 'sessionView',
+          component: sessionView
+        },
+        {
+          path: 'createUser',
+          name: 'createUserView',
+          component: createUserView
+        }
+      ]
     },
     {
       path: '/main',
@@ -94,8 +97,12 @@ const router = createRouter({
         {
           path: 'reportPayment',
           name: 'reportPayment',
-          component: reportPayment,
-          meta: { transition: 'slide-right' }
+          component: reportPayment
+        },
+        {
+          path: 'reportApt',
+          name: 'reportApt',
+          component: reportApt
         },
         {
           path: 'balance',

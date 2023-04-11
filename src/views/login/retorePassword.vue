@@ -11,21 +11,9 @@ const form = ref({ username: '' })
 
 const txt = constant
 
-// const avatar = "/img/profile/avatar/user_256x256.png";
-
-const imgDark = '/img/background/congruent_outline.png'
-const imgLight = '/img/background/y-so-serious-white.png'
-
 const validateForm = computed(() => {
   return form.value.username != ''
 })
-
-if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-  document.body.style.backgroundImage = `url(${imgDark})`
-} else {
-  // Viewport is greater than 700 pixels wide
-  document.body.style.backgroundImage = `url(${imgLight})`
-}
 </script>
 
 <template>
@@ -34,14 +22,11 @@ if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
       <div class="card-login p-3 mb-5 rounded">
         <div class="card">
           <div class="d-flex justify-content-start align-items-center">
-            <RouterLink to="/login">
+            <RouterLink to="/app/login">
               <div>
                 <v-icon name="md-keyboardbackspace" fill="#686868" title="Back Home" scale="2" />
               </div>
             </RouterLink>
-
-            <!-- <RouterLink to="/login"><span class="align-middle">Back Home</span></RouterLink>
- -->
           </div>
           <div class="d-flex justify-content-center">
             <div class="div-rounded-circle">

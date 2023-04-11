@@ -45,8 +45,10 @@ onBeforeMount(() => {
 
 onMounted(() => {
   load.value = true
-  /*   document.body.style.overflowX = 'hidden'
-  document.body.style.overflowY = 'hidden' */
+  /*
+  document.body.style.overflowX = 'hidden'
+  document.body.style.overflowY = 'hidden'
+   */
   document.body.style.backgroundImage = `url(${conf.body.background.imgMain})`
 })
 </script>

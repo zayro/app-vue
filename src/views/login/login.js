@@ -6,11 +6,6 @@ import { http } from '@/services/http-axios'
 import { useConfigStoreRef } from '@/stores/config'
 import JwtService from '@/services/jwt'
 
-// IMAGE IMPORT
-
-import imgDark from '@/assets/img/background/congruent_outline.png'
-import imgLight from '@/assets/img/background/y-so-serious-white.png'
-
 export default {
   setup () {
     try {
@@ -38,8 +33,9 @@ export default {
           .post('login', payload)
           .then((response) => {
             swal('Good job!', 'Welcome to App!', 'success')
-            conf.setConfig(response.data)
             jwt.setToken(response.data.token)
+            conf.setConfig(jwt.getTokenDecode())
+            console.log('🚧 - .then - jwt.getTokenDecode():', jwt.getTokenDecode())
             router.push({ path: '/home' })
           })
           .catch((error) => {
@@ -48,24 +44,9 @@ export default {
           })
       }
 
-      return { login, validateForm, imgDark, imgLight, avatar, txt, title, form, conf }
+      return { login, validateForm, avatar, txt, title, form, conf }
     } catch (error) {
       console.log(':rocket: ~ setup ~ error', error)
     }
-  },
-
-  mounted () {
-    document.body.style.overflowX = 'hidden'
-    document.body.style.overflowY = 'hidden'
-
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      document.body.style.backgroundImage = `url(${this.imgDark})`
-    } else {
-      // Viewport is greater than 700 pixels wide
-      document.body.style.backgroundImage = `url(${this.imgLight})`
-    }
-    console.log('the component is now mounted.')
-    document.title = 'Login'
-    // document.documentElement.style.setProperty('--animate-duration', '.9s');
   }
 }

@@ -1,10 +1,13 @@
 import { defineStore } from 'pinia'
 
-import { LocalService } from '../services/secureStorage'
+import { LocalService } from '@/services/secureStorage'
+import JwtService from '@/services/jwt'
 
+const jwt = new JwtService()
 const localService = new LocalService()
 
-let confDefault = {}
+let confDefault = jwt.getTokenDecode() || {}
+console.log('🚧 - confDefault:', confDefault)
 
 if (localService.getJsonValue('config')) {
   const localStorage = localService.getJsonValue('config')
@@ -18,15 +21,16 @@ if (localService.getJsonValue('config')) {
 export const useConfigStoreRef = defineStore('config', {
   state: () => ({ conf: confDefault, author: 'Marlon Zayro Arias Vargas' }),
   getters: {
-    getPermissions: (state) => state.conf.data.payload.permissions || {},
-    getMenu: (state) => state.conf.data.payload.menu || {},
-    getInformation: (state) => state.conf.data.payload.information || {}
+    getPermissions: (state) => state.conf.data.permissions || {},
+    getMenu: (state) => state.conf.data.menu || {},
+    getInformation: (state) => state.conf.data.information || {}
   },
   actions: {
     setConfig (data) {
       const info = { ...this.conf, data }
       this.conf = info
       localService.setJsonValue('config', info)
+      console.log('🚧 - setConfig - info:', info)
     }
   }
 })

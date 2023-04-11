@@ -12,17 +12,23 @@ const load = ref()
 <template>
   <div>
     <div class="flex-container">
-      <div class="card card1">
-        <div class="card-body">
-          <div class="card-title"><v-icon name="md-apartment" fill="#3C8D98" scale="4" /> Reporte por Apartamento</div>
+      <RouterLink to="/main/reportApt">
+        <div class="card card1">
+          <div class="card-body">
+            <div class="card-title">
+              <v-icon name="md-apartment" fill="#3C8D98" scale="4" /> Reporte por Apartamento
+            </div>
+          </div>
         </div>
-      </div>
+      </RouterLink>
 
-      <div class="card card2">
-        <div class="card-body">
-          <div class="card-title"><v-icon name="gi-receive-money" fill="#3C9844" scale="4" /> Reporde de Pagos</div>
+      <RouterLink to="/main/reportPayment">
+        <div class="card card2">
+          <div class="card-body">
+            <div class="card-title"><v-icon name="gi-receive-money" fill="#3C9844" scale="4" /> Reporde de Pagos</div>
+          </div>
         </div>
-      </div>
+      </RouterLink>
     </div>
 
     <div class="flex-container">
@@ -42,6 +48,11 @@ const load = ref()
 </template>
 
 <style lang="scss" scoped>
+a,
+a:hover {
+  color: inherit; /* blue colors for links too */
+  text-decoration: inherit; /* no underline */
+}
 .card-body {
   padding: 40px;
 }
