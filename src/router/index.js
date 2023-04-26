@@ -14,10 +14,18 @@ import Upload from '../views/Main/Avatar/uploadComponent.vue'
 import Config from '../views/config/configView.vue'
 
 import User from '../views/Main/User/UserView.vue'
-import reportPayment from '../views/Main/Report/reportPayment.vue'
-import reportApt from '../views/Main/Report/reportApt.vue'
 
-import Balance from '../views/Main/Balance/Balance.vue'
+import table from '../shared/tablePagination.vue'
+
+import Payment from '../views/Main/Payment/PaymentView.vue'
+import Expenditure from '../views/Main/Expenditure/ExpenditureView.vue'
+import reportPayment from '../views/Main/Report/reportPayment.vue'
+import reportExpenditure from '../views/Main/Report/reportExpenditure.vue'
+import reportApt from '../views/Main/Report/reportApt.vue'
+import reportBalance from '../views/Main/Report/reportBalance.vue'
+import reportGeneral from '../views/Main/Report/reportGeneral.vue'
+
+import report from '../views/Main/Report/reportView.vue'
 
 import InfoView from '../views/Home/InfoView.vue'
 
@@ -36,6 +44,17 @@ const router = createRouter({
       path: '/',
       name: 'default',
       component: login
+    },
+    {
+      path: '/demo',
+      name: 'demo',
+      children: [
+        {
+          path: 'table',
+          name: 'table',
+          component: table
+        }
+      ]
     },
     {
       path: '/app',
@@ -91,7 +110,13 @@ const router = createRouter({
         {
           path: 'addPayment',
           name: 'addPayment',
-          component: User,
+          component: Payment,
+          meta: { transition: 'slide-right' }
+        },
+        {
+          path: 'addExpenditure',
+          name: 'addExpenditure',
+          component: Expenditure,
           meta: { transition: 'slide-right' }
         },
         {
@@ -100,19 +125,34 @@ const router = createRouter({
           component: reportPayment
         },
         {
+          path: 'reportExpenditure',
+          name: 'reportExpenditure',
+          component: reportExpenditure
+        },
+        {
+          path: 'reportGeneral',
+          name: 'reportGeneral',
+          component: reportGeneral
+        },
+        {
           path: 'reportApt',
           name: 'reportApt',
           component: reportApt
         },
         {
-          path: 'balance',
-          name: 'balance',
-          component: Balance,
+          path: 'reportBalance',
+          name: 'reportBalance',
+          component: reportBalance
+        },
+
+        {
+          path: 'report',
+          name: 'report',
+          component: report,
           meta: { transition: 'slide-right' }
         }
       ]
     },
-
     {
       path: '/home',
       name: 'home',

@@ -51,9 +51,9 @@ const load = ref()
 
     <div class="flex-container">
       <RouterLink to="/main/reportGeneral">
-        <div class="card card3">
+        <div class="card card5">
           <div class="card-body">
-            <div class="card-title"><v-icon name="gi-pay-money" fill="#987E3C" scale="4" /> Reporde de General</div>
+            <div class="card-title"><v-icon name="io-document-text" fill="#56983c" scale="4" /> Reporde Detallado</div>
           </div>
         </div>
       </RouterLink>
@@ -113,6 +113,7 @@ $color1: rgb(60, 141, 152, 50%);
 $color2: rgb(60, 152, 68, 50%);
 $color3: rgb(152, 126, 60, 50%);
 $color4: rgb(152, 60, 60, 50%);
+$color5: rgba(86, 152, 60, 0.5);
 $card-width: 450px;
 $card-height: 170px;
 
@@ -125,12 +126,14 @@ $card-height: 170px;
     border-color: $color3;
   } @else if $valor == 4 {
     border-color: $color4;
+  } @else if $valor == 5 {
+    border-color: $color5;
   } @else {
     border-color: black;
   }
 }
 
-@for $i from 1 through 4 {
+@for $i from 1 through 5 {
   .card#{$i} {
     width: $card-width;
     height: $card-height;

@@ -7,27 +7,20 @@ const emit = defineEmits({
 </script>
 
 <template>
-  <div
-    id="myCanvasNav"
-    class="backdrop"
-    style="width: 0%; opacity: 0"
-    @click="emit('close-sidebar')"
-  ></div>
+  <div id="myCanvasNav" class="backdrop" style="width: 0%; opacity: 0" @click="emit('close-sidebar')"></div>
 </template>
 
 <style>
 .backdrop {
   height: 100%;
-  width: 0;
   position: fixed;
   z-index: 2030;
   top: 0;
   left: 0;
-  background-color: hsl(0, 0%, 47%);
+  background-color: hsl(0, 0%, 0%);
   overflow-y: auto;
   overflow-x: hidden;
   text-align: center;
-  opacity: 0;
   transition: opacity 1s;
 }
 </style>

@@ -16,24 +16,21 @@ const conf = inject('conf')
 console.log('🚧 - conf', conf)
 
 const load = ref()
+const date = ref({
+  month: new Date().getMonth(),
+  year: new Date().getFullYear()
+})
 const comprobante = ref()
 const responseUpload = ref()
 const requestApt = ref()
-const periodos = ref()
 
 const cleanInfoPay = {
-  id_apartamento: '',
+  valor: '',
   id_tipo_metodo_pago: '',
-  detalle_pago: [
-    {
-      valor: '',
-      fecha: {
-        month: new Date().getMonth(),
-        year: new Date().getFullYear()
-      }
-    }
-  ],
-  comprobante: ''
+  fecha: '',
+  comprobante: '',
+  id_tipo_gasto: '',
+  observacion: ''
 }
 
 const infoPay = ref(cleanInfoPay)
@@ -46,13 +43,10 @@ const optionsCurrency = {
   hideNegligibleDecimalDigitsOnFocus: true,
   autoDecimalDigits: false,
   useGrouping: true,
-  accountingSign: false,
-  valueRange: {
-    min: 1000
-  }
+  accountingSign: false
 }
 
-const urlGetPagos = '/general/select/adminApt.apartamento'
+const urlGetPagos = '/general/select/adminApt.tipo_gastos'
 
 const execute = () => {
   getData(urlGetPagos)
@@ -72,11 +66,9 @@ const saveData = () => {
     infoPay.value.comprobante = responseUpload.value.filename
   }
 
-  infoPay.value.detalle_pago = JSON.stringify(infoPay.value.detalle_pago)
-
   const payload = {
     db: 'enterprise',
-    insert: 'adminApt.pagos',
+    insert: 'adminApt.gastos',
     values: infoPay.value
   }
 
@@ -101,7 +93,7 @@ const uploadImage = () => {
   formData.append('archivo', comprobante.value)
 
   httpFormData
-    .post(`uploadSingle/${infoPay.value.id_apartamento}`, formData)
+    .post('uploadSingle/123456', formData)
     .then((response) => {
       responseUpload.value = response.data.data
       swal('Upload File!', 'it was successfully', 'success')
@@ -128,21 +120,22 @@ const previewFiles = (event) => {
     console.groupEnd()
   }
 }
+const format = (date) => {
+  const month = date.getMonth()
+  const year = date.getFullYear()
 
-watch(periodos, async (newValue, old) => {
-  for (let i = 0; i <= newValue; i++) {
-    if (infoPay.value.detalle_pago.length === 0 || infoPay.value.detalle_pago === '') {
-      infoPay.value.detalle_pago = []
-    }
+  return `${month}/${year}`
+}
 
-    infoPay.value.detalle_pago.push({
-      valor: '',
-      fecha: {
-        month: new Date().getMonth(),
-        year: new Date().getFullYear()
-      }
-    })
+// watch works directly on a ref
+watch(date, async (newQuestion, oldQuestion) => {
+  console.log('🚧 - watch - newQuestion:', newQuestion)
+  const fecha = {
+    month: newQuestion.month + 1,
+    year: newQuestion.year
   }
+  console.log('🚧 - watch - fecha:', fecha)
+  infoPay.value.fecha = JSON.stringify(fecha)
 })
 
 onBeforeMount(() => {
@@ -164,60 +157,48 @@ onMounted(() => {
             <div class="card mb-3">
               <div class="card-body">
                 <div class="card-tools">
-                  <div class="card-title">Agregar Pago</div>
+                  <div class="card-title">Agregar Gastos</div>
                 </div>
 
                 <hr />
 
                 <div class="row">
-                  <form id="pagos" action="pagos" name="pagos" @submit.prevent="saveData">
+                  <form id="pagos" action="pagos" name="pagos">
                     <div class="col-12">
                       <div class="mb-3">
-                        <label for="select_apt" class="form-label">Apt</label>
+                        <label for="select_apt" class="form-label">Informacion del gasto</label>
                         <select
                           id="select_apt"
-                          v-model="infoPay.id_apartamento"
+                          v-model="infoPay.id_tipo_gasto"
                           class="form-select"
                           aria-label="Default select apt."
                         >
                           <option v-for="item in requestApt" :key="item.id" :value="item.id">
-                            {{ item.piso }}
+                            {{ item.nombre }}
                           </option>
                         </select>
                       </div>
 
-                      <div class="mb-3">
-                        <label for="periodos" class="form-label">Periodos a cancelar</label>
+                      <div v-show="infoPay.id_tipo_gasto == '4'" class="mb-3">
+                        <label for="observacion" class="form-label">Cual ?</label>
                         <input
-                          id="periodos"
-                          v-model="periodos"
-                          type="number"
-                          min="1"
+                          id="observacion"
+                          v-model="infoPay.observacion"
+                          type="text"
                           class="form-control"
-                          name="periodos"
-                          required
+                          name="observacion"
                         />
                       </div>
 
-                      <div v-for="(item, index) in periodos" :key="index" class="row">
-                        <div class="col-6">
-                          <div class="mb-3">
-                            <label for="date_pay" class="form-label">Periodo a Cancelar </label>
-                            <VueDatePicker id="date_pay" v-model="infoPay.detalle_pago[index].fecha" month-picker />
-                          </div>
-                        </div>
-                        <div class="col-6">
-                          <div class="mb-3">
-                            <label for="value_pay" class="form-label">Valor a Cancelar</label>
-                            <CurrencyInput
-                              v-model="infoPay.detalle_pago[index].valor"
-                              class="form-control"
-                              :options="optionsCurrency"
-                            />
-                          </div>
-                        </div>
-                      </div>
+                      <div class="mb-3">
+                        <label for="value_pay" class="form-label">Valor a agregar</label>
 
+                        <CurrencyInput v-model="infoPay.valor" class="form-control" :options="optionsCurrency" />
+                      </div>
+                      <div class="mb-3">
+                        <label for="date_pay" class="form-label">Periodo a agregar</label>
+                        <VueDatePicker id="date_pay" v-model="date" month-picker :format="format" />
+                      </div>
                       <div class="mb-3">
                         <label for="select_year" class="form-label">Medio de Pago</label>
                         <select
@@ -225,7 +206,6 @@ onMounted(() => {
                           v-model="infoPay.id_tipo_metodo_pago"
                           class="form-select"
                           aria-label="Default select year"
-                          required
                         >
                           <option selected>seleccionar</option>
                           <option value="1">Efectivo</option>
@@ -245,7 +225,7 @@ onMounted(() => {
                       </div>
 
                       <div class="d-grid gap-2 mx-auto">
-                        <button class="btn btn-primary" type="submit">Generar Pago</button>
+                        <button class="btn btn-primary" type="button" @click="saveData">Generar Gasto</button>
                       </div>
                     </div>
                   </form>

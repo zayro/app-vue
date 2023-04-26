@@ -1,15 +1,19 @@
 <script setup>
 import { ref, computed } from 'vue'
-import { getData, deleteData } from '@/api/index'
+import { getDataFilter } from '@/api/index'
 
 const currentPage = ref(1)
-const itemsPerPage = ref(10)
+const itemsPerPage = ref(15)
 
 const sort = ref({ key: null, direction: 1 })
 
-const search = ref('')
+const searchColumn = ref({
+  apartamento: '',
+  mes: '',
+  año: ''
+})
 
-const nombreColumnas = ref(['apartamento', 'pago', 'detalle'])
+const nombreColumnas = ref(['apartamento', 'valor', 'mes', 'año'])
 
 const tableData = ref([])
 
@@ -26,78 +30,72 @@ const endIndex = computed(() => {
 })
 
 const filteredData = computed(() => {
-  const searchText = search.value.toLowerCase()
+  const filtered = doLocalFilter()
 
-  return tableData.value
-    .filter((item) => {
-      return item.apartamento.toLowerCase().includes(searchText)
-    })
-    .sort((a, b) => {
-      if (sort.value.key === null) return 0
+  return filtered.sort((a, b) => {
+    if (sort.value.key === null) return 0
 
-      let comparison
-      if (typeof a[sort.value.key] === 'string' && typeof b[sort.value.key] === 'string') {
-        comparison = a[sort.value.key].localeCompare(b[sort.value.key])
-      } else if (
-        typeof a[sort.value.key] === 'object' &&
-        a[sort.value.key] instanceof Date &&
-        typeof b[sort.value.key] === 'object' &&
-        b[sort.value.key] instanceof Date
-      ) {
-        comparison = a[sort.value.key].getTime() - b[sort.value.key].getTime()
-      } else {
-        comparison = a[sort.value.key] - b[sort.value.key]
-      }
-      return comparison * sort.value.direction
-    })
+    let comparison
+    if (typeof a[sort.value.key] === 'string' && typeof b[sort.value.key] === 'string') {
+      comparison = a[sort.value.key].localeCompare(b[sort.value.key])
+    } else if (
+      typeof a[sort.value.key] === 'object' &&
+      a[sort.value.key] instanceof Date &&
+      typeof b[sort.value.key] === 'object' &&
+      b[sort.value.key] instanceof Date
+    ) {
+      comparison = a[sort.value.key].getTime() - b[sort.value.key].getTime()
+    } else {
+      comparison = a[sort.value.key] - b[sort.value.key]
+    }
+    return comparison * sort.value.direction
+  })
 })
 
 const visibleItems = computed(() => {
   return filteredData.value.slice(startIndex.value, endIndex.value)
 })
 
-const currency = (value) => {
-  if (typeof value !== 'number') {
-    return value
-  }
-  const formatter = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD'
+function doLocalFilter () {
+  const filters = Object.keys(searchColumn.value).reduce((prev, key) => {
+    if (!searchColumn.value[key]) {
+      return prev
+    }
+    return { ...prev, [key]: searchColumn.value[key] }
+  }, {})
+
+  const filtered = tableData.value.filter((item) => {
+    return Object.keys(filters).every((key) => {
+      return item[key] == filters[key]
+    })
   })
-  return formatter.format(value)
+  return filtered
+}
+
+const urlGetSearch = '/general/search'
+
+function onColumnFilter (column, value) {
+  const copyColumn = { ...searchColumn.value }
+  copyColumn[column] = value
+  searchColumn.value = { ...copyColumn }
 }
 
 function loadData () {
-  getData('/general/select/adminApt.vista_pagos_simple')
+  const getYear = new Date().getFullYear()
+  getDataFilter({
+    url: urlGetSearch,
+    From: 'adminApt.vista_pagos_mensual',
+    Fields: '*'
+  })
     .then((result) => {
       tableData.value = result.data
     })
-
     .catch((err) => {
-      console.log('🚧 - getUsers.then - err', err)
+      console.error('🚧 - getUsers.then - err', err)
     })
 }
 
 loadData()
-
-const deleteRow = (value) => {
-  const info = { table: 'adminApt.pagos', condition: { id: value } }
-
-  deleteData(info)
-    .then((result) => {
-      console.log('🚧 - deleteData.then - result', result)
-      loadData()
-    })
-    .catch((err) => {
-      console.log('🚧 - getUsers.then - err', err)
-    })
-}
-
-const sumatoria = (index) => {
-  return visibleItems.value[index].detalle_pago.reduce((acumulado, objeto) => {
-    return acumulado + objeto.valor
-  }, 0)
-}
 
 function goToPage (page) {
   currentPage.value = page
@@ -112,24 +110,22 @@ function goToPage (page) {
           <div class="card-title">Reporte de Pagos</div>
           <hr />
           <div class="column">
-            <div class="col mb-5">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th class="text-center align-middle" style="width: 10%">Buscador:</th>
-                    <th style="width: 90%">
-                      <input v-model="search" type="search" placeholder="Buscar por apt" class="form-control" />
-                    </th>
-                  </tr>
-                </thead>
-              </table>
-            </div>
-
             <div class="col mb-3">
               <table class="table table-sm table-striped table-hover">
                 <thead>
                   <tr>
-                    <th></th>
+                    <th v-for="(columna, index) in nombreColumnas" :key="index">
+                      <input
+                        v-if="columna !== 'valor'"
+                        v-model="searchColumn[columna]"
+                        type="search"
+                        :placeholder="'Buscar por: ' + columna"
+                        class="form-control"
+                        @input="onColumnFilter(columna, $event.target.value)"
+                      />
+                    </th>
+                  </tr>
+                  <tr>
                     <th v-for="(columna, index) in nombreColumnas" :key="index">
                       {{ columna }}
                     </th>
@@ -137,23 +133,10 @@ function goToPage (page) {
                 </thead>
                 <tbody class="table-group-divider">
                   <tr v-for="(item, index) in visibleItems" :key="item.id">
-                    <td>
-                      <div>
-                        <v-icon name="md-delete" fill="#686868" title="Delete" scale="1" @click="deleteRow(item.id)" />
-                      </div>
-                    </td>
-
                     <td>{{ item.apartamento }}</td>
-                    <td>{{ item.pago }}</td>
-                    <td>
-                      <tr v-for="data in item.detalle_pago" :key="data">
-                        <td><strong>Valor : </strong> {{ currency(data.valor) }}</td>
-                        <td><strong>Fecha : </strong> {{ data.fecha.month + 1 }} / {{ data.fecha.year }}</td>
-                      </tr>
-                      <tr>
-                        <td><strong>Total : </strong> {{ currency(sumatoria(index)) }}</td>
-                      </tr>
-                    </td>
+                    <td>{{ item.valor }}</td>
+                    <td>{{ item.mes + 1 }}</td>
+                    <td>{{ item.año }}</td>
                   </tr>
                 </tbody>
               </table>

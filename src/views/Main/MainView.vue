@@ -33,6 +33,7 @@ function closeNav () {
 }
 
 const load = ref()
+const positionSidebar = ref('relative')
 
 const app = getCurrentInstance()
 const progressBar = app.appContext.config.globalProperties.msg
@@ -67,11 +68,10 @@ onMounted(() => {
 
     <!-- SIDEBAR -->
     <Sidebar
-      class="sidebar"
       :background-sidenav="appStore.getBackgroundSidenav"
       :background-image-sidenav="appStore.getBackgroundImageSidenav"
       :color-sidenav="appStore.getColorSidenav"
-      :position-sidenav="initial"
+      :position-sidenav="positionSidebar"
       @close-sidebar="closeNav"
     />
 

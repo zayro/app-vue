@@ -1,24 +1,26 @@
 <script setup>
 import { ref, watch } from 'vue'
-import { getData, deleteData, getDataFilter } from '@/api/index'
+import { getData, getDataFilter } from '@/api/index'
 
 import moment from 'moment'
 
-import { records, currency } from '@/services/table'
+import { currency } from '@/services/table'
 
 // SECTION - Logic
 
-const column = ['apartamento', 'valor', 'fecha_rango']
+const column = ['apartamento', 'valor', 'fecha']
 
 const defaultBalance = {
-  anualidad: 0,
-  pagos: 0,
-  balance: 0
+  pago_anual: 0,
+  pago_actual: 0,
+  pago_pendiente: 0
 }
 
+const balance = ref(defaultBalance)
 const apartamento = ref()
 const requestApt = ref()
-const balance = ref(defaultBalance)
+
+const records = ref([])
 
 // ANCHOR - API CONECTION
 
@@ -31,7 +33,7 @@ moment.lang('es', {
 })
 
 const urlGetApt = '/general/select/adminApt.apartamento'
-const urlGetPagos = '/general/select/adminApt.pagos'
+
 const urlGetBalace = '/general/search'
 
 const execute = () => {
@@ -48,7 +50,13 @@ const execute = () => {
 execute()
 
 function loadData (value) {
-  getDataFilter({ url: urlGetBalace, From: 'adminApt.pagos', Fields: '*', Where: { apartamento: value } })
+  const getYear = new Date().getFullYear()
+  getDataFilter({
+    url: urlGetBalace,
+    From: 'adminApt.vista_pagos',
+    Fields: '*',
+    Where: { apartamento: value, año: getYear }
+  })
     .then((result) => {
       console.log('🚧 - getUsers.then - result', result)
       records.value = result.data
@@ -59,7 +67,7 @@ function loadData (value) {
 }
 
 function loadDataFilter (value) {
-  getDataFilter({ url: urlGetBalace, From: 'adminApt.balance', Fields: '*', Where: { apartamento: value } })
+  getDataFilter({ url: urlGetBalace, From: 'adminApt.balance_apt', Fields: '*', Where: { apartamento: value } })
     .then((result) => {
       console.log('🚧 - .then - result: loadDataFilter', result.data)
 
@@ -76,67 +84,8 @@ function loadDataFilter (value) {
     })
 }
 
-const deleteRow = (value) => {
-  const info = { table: 'adminApt.pagos', condition: { id: value } }
-
-  deleteData(info)
-    .then((result) => {
-      console.log('🚧 - deleteData.then - result', result)
-      loadData()
-    })
-    .catch((err) => {
-      console.error('🚧 - getUsers.then - err', err)
-    })
-}
-
 const formmatDate = (value) => {
   return moment(value, 'YYYY-MM-DD').format('LL')
-}
-
-const diffDate = (diffDay) => {
-  console.group('diffDate')
-  console.log('🚧 - diffDate - diffDay:', diffDay)
-  // To calculate the time difference of two dates
-
-  const from = Date.parse(diffDay[0])
-  console.log('🚧 - diffDate - from:', from)
-  const to = Date.parse(diffDay[1])
-  console.log('🚧 - diffDate - to:', to)
-
-  const DifferenceTime = Date.parse(diffDay[1]) - Date.parse(diffDay[0])
-
-  const oneDay = 1000 * 60 * 60 * 24
-  console.log('🚧 - diffDate - oneDay:', oneDay)
-
-  // To calculate the no. of days between two dates
-  const DifferenceDays = DifferenceTime / oneDay
-
-  const now = new Date()
-  const start = new Date(now.getFullYear(), 0, 0)
-
-  const diff = now - start
-
-  const day = Math.floor(diff / oneDay)
-  console.log('Day of year: ' + day)
-
-  console.groupEnd()
-
-  return `${formmatDate(diffDay[0])} - ${formmatDate(diffDay[1])} Dias Cancelados  ${DifferenceDays + 1}`
-}
-
-function daysInYear (year) {
-  const currentDate = new Date()
-  const currentYear = currentDate.getFullYear()
-  console.log(currentYear) // Output: e.g. 2021
-
-  return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0 ? 366 : 365
-}
-
-function daysInYearCurrent () {
-  const currentDate = new Date()
-  const currentYear = currentDate.getFullYear()
-
-  return (currentYear % 4 === 0 && currentYear % 100 !== 0) || currentYear % 400 === 0 ? 366 : 365
 }
 
 // watch works directly on a ref
@@ -169,7 +118,7 @@ watch(apartamento, async (newQuestion, oldQuestion) => {
         <div class="widget-card">
           <div class="d-flex justify-content-between align-items-center">
             <div class="value-box">
-              <h4 class="mb-0">{{ currency(balance.anualidad) }}</h4>
+              <h4 class="mb-0">{{ currency(balance.pago_anual) }}</h4>
             </div>
             <div class="text-warning">
               <strong><span>Deuda general</span></strong>
@@ -180,7 +129,7 @@ watch(apartamento, async (newQuestion, oldQuestion) => {
         <div class="widget-card">
           <div class="d-flex justify-content-between align-items-center">
             <div class="value-box">
-              <h4 class="mb-0">{{ currency(balance.pagos) }}</h4>
+              <h4 class="mb-0">{{ currency(balance.pago_actual) }}</h4>
             </div>
             <div class="text-success">
               <strong><span>Abono</span></strong>
@@ -191,7 +140,7 @@ watch(apartamento, async (newQuestion, oldQuestion) => {
         <div class="widget-card">
           <div class="d-flex justify-content-between align-items-center">
             <div class="value-box">
-              <h4 class="mb-0">{{ currency(balance.balance) }}</h4>
+              <h4 class="mb-0">{{ currency(balance.pago_pendiente) }}</h4>
             </div>
             <div class="text-danger">
               <strong><span>Pendiente</span></strong>
@@ -212,7 +161,6 @@ watch(apartamento, async (newQuestion, oldQuestion) => {
                 <table class="table table-sm table-striped">
                   <thead>
                     <tr>
-                      <th></th>
                       <th v-for="item in column" :key="item">
                         {{ item }}
                       </th>
@@ -220,21 +168,9 @@ watch(apartamento, async (newQuestion, oldQuestion) => {
                   </thead>
                   <tbody class="table-group-divider">
                     <tr v-for="item in records" :key="item.id">
-                      <td>
-                        <div>
-                          <v-icon
-                            name="md-delete"
-                            fill="#686868"
-                            title="Delete"
-                            scale="1"
-                            @click="deleteRow(item.id)"
-                          />
-                        </div>
-                      </td>
-
                       <td>{{ item.apartamento }}</td>
                       <td>{{ currency(item.valor) }}</td>
-                      <td>{{ diffDate(item.fecha_rango) }}</td>
+                      <td>{{ item.mes + 1 }}/ {{ item.año }}</td>
                     </tr>
                   </tbody>
                 </table>

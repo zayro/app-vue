@@ -7,7 +7,7 @@ export default {
     }
   },
   setup (props) {
-    console.log(props.load)
+    console.log('Spinner ', props.load)
   }
 }
 </script>
@@ -16,11 +16,12 @@ export default {
   <div v-if="load" class="backdrop">
     <div class="center-div">
       <div class="spinner"></div>
+      <div class="text-white">Cargando</div>
     </div>
   </div>
 </template>
 
-<style lang="css" scoped>
+<style lang="css">
 /**
 * Spinner Loading
 */
@@ -54,6 +55,8 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
+  opacity: 0.8;
+  transition: opacity 2s;
   /*
   display: flex;
   justify-content: center;
@@ -63,8 +66,11 @@ export default {
 
 .center-div {
   display: flex;
-  justify-content: center;
-  height: 100vh;
+  flex-direction: column;
   align-items: center;
+  align-self: center;
+  justify-content: center;
+  align-content: center;
+  height: 100vh;
 }
 </style>

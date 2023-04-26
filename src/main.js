@@ -15,6 +15,8 @@ import '~bootstrap/dist/css/bootstrap.min.css'
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 
+import VueApexCharts from 'vue3-apexcharts'
+
 import { OhVueIcon, addIcons } from 'oh-vue-icons'
 import {
   GiPayMoney,
@@ -27,6 +29,7 @@ import {
   FaArrowLeft,
   FaArrowRight,
   FaBalanceScale,
+  IoDocumentText,
   MdPassword,
   CoMinutemailer,
   MdApartment,
@@ -59,6 +62,7 @@ addIcons(
   FaArrowLeft,
   FaArrowRight,
   FaBalanceScale,
+  IoDocumentText,
   MdPassword,
   CoMinutemailer,
   MdApartment,
@@ -81,6 +85,8 @@ addIcons(
 )
 
 const app = createApp(App)
+
+app.use(VueApexCharts)
 
 // Global Var
 app.config.globalProperties.msg = 'hello'

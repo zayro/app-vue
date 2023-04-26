@@ -10,7 +10,7 @@ const emit = defineEmits({
 const props = defineProps({
   backgroundImageSideNav: {
     type: String,
-    default: ''
+    default: 'none'
   },
   backgroundSidenav: {
     type: String,
@@ -68,11 +68,11 @@ if (props.positionSidenav === 'relative') {
       </RouterLink>
 
       <hr />
-      <a href="#" class="sidenav-link"> <v-icon name="gi-pay-money" fill="black" scale="1.3" /> Agregar Gastos </a>
+      <RouterLink to="/main/addExpenditure">
+        <v-icon name="gi-pay-money" fill="black" scale="1.3" /> Agregar Gastos
+      </RouterLink>
       <hr />
-      <RouterLink to="/main/balance">
-        <v-icon name="hi-document-report" fill="black" scale="1.3" /> Reportes</RouterLink
-      >
+      <RouterLink to="/main/report"> <v-icon name="hi-document-report" fill="black" scale="1.3" /> Reportes</RouterLink>
       <hr />
 
       <a href="#"> <v-icon name="md-person-sharp" fill="black" scale="1.3" /> Configuracion </a>
@@ -89,7 +89,7 @@ if (props.positionSidenav === 'relative') {
   z-index: 3000;
   left: 0;
   margin-top: v-bind(marginTop);
-  background-image: v-bind('props.backgroundImageSideNav');
+  /* background-image: v-bind('props.backgroundImageSideNav'); */
   background-size: cover;
   background-position: 50%;
   border-radius: 0.375rem;
