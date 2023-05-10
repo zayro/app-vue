@@ -1,6 +1,4 @@
 <script setup>
-import 'bootstrap'
-
 import { ref, onMounted, onBeforeMount, getCurrentInstance, inject } from 'vue'
 
 import Spinner from '../../shared/Spinner.vue'
@@ -19,17 +17,11 @@ function openNav () {
   console.log('openNav')
   document.getElementById('mySidenav').style.minWidth = '350px'
   document.getElementById('mySidenav').style.width = '350px'
-  // document.getElementById("main").style.marginLeft = "35% ";
-  document.getElementById('myCanvasNav').style.width = '100%'
-  document.getElementById('myCanvasNav').style.opacity = '0.6'
 }
 
 function closeNav () {
   document.getElementById('mySidenav').style.minWidth = '0'
   document.getElementById('mySidenav').style.width = '0'
-  // document.getElementById("main").style.marginLeft = "0";
-  document.getElementById('myCanvasNav').style.width = '0%'
-  document.getElementById('myCanvasNav').style.opacity = '0'
 }
 
 const load = ref()
@@ -81,19 +73,3 @@ onMounted(() => {
     </div>
   </div>
 </template>
-
-<style lang="css" scoped>
-.container-flex {
-  display: flex; /* or inline-flex */
-  flex-direction: row;
-}
-
-.sidebar {
-  flex-grow: 1;
-  margin: auto;
-}
-.routes {
-  flex-grow: 2;
-  width: 100%;
-}
-</style>

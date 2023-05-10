@@ -36,7 +36,7 @@ export default {
             jwt.setToken(response.data.token)
             conf.setConfig(jwt.getTokenDecode())
             console.log('🚧 - .then - jwt.getTokenDecode():', jwt.getTokenDecode())
-            router.push({ path: '/home' })
+            router.push({ path: '/main/' })
           })
           .catch((error) => {
             console.log(error)

@@ -1,14 +1,3 @@
-<script setup>
-import { ref, inject } from 'vue'
-
-const txt = inject('txt')
-console.log('🚧 - txt', txt)
-const conf = inject('conf')
-console.log('🚧 - conf', conf)
-
-const load = ref()
-</script>
-
 <template>
   <div>
     <div class="flex-container">
@@ -63,21 +52,12 @@ const load = ref()
 
 <style lang="scss" scoped>
 a,
-a:hover {
+a:hover,
+a:visited,
+a:active {
   color: inherit; /* blue colors for links too */
   text-decoration: inherit; /* no underline */
 }
-.card-body {
-  padding: 40px;
-}
-.flex-item {
-  align-self: center;
-}
-.flex-item-full {
-  -webkit-flex: auto;
-  flex: auto;
-}
-
 .flex-container {
   margin-top: 80px;
   display: flex;
@@ -87,25 +67,6 @@ a:hover {
 
   transition: margin-left 0.5s;
   padding: 16px;
-  /* height: 98vh; */
-}
-
-.card-tools {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-#flex-container {
-  margin-top: 80px;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-flex-direction: row;
-  flex-direction: row;
-  align-items: center;
-  align-self: center;
-  justify-content: center;
-  align-content: space-around;
   /* height: 98vh; */
 }
 
@@ -139,7 +100,6 @@ $card-height: 170px;
     height: $card-height;
     cursor: pointer;
     align-items: center;
-
     border: 6px solid transparent;
     transition: border-color 0.4s ease-in-out;
 

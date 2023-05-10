@@ -7,10 +7,11 @@ import router from './router'
 import { constant } from './i18n/en.js'
 import { conf } from './services/conf'
 
-import './assets/global.css'
-
+import 'bootstrap'
 import '~bootstrap/dist/css/bootstrap.min.css'
 // import './registerServiceWorker'
+
+import './assets/style/global.scss'
 
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
@@ -19,6 +20,7 @@ import VueApexCharts from 'vue3-apexcharts'
 
 import { OhVueIcon, addIcons } from 'oh-vue-icons'
 import {
+  BiPcDisplay,
   GiPayMoney,
   GiReceiveMoney,
   FaFlag,
@@ -29,6 +31,7 @@ import {
   FaArrowLeft,
   FaArrowRight,
   FaBalanceScale,
+  IoDocument,
   IoDocumentText,
   MdPassword,
   CoMinutemailer,
@@ -52,6 +55,7 @@ import {
 } from 'oh-vue-icons/icons'
 
 addIcons(
+  BiPcDisplay,
   GiPayMoney,
   GiReceiveMoney,
   FaFlag,
@@ -62,6 +66,7 @@ addIcons(
   FaArrowLeft,
   FaArrowRight,
   FaBalanceScale,
+  IoDocument,
   IoDocumentText,
   MdPassword,
   CoMinutemailer,

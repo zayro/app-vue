@@ -66,6 +66,8 @@ const saveData = () => {
     infoPay.value.comprobante = responseUpload.value.filename
   }
 
+  console.log('🚧 - saveData - payload.infoPay:', infoPay.value)
+
   const payload = {
     db: 'enterprise',
     insert: 'adminApt.gastos',
@@ -76,13 +78,15 @@ const saveData = () => {
     .post('general/insert', payload)
     .then((response) => {
       console.log('🚧 - .then - response:', response)
-      swal('Good job!', 'Welcome to App!', 'success')
+      swal('Transaccion Exitosa!', 'se agrego nuevo registro', 'success')
+      /*
       infoPay.value = cleanInfoPay
       document.getElementById('pagos').reset()
+      */
     })
     .catch((error) => {
       console.log(error)
-      swal('Wrong!', 'Somthing is Wrong!', 'error')
+      swal('Upps!', 'Ocurrio un error!', 'error')
     })
 }
 
@@ -150,12 +154,12 @@ onMounted(() => {
 
 <template>
   <div>
-    <div v-show="load" id="flex-container">
-      <div id="main">
+    <div v-show="load" class="flex-container">
+      <div class="main">
         <div class="d-flex flex-column">
           <div class="flex-item">
             <div class="card mb-3">
-              <div class="card-body">
+              <div class="card-body p-4">
                 <div class="card-tools">
                   <div class="card-title">Agregar Gastos</div>
                 </div>
@@ -163,7 +167,7 @@ onMounted(() => {
                 <hr />
 
                 <div class="row">
-                  <form id="pagos" action="pagos" name="pagos">
+                  <form id="pagos" action="pagos" name="pagos" @submit.prevent="saveData">
                     <div class="col-12">
                       <div class="mb-3">
                         <label for="select_apt" class="form-label">Informacion del gasto</label>
@@ -172,6 +176,7 @@ onMounted(() => {
                           v-model="infoPay.id_tipo_gasto"
                           class="form-select"
                           aria-label="Default select apt."
+                          required
                         >
                           <option v-for="item in requestApt" :key="item.id" :value="item.id">
                             {{ item.nombre }}
@@ -197,7 +202,7 @@ onMounted(() => {
                       </div>
                       <div class="mb-3">
                         <label for="date_pay" class="form-label">Periodo a agregar</label>
-                        <VueDatePicker id="date_pay" v-model="date" month-picker :format="format" />
+                        <VueDatePicker id="date_pay" v-model="infoPay.fecha" month-picker :format="format" required />
                       </div>
                       <div class="mb-3">
                         <label for="select_year" class="form-label">Medio de Pago</label>
@@ -206,6 +211,7 @@ onMounted(() => {
                           v-model="infoPay.id_tipo_metodo_pago"
                           class="form-select"
                           aria-label="Default select year"
+                          required
                         >
                           <option selected>seleccionar</option>
                           <option value="1">Efectivo</option>
@@ -225,7 +231,7 @@ onMounted(() => {
                       </div>
 
                       <div class="d-grid gap-2 mx-auto">
-                        <button class="btn btn-primary" type="button" @click="saveData">Generar Gasto</button>
+                        <button class="btn btn-primary" type="submit">Generar Gasto</button>
                       </div>
                     </div>
                   </form>
@@ -238,51 +244,3 @@ onMounted(() => {
     </div>
   </div>
 </template>
-
-<style lang="css" scoped>
-#main {
-  transition: margin-left 0.5s;
-  padding: 16px;
-  width: 90%;
-}
-
-.card-body {
-  padding: 40px;
-}
-
-.flex-item {
-  -webkit-flex: auto;
-  flex: auto;
-}
-
-#flex-container {
-  margin-top: 80px;
-  display: flex;
-  -webkit-flex-direction: row;
-  flex-direction: row;
-  align-items: center;
-  align-self: center;
-  justify-content: center;
-  align-content: center;
-  /* height: 98vh; */
-}
-
-.card-tools {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-#flex-container {
-  margin-top: 80px;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-flex-direction: row;
-  flex-direction: row;
-  align-items: center;
-  align-self: center;
-  justify-content: center;
-  align-content: space-around;
-  /* height: 98vh; */
-}
-</style>

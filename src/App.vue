@@ -13,7 +13,6 @@ window.addEventListener('resize', () => {
 window.onload = function () {
   console.log(' window.onload ')
 }
-
 </script>
 
 <template>
@@ -24,15 +23,3 @@ window.onload = function () {
     </transition>
   </router-view>
 </template>
-
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>

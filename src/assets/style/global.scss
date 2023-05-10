@@ -1,0 +1,158 @@
+/* fonts */
+@import url("https://fonts.googleapis.com/css2?family=Dosis:wght@200;300;400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Slab:ital,wght@0,100;0,300;0,400;0,600;0,700;1,300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Monoton&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap");
+
+@import "var.scss";
+@import "pagination.scss";
+
+/*
+a,
+a:visited {
+    color: $color-text-link !important;
+}
+
+a:hover,
+a:active {
+    color: $color-text-link !important;
+}
+*/
+
+.navbar-icon-right {
+    a,
+    a:visited {
+        color: $color-text-link !important;
+    }
+
+    a:hover,
+    a:active {
+        color: $color-text-link !important;
+    }
+}
+
+/* colors */
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited,
+.btn-primary:focus {
+    background-color: $color-button-primary;
+    border: 1px solid $color-button-primary;
+    font-size: 15px;
+}
+
+.btn:hover {
+    background-color: $color-button-primary-hover;
+}
+
+.btn.btn-primary:active:focus,
+.btn.btn-primary:active:hover {
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #5cb85c;
+    outline: none;
+    box-shadow: none;
+}
+
+/* cards */
+.card {
+    border-radius: 6px;
+    box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 20%), 0 1px 5px 0 rgb(0 0 0 / 12%);
+}
+
+.card-title {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-style: normal;
+    font-size: 16px;
+}
+
+.card-subtitle {
+    text-transform: capitalize;
+    font-weight: lighter;
+    font-style: normal;
+    font-size: 16px;
+}
+
+.card-body {
+    padding: 40px;
+}
+
+.card-tools {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+/* flex */
+.flex-container {
+    margin-top: 80px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-self: center;
+    justify-content: center;
+    align-content: center;
+}
+
+.flex-item {
+    flex: auto;
+}
+
+.container-flex {
+    display: flex;
+    flex-direction: row;
+}
+
+.sidebar {
+    flex-grow: 1;
+    margin: auto;
+}
+
+.routes {
+    flex-grow: 2;
+    width: 100%;
+}
+
+/* fonts classes */
+.font-monoton {
+    font-family: "Monoton", cursive;
+}
+
+.font-dosis {
+    font-family: "Dosis", sans-serif;
+}
+
+.font-lato {
+    font-family: "Lato", sans-serif;
+}
+
+.font-josefin {
+    font-family: "Josefin Slab", serif;
+}
+
+/* other */
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.5s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+
+.main {
+    transition: margin-left 0.5s;
+    padding: 16px;
+    width: 90%;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.navbar-top {
+    box-shadow: none;
+}

@@ -1,42 +1,75 @@
 <script setup>
+import { ref, computed } from 'vue'
 import { getData, deleteData } from '@/api/index'
+import swal from 'sweetalert'
 
-import {
-  records,
-  recordsFiltered,
-  paginationLimit,
-  recordsShowTable,
-  searchTable,
-  columnFilter,
-  displayPageNavNext,
-  displayPageNavPrev,
-  displayPageNav,
-  displayItems,
-  SortArrayObject,
-  currency
-} from '@/services/table'
+import { currency } from '@/services/table'
 
 // SECTION - Logic
+const currentPage = ref(1)
+const itemsPerPage = ref(10)
 
-const column = ['tipo_gasto', 'tipo_pago', 'valor', 'mes', 'año']
+const sort = ref({ key: null, direction: 1 })
 
-// ANCHOR - Observable to input Search
+const search = ref('')
 
-columnFilter.value = column
+const nombreColumnas = ref(['tipo_pago', 'tipo_gasto', 'valor', 'mes', 'año'])
+
+const tableData = ref([])
+
+const totalPages = computed(() => {
+  return Math.ceil(filteredData.value.length / itemsPerPage.value)
+})
+
+const startIndex = computed(() => {
+  return (currentPage.value - 1) * itemsPerPage.value
+})
+
+const endIndex = computed(() => {
+  return startIndex.value + itemsPerPage.value
+})
+
+const filteredData = computed(() => {
+  const searchText = search.value.toLowerCase()
+
+  return tableData.value
+    .filter((item) => {
+      return item.tipo_gasto.toLowerCase().includes(searchText) || item.tipo_pago.toLowerCase().includes(searchText)
+    })
+    .sort((a, b) => {
+      if (sort.value.key === null) return 0
+
+      let comparison
+      if (typeof a[sort.value.key] === 'string' && typeof b[sort.value.key] === 'string') {
+        comparison = a[sort.value.key].localeCompare(b[sort.value.key])
+      } else if (
+        typeof a[sort.value.key] === 'object' &&
+        a[sort.value.key] instanceof Date &&
+        typeof b[sort.value.key] === 'object' &&
+        b[sort.value.key] instanceof Date
+      ) {
+        comparison = a[sort.value.key].getTime() - b[sort.value.key].getTime()
+      } else {
+        comparison = a[sort.value.key] - b[sort.value.key]
+      }
+      return comparison * sort.value.direction
+    })
+})
+
+const visibleItems = computed(() => {
+  return filteredData.value.slice(startIndex.value, endIndex.value)
+})
+
+function goToPage (page) {
+  currentPage.value = page
+}
 
 // ANCHOR - API CONECTION
 
 function loadData () {
   getData('/general/select/adminApt.vista_gastos')
     .then((result) => {
-      console.log('🚧 - getUsers.then - result', result)
-      records.value = result.data
-      recordsFiltered.value = result.data
-
-      displayPageNav(records.value.length, paginationLimit.value)
-      displayItems()
-
-      console.log('🚧 - .then - recordsShowTable:', recordsShowTable.value[0].detalle_pago)
+      tableData.value = result.data
     })
 
     .catch((err) => {
@@ -46,55 +79,59 @@ function loadData () {
 
 loadData()
 
-const deleteRow = (value) => {
-  const info = { table: 'adminApt.gastos', condition: { id: value } }
+const deleteRow = (item) => {
+  const info = { table: 'adminApt.gastos', condition: { id: item.id } }
+  swal({
+    title: 'Estas Seguro?',
+    text: `Una vez eliminado, no podras recuperar de nuevo el registros \n tipo gasto:  ${item.tipo_gasto}  mes: ${item.mes} año: ${item.año} `,
+    icon: 'warning',
+    buttons: true,
+    dangerMode: true
+  }).then((willDelete) => {
+    if (willDelete) {
+      swal('Se Elimino el registros seleccionado!', {
+        icon: 'success'
+      })
 
-  deleteData(info)
-    .then((result) => {
-      console.log('🚧 - deleteData.then - result', result)
-      loadData()
-    })
-    .catch((err) => {
-      console.log('🚧 - getUsers.then - err', err)
-    })
+      deleteData(info)
+        .then((result) => {
+          console.log('🚧 - deleteData.then - result', result)
+          loadData()
+        })
+        .catch((err) => {
+          console.log('🚧 - getUsers.then - err', err)
+        })
+    } else {
+      swal('Se cancelo la accion de Eliminar')
+    }
+  })
 }
 </script>
 
 <template>
-  <div id="flex-container">
-    <div id="main">
+  <div class="flex-container">
+    <div class="main">
       <div class="card mb-3">
         <div class="card-body">
-          <div class="card-title">Reporte de Pagos</div>
+          <div class="card-title">Reporte de Gastos</div>
           <hr />
           <div class="column">
             <div class="col mb-5">
-              <div class="d-flex justify-content-around">
-                <div>
-                  <button
-                    class="btn btn-outline-dark"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#collapseExample"
-                    aria-expanded="false"
-                    aria-controls="collapseExample"
-                  >
-                    Search All Fields
-                  </button>
-                </div>
-              </div>
-
-              <div id="collapseExample" class="collapse">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th class="text-center align-middle" style="width: 10%">Search:</th>
-                      <th style="width: 90%">
-                        <input type="text" class="form-control" @input="searchTable" />
-                      </th>
-                    </tr>
-                  </thead>
-                </table>
-              </div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th class="text-center align-middle" style="width: 10%">Buscador:</th>
+                    <th style="width: 90%">
+                      <input
+                        v-model="search"
+                        type="search"
+                        placeholder="Buscar por gasto o pago"
+                        class="form-control"
+                      />
+                    </th>
+                  </tr>
+                </thead>
+              </table>
             </div>
 
             <div class="col mb-3">
@@ -102,21 +139,26 @@ const deleteRow = (value) => {
                 <thead>
                   <tr>
                     <th></th>
-                    <th
-                      v-for="item in column"
-                      :key="item"
-                      @click=";(sortField.name = item), (sortField.asc = !sortField.asc), SortArrayObject()"
-                    >
-                      {{ item }}
+                    <th v-for="(columna, index) in nombreColumnas" :key="index">
+                      {{ columna }}
                     </th>
                   </tr>
                 </thead>
                 <tbody class="table-group-divider">
-                  <tr v-for="(item, index) in recordsShowTable" :key="item.id">
+                  <tr v-for="(item, index) in visibleItems" :key="item.id">
                     <td>
                       <div>
                         <!-- <v-icon name="fa-edit" fill="#686868" title="Edit" scale="1" /> -->
-                        <v-icon name="md-delete" fill="#686868" title="Delete" scale="1" @click="deleteRow(item.id)" />
+                        <button class="btn btn-outline-dark">
+                          <v-icon
+                            name="md-delete"
+                            fill="#983C3C"
+                            title="Delete"
+                            scale="1"
+                            class="cursor-pointer"
+                            @click="deleteRow(item)"
+                          />
+                        </button>
                       </div>
                     </td>
 
@@ -129,26 +171,27 @@ const deleteRow = (value) => {
                 </tbody>
               </table>
 
-              <div id="pagination">
-                <button type="button" class="btn" @click="displayPageNavPrev()">
-                  <v-icon name="fa-arrow-left" fill="black" scale="1" />
-                </button>
-                <div v-for="item in paginationPage" :key="item">
-                  <button
-                    type="button"
-                    class="btn"
-                    :class="paginationPagePosition.index == item ? 'btn-primary' : 'btn-light'"
-                    @click="displayItems(item)"
+              <div class="pagination justify-content-center">
+                <ul class="pagination">
+                  <li v-if="currentPage > 1" class="page-item" @click="goToPage(currentPage - 1)">
+                    <a class="page-link" href="#"> Anterior </a>
+                  </li>
+                  <li
+                    v-for="page in totalPages"
+                    :key="page"
+                    class="page-item"
+                    :class="{ active: currentPage === page }"
+                    @click="goToPage(page)"
                   >
-                    {{ item }}
-                  </button>
-                </div>
-                <button type="button" class="btn" @click="displayPageNavNext()">
-                  <v-icon name="fa-arrow-right" fill="black" scale="1" />
-                </button>
+                    <a class="page-link" href="#">
+                      {{ page }}
+                    </a>
+                  </li>
+                  <li v-if="currentPage < totalPages" class="page-item" @click="goToPage(currentPage + 1)">
+                    <a class="page-link" href="#"> Siguiente </a>
+                  </li>
+                </ul>
               </div>
-
-              <div class="total">total rows: {{ recordsFiltered.length }}</div>
             </div>
           </div>
         </div>
@@ -158,23 +201,6 @@ const deleteRow = (value) => {
 </template>
 
 <style scoped>
-#flex-container {
-  margin-top: 80px;
-  display: flex;
-  -webkit-flex-direction: row;
-  flex-direction: row;
-  align-items: center;
-  align-self: center;
-  justify-content: center;
-  align-content: center;
-}
-
-#main {
-  transition: margin-left 0.5s;
-  padding: 16px;
-  width: 100%;
-}
-
 .btn {
   padding-left: 0.4rem;
   padding-right: 0.4rem;

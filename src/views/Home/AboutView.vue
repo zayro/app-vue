@@ -1,5 +1,4 @@
 <script setup>
-
 import { onUnmounted, onMounted } from 'vue'
 import { SocketService } from '@/services/socket.js'
 
@@ -16,17 +15,17 @@ onMounted(() => {
   SocketService.join('userAbout', 'about')
   SocketService.messageRoom({ to: 'about', content: 'hola about' })
 
-  socket.on('access', data => {
+  socket.on('access', (data) => {
     console.log('🚧 - access data', data)
   })
 
-  socket.on('message', message => {
+  socket.on('message', (message) => {
     console.log('🚧 - message', message)
   })
 
-  socket.on('users', message => {
+  socket.on('users', (message) => {
     console.log('🚧 - users', message)
-    console.log('🚧 - users about length', message.filter(item => item.room === 'about').length)
+    console.log('🚧 - users about length', message.filter((item) => item.room === 'about').length)
   })
 
   socket.on('disconnect', () => {
@@ -38,12 +37,11 @@ onUnmounted(() => {
   console.log(' ----------- onUnmounted -----------')
   socket.disconnect()
 })
-
 </script>
 
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    <h1>This is an about page...</h1>
   </div>
 </template>
 

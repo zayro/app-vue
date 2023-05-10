@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/Home/HomeView.vue'
+
 import NotFound from '../views/404/404.vue'
 
 import app from '../views/login/appView.vue'
@@ -17,6 +17,8 @@ import User from '../views/Main/User/UserView.vue'
 
 import table from '../shared/tablePagination.vue'
 
+import HomeView from '../views/Main/Home/HomeView.vue'
+
 import Payment from '../views/Main/Payment/PaymentView.vue'
 import Expenditure from '../views/Main/Expenditure/ExpenditureView.vue'
 import reportPayment from '../views/Main/Report/reportPayment.vue'
@@ -27,7 +29,8 @@ import reportGeneral from '../views/Main/Report/reportGeneral.vue'
 
 import report from '../views/Main/Report/reportView.vue'
 
-import InfoView from '../views/Home/InfoView.vue'
+import InfoView from '../views/Main/Home/InfoView.vue'
+import AboutView from '../views/Main/Home/AboutView.vue'
 
 import JwtService from '../services/jwt'
 
@@ -89,6 +92,26 @@ const router = createRouter({
       component: MainView,
       meta: { transition: 'slide-right' },
       children: [
+        {
+          path: '',
+          name: 'home',
+          component: HomeView,
+          meta: { authRequired: true, transition: 'slide-left' },
+          // only authenticated users can create posts
+          children: [
+            {
+              path: '',
+              name: 'info',
+              component: InfoView
+              // meta: { authRequired: true }
+            },
+            {
+              path: 'about',
+              name: 'about',
+              component: AboutView
+            }
+          ]
+        },
         {
           path: 'avatar',
           name: 'avatar',
@@ -155,20 +178,20 @@ const router = createRouter({
     },
     {
       path: '/home',
-      name: 'home',
-      component: HomeView,
+      name: 'defaultVue',
       meta: { authRequired: true, transition: 'slide-left' },
+      component: () => import('../views/Home/HomeView.vue'),
       // only authenticated users can create posts
       children: [
         {
           path: '',
-          name: 'info',
-          component: InfoView,
-          meta: { authRequired: true }
+          name: 'defaultVueInfo',
+          meta: { authRequired: true },
+          component: () => import('../views/Home/InfoView.vue')
         },
         {
           path: 'about',
-          name: 'about',
+          name: 'defaultVueAbout',
           // route level code-splitting
           // this generates a separate chunk (About.[hash].js) for this route
           // which is lazy-loaded when the route is visited.

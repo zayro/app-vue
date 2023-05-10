@@ -185,12 +185,12 @@ onMounted(() => {
   <div>
     <!-- LOADING -->
     <Spinner :load="load.value" />
-    <div v-show="load" id="flex-container">
-      <div id="main">
+    <div v-show="load" class="flex-container">
+      <div class="main">
         <div class="d-flex flex-column">
           <div class="flex-item">
             <div class="card mb-3">
-              <div class="card-body">
+              <div class="card-body p-4">
                 <div class="card-tools">
                   <div class="card-title">Agregar Pago</div>
                 </div>
@@ -201,6 +201,20 @@ onMounted(() => {
                   <form id="pagos" action="pagos" name="pagos" @submit.prevent="saveData">
                     <div class="col-12">
                       <div class="mb-3">
+                        <!--                   <input
+                          id="select_apt"
+                          v-model="infoPay.id_apartamento"
+                          list="listApt"
+                          aria-label="Default select apt."
+                          required
+                          class="form-select form-select-sm"
+                        />
+                        <datalist id="listApt">
+                          <option v-for="item in requestApt" :key="item.id" :value="item.id">
+                            {{ item.piso }}
+                          </option>
+                        </datalist>
+ -->
                         <label for="select_apt" class="form-label">Apt</label>
                         <select
                           id="select_apt"
@@ -302,51 +316,5 @@ input:invalid + span::after {
 input:valid + span::after {
   content: '✓';
   padding-left: 5px;
-}
-
-#main {
-  transition: margin-left 0.5s;
-  padding: 16px;
-  width: 90%;
-}
-
-.card-body {
-  padding: 40px;
-}
-
-.flex-item {
-  -webkit-flex: auto;
-  flex: auto;
-}
-
-#flex-container {
-  margin-top: 80px;
-  display: flex;
-  -webkit-flex-direction: row;
-  flex-direction: row;
-  align-items: center;
-  align-self: center;
-  justify-content: center;
-  align-content: center;
-  /* height: 98vh; */
-}
-
-.card-tools {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-#flex-container {
-  margin-top: 80px;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-flex-direction: row;
-  flex-direction: row;
-  align-items: center;
-  align-self: center;
-  justify-content: center;
-  align-content: space-around;
-  /* height: 98vh; */
 }
 </style>

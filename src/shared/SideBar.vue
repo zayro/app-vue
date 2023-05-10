@@ -57,30 +57,70 @@ if (props.positionSidenav === 'relative') {
           <v-icon name="bi-building" fill="#686868" scale="4" />
         </div>
       </div>
+      <nav>
+        <hr />
+        <RouterLink to="/main/"> <v-icon name="hi-solid-home" fill="black" scale="1.5" /> Home </RouterLink>
+        <hr />
+        <!-- <a href="#" class="sidenav-link"> <v-icon name="gi-receive-money" fill="black" scale="1.5" /> Generar Pagos </a>
+      <hr /> -->
+        <RouterLink to="/main/addPayment">
+          <v-icon name="gi-receive-money" fill="black" scale="1.5" /> Agregar Pagos
+        </RouterLink>
 
-      <hr />
-      <a href="#"> <v-icon name="hi-solid-home" fill="black" scale="1.3" /> Home</a>
-      <hr />
-      <a href="#" class="sidenav-link"> <v-icon name="gi-receive-money" fill="black" scale="1.3" /> Generar Pagos </a>
-      <hr />
-      <RouterLink to="/main/addPayment">
-        <v-icon name="fa-credit-card" fill="black" scale="1.3" /> Agregar Pagos
-      </RouterLink>
+        <hr />
+        <RouterLink to="/main/addExpenditure">
+          <v-icon name="gi-pay-money" fill="black" scale="1.5" /> Agregar Gastos
+        </RouterLink>
+        <hr />
+        <RouterLink to="/main/report">
+          <v-icon name="hi-document-report" fill="black" scale="1.5" /> Reportes</RouterLink
+        >
+        <hr />
 
-      <hr />
-      <RouterLink to="/main/addExpenditure">
-        <v-icon name="gi-pay-money" fill="black" scale="1.3" /> Agregar Gastos
-      </RouterLink>
-      <hr />
-      <RouterLink to="/main/report"> <v-icon name="hi-document-report" fill="black" scale="1.3" /> Reportes</RouterLink>
-      <hr />
-
-      <a href="#"> <v-icon name="md-person-sharp" fill="black" scale="1.3" /> Configuracion </a>
+        <a href="#"> <v-icon name="md-person-sharp" fill="black" scale="1.5" /> Configuracion </a>
+      </nav>
     </div>
   </div>
 </template>
 
 <style scoped>
+a,
+.green {
+  text-decoration: none;
+  color: hsla(160, 100%, 37%, 1);
+  transition: 0.4s;
+}
+
+nav {
+  width: 100%;
+  font-size: 12px;
+  margin-top: 2rem;
+}
+
+nav a.router-link-exact-active {
+  color: rgba(39, 167, 82, 0.747);
+  font-weight: bold;
+}
+
+nav a.router-link-exact-active:hover {
+  background-color: transparent;
+}
+
+nav a {
+  display: inline-block;
+  padding: 0 1rem;
+  border-left: 1px solid rgba(206, 37, 37, 0.48);
+}
+
+nav a:first-of-type {
+  border: 0;
+}
+@media (hover: hover) {
+  a:hover {
+    background-color: hsla(241, 55%, 38%, 0.2);
+  }
+}
+
 .sidenav {
   overflow: hidden;
   display: flex;

@@ -50,10 +50,10 @@ function myFunction () {
         <v-icon name="hi-menu" :fill="colorNavText" scale="1.3" />
       </span>
 
-      <span class="brand">Edificio Torres de San Valentin </span>
+      <span class="brand font-lato">Edificio Torres de San Valentin </span>
 
       <div class="navbar-icon-right">
-        <a href="javascript:void(0);" class="icon">
+        <a href="javascript:void(0);" class="icon font-lato">
           <strong> {{ conf.first_name + ' ' + conf.last_name }}</strong></a
         >
         <a href="javascript:void(0);" class="icon" @click="myFunction()">

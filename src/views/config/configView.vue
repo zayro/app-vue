@@ -1,6 +1,4 @@
 <script setup>
-import 'bootstrap'
-
 import { ref, onMounted, onBeforeMount, getCurrentInstance, inject, watch } from 'vue'
 
 import { useAppStoreRef } from '@/stores/app'

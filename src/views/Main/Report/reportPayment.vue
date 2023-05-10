@@ -1,9 +1,10 @@
 <script setup>
 import { ref, computed } from 'vue'
+import swal from 'sweetalert'
 import { getData, deleteData } from '@/api/index'
 
 const currentPage = ref(1)
-const itemsPerPage = ref(10)
+const itemsPerPage = ref(5)
 
 const sort = ref({ key: null, direction: 1 })
 
@@ -80,17 +81,33 @@ function loadData () {
 
 loadData()
 
-const deleteRow = (value) => {
-  const info = { table: 'adminApt.pagos', condition: { id: value } }
+const deleteRow = (item) => {
+  const info = { table: 'adminApt.pagos', condition: { id: item.id } }
 
-  deleteData(info)
-    .then((result) => {
-      console.log('🚧 - deleteData.then - result', result)
-      loadData()
-    })
-    .catch((err) => {
-      console.log('🚧 - getUsers.then - err', err)
-    })
+  swal({
+    title: 'Estas Seguro?',
+    text: `Una vez eliminado, no podras recuperar de nuevo el registros \n apartamento:  ${item.apartamento}   `,
+    icon: 'warning',
+    buttons: true,
+    dangerMode: true
+  }).then((willDelete) => {
+    if (willDelete) {
+      swal('Se Elimino el registros seleccionado!', {
+        icon: 'success'
+      })
+
+      deleteData(info)
+        .then((result) => {
+          console.log('🚧 - deleteData.then - result', result)
+          loadData()
+        })
+        .catch((err) => {
+          console.log('🚧 - getUsers.then - err', err)
+        })
+    } else {
+      swal('Se cancelo la accion de Eliminar')
+    }
+  })
 }
 
 const sumatoria = (index) => {
@@ -105,8 +122,8 @@ function goToPage (page) {
 </script>
 
 <template>
-  <div id="flex-container">
-    <div id="main">
+  <div class="flex-container">
+    <div class="main">
       <div class="card mb-3">
         <div class="card-body">
           <div class="card-title">Reporte de Pagos</div>
@@ -129,21 +146,21 @@ function goToPage (page) {
               <table class="table table-sm table-striped table-hover">
                 <thead>
                   <tr>
-                    <th></th>
                     <th v-for="(columna, index) in nombreColumnas" :key="index">
                       {{ columna }}
                     </th>
+                    <th>Eliminar</th>
+                    <th>Factura</th>
+                    <th>Comprobante</th>
                   </tr>
                 </thead>
                 <tbody class="table-group-divider">
                   <tr v-for="(item, index) in visibleItems" :key="item.id">
                     <td>
-                      <div>
-                        <v-icon name="md-delete" fill="#686868" title="Delete" scale="1" @click="deleteRow(item.id)" />
+                      <div class="d-flex justify-content-center">
+                        {{ item.apartamento }}
                       </div>
                     </td>
-
-                    <td>{{ item.apartamento }}</td>
                     <td>{{ item.pago }}</td>
                     <td>
                       <tr v-for="data in item.detalle_pago" :key="data">
@@ -153,6 +170,51 @@ function goToPage (page) {
                       <tr>
                         <td><strong>Total : </strong> {{ currency(sumatoria(index)) }}</td>
                       </tr>
+                    </td>
+
+                    <td>
+                      <div class="d-flex justify-content-center">
+                        <button class="btn btn-outline-dark">
+                          <v-icon
+                            name="md-delete"
+                            fill="#983C3C"
+                            title="Delete"
+                            scale="1"
+                            class="cursor-pointer"
+                            @click="deleteRow(item)"
+                          />
+                        </button>
+                      </div>
+                    </td>
+
+                    <td>
+                      <div class="d-flex justify-content-center">
+                        <button class="btn btn-outline-dark">
+                          <v-icon
+                            name="io-document"
+                            fill="#3C6498"
+                            title="Delete"
+                            scale="1"
+                            class="cursor-pointer"
+                            @click="deleteRow(item)"
+                          />
+                        </button>
+                      </div>
+                    </td>
+
+                    <td>
+                      <div class="d-flex justify-content-center">
+                        <button class="btn btn-outline-dark">
+                          <v-icon
+                            name="io-document"
+                            fill="#3C6498"
+                            title="Delete"
+                            scale="1"
+                            class="cursor-pointer"
+                            @click="deleteRow(item)"
+                          />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 </tbody>
@@ -188,23 +250,6 @@ function goToPage (page) {
 </template>
 
 <style scoped>
-#flex-container {
-  margin-top: 80px;
-  display: flex;
-  -webkit-flex-direction: row;
-  flex-direction: row;
-  align-items: center;
-  align-self: center;
-  justify-content: center;
-  align-content: center;
-}
-
-#main {
-  transition: margin-left 0.5s;
-  padding: 16px;
-  width: 100%;
-}
-
 .btn {
   padding-left: 0.4rem;
   padding-right: 0.4rem;
@@ -212,6 +257,7 @@ function goToPage (page) {
 
 table th {
   text-transform: uppercase;
+  text-align: center;
 }
 
 .botonera {

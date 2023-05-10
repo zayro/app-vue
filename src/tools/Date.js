@@ -1,30 +1,17 @@
-export const formatMonth = (date) => {
-  const month = date.getMonth() + 1
-  const year = date.getFullYear()
-  return `${month}/${year}`
+import moment from 'moment'
+
+export const dateFormat = (value) => {
+  return moment(value).format('YYYY-MM-DD')
 }
 
-export const formatMonth = (date) => {
-   const formatJson = (date) => {
+export const getDayMonthYear = (date) => {
   const day = date.getDate()
-  const month = date.getMonth() + 1
+  const month = date.getMonth()
   const year = date.getFullYear()
-  return { month, year }
+  return { day, month, year }
 }
 
-// In case of a range picker, you'll receive [Date, Date]
-export const formatMonth = (date) => {
-   const format = (date) => {
-  console.log('🚧 - format - date:', date)
-  const from = formatMonth(date[0])
-
-  infoPay.value.fecha_rango = JSON.stringify([formatJson(date[0])])
-
-  return [from]
-}
-
-
-const diffDate = (diffDay) => {
+export const diffDate = (diffDay) => {
   console.group('diffDate')
   console.log('🚧 - diffDate - diffDay:', diffDay)
   // To calculate the time difference of two dates
@@ -52,10 +39,10 @@ const diffDate = (diffDay) => {
 
   console.groupEnd()
 
-  return `${formmatDate(diffDay[0])} - ${formmatDate(diffDay[1])} Dias Cancelados  ${DifferenceDays + 1}`
+  return ` ${DifferenceDays + 1}`
 }
 
-function daysInYear (year) {
+export function daysInYear (year) {
   const currentDate = new Date()
   const currentYear = currentDate.getFullYear()
   console.log(currentYear) // Output: e.g. 2021
@@ -63,7 +50,7 @@ function daysInYear (year) {
   return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0 ? 366 : 365
 }
 
-function daysInYearCurrent () {
+export function daysInYearCurrent () {
   const currentDate = new Date()
   const currentYear = currentDate.getFullYear()
 

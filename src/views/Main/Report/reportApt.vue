@@ -97,8 +97,8 @@ watch(apartamento, async (newQuestion, oldQuestion) => {
 </script>
 
 <template>
-  <div id="flex-container">
-    <div id="main">
+  <div class="flex-container">
+    <div class="main">
       <div class="row">
         <form id="pagos" action="pagos" name="pagos">
           <div class="col-12">
@@ -196,22 +196,6 @@ watch(apartamento, async (newQuestion, oldQuestion) => {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-}
-
-#flex-container {
-  margin-top: 80px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  align-self: center;
-  justify-content: center;
-  align-content: center;
-}
-
-#main {
-  transition: margin-left 0.5s;
-  padding: 16px;
-  width: 100%;
 }
 
 .btn {
