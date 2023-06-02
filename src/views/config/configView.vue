@@ -1,9 +1,7 @@
 <script setup>
 import { ref, onMounted, onBeforeMount, getCurrentInstance, inject, watch } from 'vue'
 
-import { useAppStoreRef } from '@/stores/app'
-
-import { useConfigStoreRef } from '@/stores/config'
+import { useAppStoreRef } from '@/stores/config.js'
 
 const txt = inject('txt')
 console.log('🚧 - txt', txt)
@@ -11,8 +9,6 @@ const conf = inject('conf')
 console.log('🚧 - conf', conf)
 
 const appStore = useAppStoreRef()
-
-const configStore = useConfigStoreRef()
 
 const sidebar = Object.keys(import.meta.globEager('@/assets/img/sidebar/*.jpg'))
 

@@ -49,7 +49,7 @@ export const constant = {
       SLOGAN: 'GENTE UTIL',
       TITLE: 'Hello Angular with ngx-translate!',
       SELECT: 'Change language'
-    },
+    }
   },
   FORM: {
     first_name: 'primer nombre',

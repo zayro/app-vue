@@ -1,15 +1,18 @@
 import axios from 'axios'
-// import store from '@/store';
+import { CONSTANT } from '@/environments'
 
-const URL = 'http://127.0.0.1:4000/api/v1/'
-// const URL = 'https://jsonplaceholder.typicode.com/';
+const URL = CONSTANT.URL.API
+
+const TOKEN = window.localStorage.getItem('accessToken')
+  ? JSON.parse(window.localStorage.getItem('accessToken')).token
+  : null
 
 const http = axios.create({
   baseURL: URL,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Authorization: `Bearer ${window.localStorage.getItem('accessToken')}`
+    Authorization: `Bearer ${TOKEN}`
   },
   responseType: 'json', // defecto
   responseEncoding: 'utf8', // defecto
@@ -22,7 +25,7 @@ const httpFormData = axios.create({
   baseURL: URL,
   headers: {
     'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
-    Authorization: `Bearer ${window.localStorage.getItem('accessToken')}`
+    Authorization: `Bearer ${TOKEN}`
   },
   responseType: 'json' // defecto
 })
@@ -31,7 +34,7 @@ const httpDownload = axios.create({
   baseURL: URL,
   headers: {
     'Content-Type': 'multipart/form-data;',
-    Authorization: `Bearer ${window.localStorage.getItem('accessToken')}`
+    Authorization: `Bearer ${TOKEN}`
   },
   responseType: 'blob',
   timeout: 30000

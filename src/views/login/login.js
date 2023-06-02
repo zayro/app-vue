@@ -4,12 +4,10 @@ import swal from 'sweetalert'
 import { constant } from '@/i18n/en'
 import { http } from '@/services/http-axios'
 import { useConfigStoreRef } from '@/stores/config'
-import JwtService from '@/services/jwt'
 
 export default {
   setup () {
     try {
-      const jwt = new JwtService()
       const txt = constant
       const title = 'Login User'
       const form = ref({ username: '', password: '' })
@@ -32,21 +30,19 @@ export default {
         http
           .post('login', payload)
           .then((response) => {
-            swal('Good job!', 'Welcome to App!', 'success')
-            jwt.setToken(response.data.token)
-            conf.setConfig(jwt.getTokenDecode())
-            console.log('🚧 - .then - jwt.getTokenDecode():', jwt.getTokenDecode())
+            swal('Ingreso Exitoso!', 'Bienvenido App!', 'success')
+            conf.setToken(response.data.token)
             router.push({ path: '/main/' })
           })
           .catch((error) => {
-            console.log(error)
-            swal('Wrong!', 'Somthing is Wrong!', 'error')
+            console.log('🚧 - login - error:', error)
+            swal('Wrong!', 'Algo salio mal!', 'error')
           })
       }
 
       return { login, validateForm, avatar, txt, title, form, conf }
     } catch (error) {
-      console.log(':rocket: ~ setup ~ error', error)
+      console.log('🚧 - setup - error:', error)
     }
   }
 }

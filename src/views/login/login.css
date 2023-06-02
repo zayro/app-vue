@@ -137,6 +137,10 @@ button {
   font-size: 15px;
 }
 
+.btn-space-wrapper {
+  width: 300px;
+}
+
 .no-overflow {
   overflow-y: hidden;
   overflow-x: hidden;

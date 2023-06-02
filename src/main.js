@@ -18,6 +18,8 @@ import '@vuepic/vue-datepicker/dist/main.css'
 
 import VueApexCharts from 'vue3-apexcharts'
 
+import piniaPersist from 'pinia-plugin-persist'
+
 import { OhVueIcon, addIcons } from 'oh-vue-icons'
 import {
   BiPcDisplay,
@@ -90,8 +92,7 @@ addIcons(
 )
 
 const app = createApp(App)
-
-app.use(VueApexCharts)
+const pinia = createPinia()
 
 // Global Var
 app.config.globalProperties.msg = 'hello'
@@ -101,7 +102,12 @@ app.config.globalProperties.$globalVariable = 'Jimmy'
 app.provide('txt', constant)
 app.provide('conf', conf)
 
-app.use(createPinia())
+app.use(VueApexCharts)
+
+pinia.use(piniaPersist)
+
+app.use(pinia)
+
 app.use(router)
 
 app.component('VIcon', OhVueIcon)

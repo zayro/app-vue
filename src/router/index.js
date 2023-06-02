@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import NotFound from '../views/404/404.vue'
 
 import app from '../views/login/appView.vue'
+import defaultView from '../views/login/defaultView.vue'
 import login from '../views/login/loginView.vue'
 import recoveryPass from '../views/login/retorePassword.vue'
 import sessionView from '../views/login/sessionView.vue'
@@ -12,8 +13,6 @@ import MainView from '../views/Main/MainView.vue'
 import Avatar from '../views/Main/Avatar/AvatarComponent.vue'
 import Upload from '../views/Main/Avatar/uploadComponent.vue'
 import Config from '../views/config/configView.vue'
-
-import User from '../views/Main/User/UserView.vue'
 
 import table from '../shared/tablePagination.vue'
 
@@ -32,13 +31,9 @@ import report from '../views/Main/Report/reportView.vue'
 import InfoView from '../views/Main/Home/InfoView.vue'
 import AboutView from '../views/Main/Home/AboutView.vue'
 
-import JwtService from '../services/jwt'
+import { JwtDecodeToken } from '@/services/jwt'
 
-import { LocalService } from '../services/secureStorage'
-
-const localService = new LocalService()
-
-const instance = new JwtService()
+import { useConfigStoreRef } from '@/stores/config'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -46,7 +41,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'default',
-      component: login
+      component: defaultView
     },
     {
       path: '/demo',
@@ -199,7 +194,6 @@ const router = createRouter({
         }
       ]
     },
-
     {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
@@ -208,74 +202,84 @@ const router = createRouter({
   ]
 })
 
-function hasAccess (namePermission) {
-  // let permission = ['admin', 'user', 'developer', 'guest']
-  let permission = ''
-
-  if (localService.getJsonValue('config') && Object.keys(localService.getJsonValue('config')).length !== 0) {
-    const getTokenDecode = instance.getTokenDecode()
-
-    const localStorage = localService.getJsonValue('config')
-
-    console.log('🚧 - hasAccess - permission', Object.keys(localStorage).length)
-
-    // permission = localStorage.data.payload.permissions
-    permission = getTokenDecode.permissions
-    console.log('🚧 - hasAccess - permission', permission)
-  }
-  // const permission = JSON.parse(ls.get('vuex')).config.privileges.permissions;
-
-  switch (namePermission) {
-    case 'home': {
-      const valid = ['admin', 'user', 'developer', 'guest']
-      const returnAccess = permission.filter((x) => valid.includes(x)).length > 0
-      return returnAccess
-      // return validHome.some((element) => permission.includes(element))
-    }
-    case 'info': {
-      const validHome = ['admin', 'user', 'developer', 'guest']
-      const returnAccess = permission.filter((x) => validHome.includes(x)).length > 0
-      return returnAccess
-      // return validHome.some((element) => permission.includes(element))
-    }
-    default:
-      return true
-  }
-}
-
 // GOOD
 router.beforeEach((to, from, next) => {
-  // A Logged-in user can't go to login page again
+  try {
+    const store = useConfigStoreRef()
 
-  console.log('🚧 - router.beforeEach - hasAccess(to.name)', hasAccess(to.name))
-  console.log('🚧 - router.beforeEach - to.meta.authRequired', to.meta.authRequired)
-  console.log('🚧 - router.beforeEach - instance.isTokenValid()', instance.isTokenValid())
+    const instance = new JwtDecodeToken(store.token ? store.token : {})
 
-  console.log('router', to.name)
+    const { menu, information, permissions } = instance.getTokenDecode()
 
-  if ((to.name === 'login' || to.name === 'default') && instance.isTokenValid()) {
-    // router.push({ name: 'home' })
-    next({
-      name: 'sessionView',
-      replace: true
-    })
+    store.setConfig({ menu, information, permissions })
 
-    // the route requires authentication
-  }
+    // A Logged-in user can't go to login page again
 
-  if (to.meta.authRequired) {
-    if (instance.isTokenValid() && hasAccess(to.name)) {
-      return next()
-    } else {
-      next({
-        path: '/',
-        // save the location we were at to come back later
-        query: { redirect: to.fullPath }
-      })
+    const hasAccess = (namePermission) => {
+      const permission = permissions
+
+      switch (namePermission) {
+        case 'home': {
+          const valid = ['admin', 'user', 'developer', 'guest']
+          const returnAccess = permission.filter((x) => valid.includes(x)).length > 0
+          return returnAccess
+          // return validHome.some((element) => permission.includes(element))
+        }
+        case 'info': {
+          const validHome = ['admin', 'user', 'developer', 'guest']
+          const returnAccess = permission.filter((x) => validHome.includes(x)).length > 0
+          return returnAccess
+          // return validHome.some((element) => permission.includes(element))
+        }
+        default:
+          return true
+      }
     }
-  }
 
-  return next()
+    console.group('conf')
+    console.log('🚧 - store:', store.token)
+    console.log('🚧 - store:', store.conf)
+    console.groupEnd()
+
+    console.group('Security')
+    console.log('🚧 - router.beforeEach - to.meta.authRequired', to.meta.authRequired)
+    console.log('🚧 - router.beforeEach - instance.isTokenValid()', instance.isTokenValid())
+    console.log('🚧 - router.beforeEach - hasAccess(to.name)', hasAccess(to.name))
+    console.groupEnd()
+
+    console.log('router', to.name)
+
+    if ((to.name === 'login' || to.name === 'default') && instance.isTokenValid()) {
+      // router.push({ name: 'home' })
+      next({
+        name: 'sessionView',
+        replace: true
+      })
+
+      // the route requires authentication
+    }
+
+    if (to.meta.authRequired) {
+      console.log('------------------ authRequired ------------------ ', to.meta.authRequired)
+      if (instance.isTokenValid() && hasAccess(to.name)) {
+        return next()
+      } else {
+        next({
+          path: '/'
+          // save the location we were at to come back later
+          // query: { redirect: to.fullPath }
+        })
+      }
+    }
+
+    return next()
+  } catch (e) {
+    console.error(e)
+
+    next({
+      path: '/'
+    })
+  }
 })
 
 export default router

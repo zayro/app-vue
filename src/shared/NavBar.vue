@@ -1,7 +1,16 @@
 <script setup>
 import { defineProps, defineEmits, ref } from 'vue'
-
+import { useRouter } from 'vue-router'
 import { useConfigStoreRef } from '@/stores/config'
+
+const router = useRouter()
+const store = useConfigStoreRef()
+
+const clearSession = () => {
+  // localStorage.clear()
+  store.resetAll()
+  router.push({ path: '/' })
+}
 
 const confStore = useConfigStoreRef()
 
@@ -56,7 +65,7 @@ function myFunction () {
         <a href="javascript:void(0);" class="icon font-lato">
           <strong> {{ conf.first_name + ' ' + conf.last_name }}</strong></a
         >
-        <a href="javascript:void(0);" class="icon" @click="myFunction()">
+        <a href="javascript:void(0);" class="icon" @click="clearSession()">
           <v-icon name="ri-shut-down-line" :fill="colorNavText" scale="1.3" />
         </a>
       </div>

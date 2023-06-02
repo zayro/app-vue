@@ -1,36 +1,100 @@
 import { defineStore } from 'pinia'
+import { EncryptStorage } from 'encrypt-storage'
 
-import { LocalService } from '@/services/secureStorage'
-import JwtService from '@/services/jwt'
+const SECRET_KEY_STORAGE = 'my secret key'
 
-const jwt = new JwtService()
-const localService = new LocalService()
+const encryptStorage = new EncryptStorage(SECRET_KEY_STORAGE, {})
 
-let confDefault = jwt.getTokenDecode() || {}
-console.log('🚧 - confDefault:', confDefault)
-
-if (localService.getJsonValue('config')) {
-  const localStorage = localService.getJsonValue('config')
-  console.log('%c  auth Storage', 'color: yellow; font-size: 14px', localStorage)
-  confDefault = localStorage
-} else {
-  console.log('%c new auth Storage', 'color: green; font-size: 14px', localStorage)
-  localService.setJsonValue('config', {})
+const CryptStorage = {
+  setItem (key, state) {
+    return encryptStorage.setItem(key, state)
+  },
+  getItem (key) {
+    return JSON.stringify(encryptStorage.getItem(key))
+  }
 }
 
-export const useConfigStoreRef = defineStore('config', {
-  state: () => ({ conf: confDefault, author: 'Marlon Zayro Arias Vargas' }),
+/**
+ * Conf User
+ */
+
+export const useConfigStoreRef = defineStore('conf', {
+  state: () => ({ conf: {}, author: 'Marlon Zayro Arias Vargas', token: '' }),
   getters: {
-    getPermissions: (state) => state.conf.data.permissions || {},
-    getMenu: (state) => state.conf.data.menu || {},
-    getInformation: (state) => state.conf.data.information || {}
+    getPermissions: (state) => state?.conf?.permissions || {},
+    getMenu: (state) => state?.conf?.menu || {},
+    getInformation: (state) => state?.conf?.information || {},
+    getToken: (state) => state?.token || null
   },
   actions: {
     setConfig (data) {
-      const info = { ...this.conf, data }
-      this.conf = info
-      localService.setJsonValue('config', info)
-      console.log('🚧 - setConfig - info:', info)
+      // this.conf = { ...this.conf, data }
+      this.conf = data
+    },
+    setToken (value) {
+      this.token = value
+    },
+
+    resetAll () {
+      this.conf = {}
+      this.token = null
+    }
+  },
+  persist: {
+    enabled: true,
+    strategies: [
+      { storage: CryptStorage, paths: ['conf'] },
+      { key: 'accessToken', storage: localStorage, paths: ['token'] },
+      { key: 'author', storage: sessionStorage, paths: ['author'] }
+    ]
+    // strategies: [{ storage: localStorage, paths: ['conf', 'author',  'token'] }]
+  }
+})
+
+/**
+ * Conf App
+ */
+
+const AppDefault = {
+  colorNavBackground: '#b0b0b0',
+  colorNavText: '#4e4e4e',
+  backgroundSidenav: '#ffffff',
+  backgroundImageSidenav: '',
+  colorSidenav: '#000000'
+}
+
+export const useAppStoreRef = defineStore('app', {
+  state: () => ({ conf: AppDefault }),
+  getters: {
+    getBackgroundImageSidenav: (state) => state.conf.backgroundImageSidenav || '',
+    getBackgroundSidenav: (state) => state.conf.backgroundSidenav || '',
+    getColorSidenav: (state) => state.conf.colorSidenav || ''
+  },
+  actions: {
+    setConfig (data) {
+      console.log('🚧 - setConfig - data', data)
+      this.conf = { ...this.conf, ...data }
+    }
+  },
+  persist: {
+    enabled: true,
+    strategies: [
+      {
+        storage: localStorage
+      }
+    ]
+  }
+})
+
+const defaultState = {
+  foo: 'bar'
+}
+
+export const useFoo = defineStore('foo', {
+  state: () => ({ ...defaultState }),
+  actions: {
+    reset () {
+      Object.assign(this, defaultState)
     }
   }
 })

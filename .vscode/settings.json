@@ -1,7 +1,7 @@
 {
   "prettier.vueIndentScriptAndStyle": false,
-  "turboConsoleLog.addSemicolonInTheEnd": true,
-  "turboConsoleLog.quote": "\"",
+  "turboConsoleLog.addSemicolonInTheEnd": false,
+  "turboConsoleLog.quote": "'",
   "turboConsoleLog.logMessagePrefix": "🚧",
   "editor.cursorStyle": "underline-thin",
   "editor.cursorBlinking": "smooth",
@@ -40,5 +40,6 @@
   "typescript.tsc.autoDetect": "off",
   "typescript.suggest.objectLiteralMethodSnippets.enabled": false,
   "eslint.alwaysShowStatus": true,
-  "html.format.wrapLineLength": 160
+  "html.format.wrapLineLength": 160,
+  "vue.codeActions.enabled": false
 }

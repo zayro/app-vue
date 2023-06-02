@@ -7,7 +7,7 @@ import NavBar from '../../shared/NavBar.vue'
 // import Avatar from './Avatar/AvatarComponent.vue'
 import Sidebar from '../../shared/SideBar.vue'
 
-import { useAppStoreRef } from '@/stores/app'
+import { useAppStoreRef } from '@/stores/config'
 
 const appStore = useAppStoreRef()
 

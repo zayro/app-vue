@@ -1,14 +1,17 @@
 <script setup>
 import { constant } from '@/i18n/en'
 import { useRouter } from 'vue-router'
+import { useConfigStoreRef } from '@/stores/config'
 
 const txt = constant
 
 const router = useRouter()
+const store = useConfigStoreRef()
 
 const clearSession = () => {
-  localStorage.clear()
-  router.push({ path: '/login' })
+  // localStorage.clear()
+  store.resetAll()
+  router.push({ path: '/' })
 }
 </script>
 
@@ -28,8 +31,8 @@ const clearSession = () => {
             <h3 class="card-title">{{ txt.COMPONENTS.session.title }}</h3>
             <form>
               <hr />
-              <div class="d-flex justify-content-around">
-                <RouterLink to="/home">
+              <div class="d-flex justify-content-around btn-space-wrapper">
+                <RouterLink to="/main">
                   <button type="button" class="btn btn-primary btn-lg">CONTINUE</button>
                 </RouterLink>
                 <button type="button" class="btn btn-danger btn-lg" @click="clearSession()">CLOSE</button>
