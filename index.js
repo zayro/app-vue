@@ -1,8 +1,8 @@
-const express = require('express')
 const figlet = require('figlet')
 const boxen = require('boxen')
 const chalk = require('chalk')
 const path = require('path')
+const express = require('express')
 const app = express()
 
 console.log(chalk.yellow(figlet.textSync('FrontEnd - APP', { horizontalLayout: 'full' })))

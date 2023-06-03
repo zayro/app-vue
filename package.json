@@ -1,6 +1,10 @@
 {
-  "name": "vue-project",
+  "name": "app-front-project",
   "version": "1.0.0",
+  "engines": {
+    "node": "14.x",
+    "npm": "6.x"
+  },
   "scripts": {
     "build": "vite build",
     "build:stagin": "vite build --mode staging",
