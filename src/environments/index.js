@@ -1,5 +1,5 @@
-import { CONSTANT as prodConstant } from './env.prod.js'
-import { CONSTANT as devConstant } from './env.dev.js'
+import { CONSTANT as prodConstant } from './environment.prod.js'
+import { CONSTANT as devConstant } from './environment.dev.js'
 
 let CONSTANT
 
