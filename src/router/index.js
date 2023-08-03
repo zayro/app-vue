@@ -34,6 +34,7 @@ import AboutView from '../views/Main/Home/AboutView.vue'
 import { JwtDecodeToken } from '@/services/jwt'
 
 import { useConfigStoreRef } from '@/stores/config'
+import { SocketService } from '@/services/socket.js'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -202,8 +203,9 @@ const router = createRouter({
   ]
 })
 
-// GOOD
 router.beforeEach((to, from, next) => {
+  console.log('🚧 - router.beforeEach - from:', from.name)
+  console.log('🚧 - router.beforeEach - to:', to.name)
   try {
     const store = useConfigStoreRef()
 
@@ -212,6 +214,45 @@ router.beforeEach((to, from, next) => {
     const { menu, information, permissions } = instance.getTokenDecode()
 
     store.setConfig({ menu, information, permissions })
+
+    /*
+     * SOCKET
+     */
+
+    const socket = SocketService.socket
+
+    const username = information[0].username
+    const room = to.name
+    const client = {
+      appName: navigator.appName,
+      appVersion: navigator.appVersion,
+      platform: navigator.platform,
+      geolocation: navigator.geolocation
+    }
+
+    socket.on('connect', () => {
+      console.log('socket connect id', socket.id)
+    })
+
+    SocketService.subscribe(username, room)
+    SocketService.messageRoom({ to: room, content: 'IN : ' + room, info: client })
+
+    socket.on(room, (data) => {
+      console.log('🚧 - room data', data)
+    })
+
+    socket.on('users', (message) => {
+      console.log('🚧 - users', message)
+      console.log('🚧 - users about length', message.filter((item) => item.room === room).length)
+    })
+
+    socket.on('disconnect', () => {
+      console.log('🚧 - socket.on - disconnect', socket.connected)
+    })
+
+    /*
+     * TOKEN AUTH
+     */
 
     // A Logged-in user can't go to login page again
 
@@ -235,6 +276,10 @@ router.beforeEach((to, from, next) => {
           return true
       }
     }
+
+    console.group('informacion')
+    console.log('🚧 - informacion:', information[0])
+    console.groupEnd()
 
     console.group('conf')
     console.log('🚧 - store:', store.token)

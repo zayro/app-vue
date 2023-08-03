@@ -9,9 +9,12 @@ const SOCKET = CONSTANT.URL.SOCKET
 const SocketService = {
   // eslint-disable-next-line no-use-before-define
   socket: io(SOCKET, { transports: ['websocket'] }),
-  join(username, room) {
-    const info = { username: username, room: room }
-    this.socket.emit('join server', info)
+  subscribe(username, room) {
+    this.socket.emit('subscribe', { username: username, room: room, info: info })
+  },
+
+  unsubscribe(username, room) {
+    this.socket.emit('unsubscribe', { username: username, room: room })
   },
 
   messageRoom(to, content) {
