@@ -4,31 +4,14 @@ import { ref, onMounted, onBeforeMount, getCurrentInstance, inject } from 'vue'
 import Spinner from '../../shared/Spinner.vue'
 import NavBar from '../../shared/NavBar.vue'
 
-// import Avatar from './Avatar/AvatarComponent.vue'
-import Sidebar from '../../shared/SideBar.vue'
-
-import { useAppStoreRef } from '@/stores/config'
-
-const appStore = useAppStoreRef()
-
 const conf = inject('conf')
 
-function openNav () {
-  console.log('openNav')
-  document.getElementById('mySidenav').style.minWidth = '350px'
-  document.getElementById('mySidenav').style.width = '350px'
-}
-
-function closeNav () {
-  document.getElementById('mySidenav').style.minWidth = '0'
-  document.getElementById('mySidenav').style.width = '0'
-}
-
 const load = ref()
-const positionSidebar = ref('relative')
 
 const app = getCurrentInstance()
 const progressBar = app.appContext.config.globalProperties.msg
+
+const imgBody = conf.body.background.imgMain
 
 console.log(progressBar)
 
@@ -42,7 +25,7 @@ onMounted(() => {
   document.body.style.overflowX = 'hidden'
   document.body.style.overflowY = 'hidden'
    */
-  document.body.style.backgroundImage = `url(${conf.body.background.imgMain})`
+  document.body.style.backgroundImage = `url(${imgBody})`
 })
 </script>
 
@@ -52,22 +35,9 @@ onMounted(() => {
     <Spinner />
 
     <!-- NAVIGATION BAR -->
-    <NavBar
-      :color-nav-background="appStore.conf.colorNavBackground"
-      :color-nav-text="appStore.conf.colorNavText"
-      @open-sidebar="openNav"
-    />
+    <NavBar />
 
-    <!-- SIDEBAR -->
-    <Sidebar
-      :background-sidenav="appStore.getBackgroundSidenav"
-      :background-image-sidenav="appStore.getBackgroundImageSidenav"
-      :color-sidenav="appStore.getColorSidenav"
-      :position-sidenav="positionSidebar"
-      @close-sidebar="closeNav"
-    />
-
-    <div v-show="load" class="routes">
+    <div v-show="load" class="flex-item">
       <!-- ROUTING -->
       <router-view />
     </div>

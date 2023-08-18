@@ -1,7 +1,7 @@
 <script setup>
 import { RouterLink } from 'vue-router'
 
-import { onMounted, onUnmounted } from 'vue'
+import { onMounted } from 'vue'
 
 console.group()
 console.log('----------------------', import.meta.env.BASE_URL)

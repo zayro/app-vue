@@ -150,8 +150,8 @@ export class JwtDecodeToken {
         return decoded
       }
     } catch (err) {
-      console.log(err)
-      return {}
+      console.error(err)
+      return null
     }
   }
 

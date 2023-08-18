@@ -1,0 +1,169 @@
+.navbar-icon-right {
+    display: flex;
+    flex-grow: 1;
+    justify-content: flex-end;
+}
+.navbar-horizontal {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#navbar-vertical {
+    display: none;
+}
+.navbar-vertical {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+.navbar-vertical > .navbar-item {
+    margin-top: 3px;
+    margin-bottom: 6px;
+}
+.navbar-item {
+    flex: auto;
+}
+/* Style the navigation menu */
+.navbar-top {
+    overflow: hidden;
+    position: relative;
+}
+
+/* Style navigation menu links */
+.navbar-top a {
+    padding: 5px 25px 5px 25px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.brand {
+    text-decoration: none;
+    font-size: 23px;
+    padding: 15px 25px;
+    color: $color-background-text;
+}
+
+.brand:hover {
+    color: $color-background-text;
+}
+
+a.icon-left {
+    padding: 20px;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+span.icon-left {
+    padding: 20px;
+    margin-right: 5px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+/* Add a grey background color on mouse-over */
+.navbar-top a:hover {
+    background-color: #ddd;
+    color: $color-background-text;
+    border-radius: 25px;
+}
+
+.navbar-top menu:hover {
+    background-color: #ddd;
+    color: $color-background-text;
+}
+
+/* Style the active link (or home/logo) */
+
+.navbar-top {
+    -webkit-box-shadow: 0px 6px 10px -1px rgba(191, 191, 191, 0.53);
+    -moz-box-shadow: 0px 6px 10px -1px rgba(191, 191, 191, 0.53);
+    box-shadow: 0px 6px 10px -1px rgba(191, 191, 191, 0.53);
+}
+
+.bg-custom {
+    background-color: $color-background-narvbar;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.navbar-link {
+    color: $color-background-text;
+}
+
+/*
+a,
+a:visited {
+    color: $color-text-link !important;
+}
+
+a:hover,
+a:active {
+    color: $color-text-link !important;
+}
+*/
+
+.navbar-icon-right {
+    a,
+    a:visited {
+        color: $color-background-text-link !important;
+    }
+
+    a:hover,
+    a:active {
+        color: $color-button-primary-hover !important;
+    }
+}
+.navbar-top {
+    box-shadow: none;
+}
+
+.nav-link {
+    padding: 20px;
+    &:hover {
+        background-color: $color-primary-50 !important;
+        border-radius: 5px;
+    }
+}
+
+hr {
+    width: 99%;
+    margin: 0rem;
+    margin: 0 auto;
+}
+
+.offcanvas {
+    background-color: $color-background-body;
+}
+
+.navbar-toggler {
+    &:visited {
+        background-color: $color-primary;
+        border-color: $color-primary-300;
+        border-style: solid;
+    }
+    &:active {
+        background-color: $color-primary;
+        border-color: $color-primary-300;
+        border-style: solid;
+    }
+    &:focus {
+        background-color: $color-primary;
+        border-color: $color-primary-300;
+        border-style: solid;
+    }
+
+    &:hover {
+        background-color: $color-primary;
+        border-color: $color-primary-300;
+        border-style: solid;
+    }
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+.offcanvas {
+    border-radius: 5px;
+}

@@ -58,6 +58,7 @@ export const useConfigStoreRef = defineStore('conf', {
 const AppDefault = {
   colorNavBackground: '#b0b0b0',
   colorNavText: '#4e4e4e',
+  colorIconNav: '#4e4e4e',
   backgroundSidenav: '#ffffff',
   backgroundImageSidenav: '',
   colorSidenav: '#000000'

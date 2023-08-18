@@ -3,6 +3,11 @@ import { createRouter, createWebHistory } from 'vue-router'
 import NotFound from '../views/404/404.vue'
 
 import app from '../views/login/appView.vue'
+
+/** !Login
+ * Route Path
+ */
+import loginView from '../views/login/v1/loginView.vue'
 import defaultView from '../views/login/defaultView.vue'
 import login from '../views/login/loginView.vue'
 import recoveryPass from '../views/login/retorePassword.vue'
@@ -34,7 +39,6 @@ import AboutView from '../views/Main/Home/AboutView.vue'
 import { JwtDecodeToken } from '@/services/jwt'
 
 import { useConfigStoreRef } from '@/stores/config'
-import { SocketService } from '@/services/socket.js'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -43,6 +47,11 @@ const router = createRouter({
       path: '/',
       name: 'default',
       component: defaultView
+    },
+    {
+      path: '/login-v1',
+      name: 'logiV1',
+      component: loginView
     },
     {
       path: '/demo',
@@ -92,7 +101,7 @@ const router = createRouter({
           path: '',
           name: 'home',
           component: HomeView,
-          meta: { authRequired: true, transition: 'slide-left' },
+          meta: { authRequired: false, transition: 'slide-left' },
           // only authenticated users can create posts
           children: [
             {
@@ -175,14 +184,14 @@ const router = createRouter({
     {
       path: '/home',
       name: 'defaultVue',
-      meta: { authRequired: true, transition: 'slide-left' },
+      meta: { authRequired: false, transition: 'slide-left' },
       component: () => import('../views/Home/HomeView.vue'),
       // only authenticated users can create posts
       children: [
         {
           path: '',
           name: 'defaultVueInfo',
-          meta: { authRequired: true },
+          meta: { authRequired: false },
           component: () => import('../views/Home/InfoView.vue')
         },
         {
@@ -211,17 +220,20 @@ router.beforeEach((to, from, next) => {
 
     const instance = new JwtDecodeToken(store.token ? store.token : {})
 
-    const { menu, information, permissions } = instance.getTokenDecode()
-
-    store.setConfig({ menu, information, permissions })
+    if (instance.getTokenDecode() && instance.getTokenDecode() !== null) {
+      console.log(' connect to jwt ')
+      const { menu, information, permissions } = instance.getTokenDecode()
+      store.setConfig({ menu, information, permissions })
+    } else {
+      const permission = []
+      console.log('no connect to jwt ', permission)
+    }
 
     /*
      * SOCKET
      */
 
-    const socket = SocketService.socket
-
-    const username = information[0].username
+    // const username = information[0].username
     const room = to.name
     const client = {
       appName: navigator.appName,
@@ -230,26 +242,6 @@ router.beforeEach((to, from, next) => {
       geolocation: navigator.geolocation
     }
 
-    socket.on('connect', () => {
-      console.log('socket connect id', socket.id)
-    })
-
-    SocketService.subscribe(username, room)
-    SocketService.messageRoom({ to: room, content: 'IN : ' + room, info: client })
-
-    socket.on(room, (data) => {
-      console.log('🚧 - room data', data)
-    })
-
-    socket.on('users', (message) => {
-      console.log('🚧 - users', message)
-      console.log('🚧 - users about length', message.filter((item) => item.room === room).length)
-    })
-
-    socket.on('disconnect', () => {
-      console.log('🚧 - socket.on - disconnect', socket.connected)
-    })
-
     /*
      * TOKEN AUTH
      */
@@ -257,16 +249,16 @@ router.beforeEach((to, from, next) => {
     // A Logged-in user can't go to login page again
 
     const hasAccess = (namePermission) => {
-      const permission = permissions
+      const permission = []
 
       switch (namePermission) {
-        case 'home': {
+        case 'homes': {
           const valid = ['admin', 'user', 'developer', 'guest']
           const returnAccess = permission.filter((x) => valid.includes(x)).length > 0
           return returnAccess
           // return validHome.some((element) => permission.includes(element))
         }
-        case 'info': {
+        case 'infos': {
           const validHome = ['admin', 'user', 'developer', 'guest']
           const returnAccess = permission.filter((x) => validHome.includes(x)).length > 0
           return returnAccess
@@ -276,10 +268,6 @@ router.beforeEach((to, from, next) => {
           return true
       }
     }
-
-    console.group('informacion')
-    console.log('🚧 - informacion:', information[0])
-    console.groupEnd()
 
     console.group('conf')
     console.log('🚧 - store:', store.token)
@@ -304,7 +292,7 @@ router.beforeEach((to, from, next) => {
       // the route requires authentication
     }
 
-    if (to.meta.authRequired) {
+    if (to.meta.authRequired === true) {
       console.log('------------------ authRequired ------------------ ', to.meta.authRequired)
       if (instance.isTokenValid() && hasAccess(to.name)) {
         return next()

@@ -9,9 +9,16 @@ import { conf } from './services/conf'
 
 import 'bootstrap'
 import '~bootstrap/dist/css/bootstrap.min.css'
+
+import 'csshake'
 // import './registerServiceWorker'
 
-import './assets/style/global.scss'
+// import './assets/style/global.scss'
+
+import '@/assets/style/layout.scss'
+import '@/assets/style/fonts.scss'
+import '@/assets/style/card.scss'
+import '@/assets/style/form.scss'
 
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
@@ -45,10 +52,12 @@ import {
   MdPersonSharp,
   HiMenu,
   HiDocumentReport,
+  HiArrowsExpand,
   HiSolidHome,
   RiShutDownLine,
   BiArrowBarUp,
   BiArrowBarDown,
+  BiArrowsCollapse,
   BiBuilding,
   FaExpand,
   FaCamera,
@@ -80,10 +89,12 @@ addIcons(
   MdDelete,
   HiMenu,
   HiDocumentReport,
+  HiArrowsExpand,
   HiSolidHome,
   RiShutDownLine,
   BiArrowBarUp,
   BiArrowBarDown,
+  BiArrowsCollapse,
   BiBuilding,
   FaExpand,
   FaBan,

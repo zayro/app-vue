@@ -1,0 +1,32 @@
+/* cards */
+.card {
+    border-radius: 6px;
+    box-shadow:
+        0 2px 2px 0 rgb(0 0 0 / 14%),
+        0 3px 1px -2px rgb(0 0 0 / 20%),
+        0 1px 5px 0 rgb(0 0 0 / 12%);
+}
+
+.card-title {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-style: normal;
+    font-size: 16px;
+}
+
+.card-subtitle {
+    text-transform: capitalize;
+    font-weight: lighter;
+    font-style: normal;
+    font-size: 16px;
+}
+
+.card-body {
+    padding: 40px;
+}
+
+.card-tools {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

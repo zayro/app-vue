@@ -159,6 +159,17 @@ const previewFiles = (event) => {
   }
 }
 
+function clearValueIfNotInDatalist () {
+  const value = document.getElementById('inputEmpresas').value
+  const options = document.getElementById('listEmpresas').options
+  for (let i = 0; i < options.length; i++) {
+    if (options[i].value === value) {
+      return
+    }
+  }
+  document.getElementById('inputEmpresas').value = ''
+}
+
 watch(periodos, async (newValue, old) => {
   infoPay.value.detalle_pago = []
   for (let i = 0; i <= newValue - 1; i++) {
@@ -171,6 +182,28 @@ watch(periodos, async (newValue, old) => {
     })
   }
 })
+
+function toggleFullScreen (idElement) {
+  const elem = document.getElementById(idElement)
+
+  if (!document.fullscreenElement) {
+    elem.requestFullscreen().catch((err) => {
+      alert(`Error attempting to enable fullscreen mode: ${err.message} (${err.name})`)
+    })
+  } else {
+    document.exitFullscreen()
+  }
+}
+
+/* document.addEventListener(
+  'keydown',
+  (e) => {
+    if (e.key === 'Enter') {
+      toggleFullScreen()
+    }
+  },
+  false
+) */
 
 onBeforeMount(() => {
   load.value = false
@@ -187,113 +220,151 @@ onMounted(() => {
     <Spinner :load="load.value" />
     <div v-show="load" class="flex-container">
       <div class="main">
+        <ul class="nav nav-underline nav-fill">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Active</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Much longer nav link</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+          </li>
+        </ul>
+        <p>...</p>
+
         <div class="d-flex flex-column">
           <div class="flex-item">
-            <div class="card mb-3">
+            <!--    <div class="alert alert-secondary" role="alert">
+              <div class="d-flex flex-row">
+                <span class="breadcrumb-item"><a href="#"> Modulo Vacante </a></span>
+
+                <span class="breadcrumb-item active" aria-current="page"> Agregar Vacante</span>
+              </div>
+            </div> -->
+
+            <div class="alert alert-secondary" role="alert">
+              <div class="d-flex flex-row">
+                <span class="breadcrumb-item"> Modulo Vacante &nbsp; </span>
+
+                <span class="breadcrumb-item active" aria-current="page"> &nbsp; Agregar Vacante</span>
+              </div>
+            </div>
+
+            <div id="fullscreenElement" class="card mb-3">
               <div class="card-body p-4">
-                <div class="card-tools">
-                  <div class="card-title">Agregar Pago</div>
+                <div class="card-tools d-flex flex-row justify-content-between">
+                  <div class="card-title">Crear Nuevo Registro</div>
+                  <div class="d-flex flex-row justify-content-around">
+                    <div class="cursor-pointer" @click="toggleFullScreen('fullscreenElement')">
+                      <v-icon name="hi-arrows-expand" :fill="colorNavText" scale="1.3" />
+                    </div>
+                    <div>
+                      <v-icon
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseExample"
+                        aria-expanded="false"
+                        aria-controls="collapseExample"
+                        name="bi-arrows-collapse"
+                        :fill="colorNavText"
+                        scale="1.3"
+                      >
+                      </v-icon>
+                    </div>
+                  </div>
                 </div>
 
                 <hr />
 
-                <div class="row">
+                <div id="collapseExample" class="row collapse">
                   <form id="pagos" action="pagos" name="pagos" @submit.prevent="saveData">
                     <div class="col-12">
+                      <!--Empresa-->
                       <div class="mb-3">
-                        <!--                   <input
-                          id="select_apt"
-                          v-model="infoPay.id_apartamento"
-                          list="listApt"
-                          aria-label="Default select apt."
-                          required
-                          class="form-select form-select-sm"
+                        <label for="select_apt" class="form-label">Empresa</label>
+                        <input
+                          id="inputEmpresas"
+                          class="form-control form-control-sm"
+                          list="listEmpresas"
+                          name="browser"
+                          type="search"
+                          size="50"
+                          autocomplete="off"
+                          @focusout="clearValueIfNotInDatalist()"
                         />
-                        <datalist id="listApt">
-                          <option v-for="item in requestApt" :key="item.id" :value="item.id">
-                            {{ item.piso }}
-                          </option>
+
+                        <datalist id="listEmpresas">
+                          <option>Brave</option>
+                          <option>Chrome</option>
+                          <option>Edge</option>
+                          <option>Firefox</option>
+                          <option>Internet Explorer</option>
+                          <option>Opera</option>
+                          <option>Safari</option>
+                          <option>Vivaldi</option>
+                          <option>other</option>
                         </datalist>
- -->
-                        <label for="select_apt" class="form-label">Apt</label>
-                        <select
-                          id="select_apt"
-                          v-model="infoPay.id_apartamento"
-                          class="form-select"
-                          aria-label="Default select apt."
-                          required
-                        >
-                          <option v-for="item in requestApt" :key="item.id" :value="item.id">
-                            {{ item.piso }}
-                          </option>
-                        </select>
                       </div>
 
+                      <!--Cargos-->
                       <div class="mb-3">
-                        <label for="periodos" class="form-label"
-                          >Periodos a cancelar
-                          <span class="validity"></span>
-                        </label>
+                        <label for="select_apt" class="form-label">Cargos</label>
                         <input
-                          id="periodos"
-                          v-model="periodos"
-                          type="number"
-                          min="1"
-                          max="10"
-                          step="1"
-                          class="form-control"
-                          name="periodos"
-                          required
+                          id="inputEmpresas"
+                          class="form-control form-control-sm"
+                          list="listEmpresas"
+                          name="browser"
+                          type="search"
+                          size="50"
+                          autocomplete="off"
+                          @focusout="clearValueIfNotInDatalist()"
                         />
+
+                        <datalist id="listEmpresas">
+                          <option>Brave</option>
+                          <option>Chrome</option>
+                          <option>Edge</option>
+                          <option>Firefox</option>
+                          <option>Internet Explorer</option>
+                          <option>Opera</option>
+                          <option>Safari</option>
+                          <option>Vivaldi</option>
+                          <option>other</option>
+                        </datalist>
                       </div>
 
-                      <div v-for="(item, index) in periodos" :key="index" class="row">
-                        <div class="col-6">
-                          <div class="mb-3">
-                            <label for="date_pay" class="form-label">Periodo a Cancelar </label>
-                            <VueDatePicker id="date_pay" v-model="infoPay.detalle_pago[index].fecha" month-picker />
-                          </div>
-                        </div>
-                        <div class="col-6">
-                          <div class="mb-3">
-                            <label for="value_pay" class="form-label">Valor a Cancelar</label>
-                            <CurrencyInput
-                              v-model="infoPay.detalle_pago[index].valor"
-                              class="form-control"
-                              :options="optionsCurrency"
-                            />
-                          </div>
-                        </div>
-                      </div>
-
+                      <!--Cargos-->
                       <div class="mb-3">
-                        <label for="select_year" class="form-label">Medio de Pago</label>
-                        <select
-                          id="select_year"
-                          v-model="infoPay.id_tipo_metodo_pago"
-                          class="form-select"
-                          aria-label="Default select year"
-                          required
-                        >
-                          <option selected>seleccionar</option>
-                          <option value="1">Efectivo</option>
-                          <option value="2">Transferencia</option>
-                        </select>
+                        <label for="exampleFormControlInput1" class="form-label">Formacion</label>
+                        <input id="exampleFormControlInput1" type="email" class="form-control form-control-sm" />
                       </div>
-                      <div v-show="infoPay.id_tipo_metodo_pago == 2" class="mb-3">
-                        <label for="fileinput" class="form-label">Agregar comprobante</label>
-                        <input
-                          id="fileinput"
-                          class="form-control"
-                          type="file"
-                          accept="image/*"
-                          @change="previewFiles"
-                        />
-                        <button class="btn btn-primary" type="button" @click="uploadImage">Agregar Comprobante</button>
+
+                      <!--Cargos-->
+                      <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Salario</label>
+                        <input id="exampleFormControlInput1" type="email" class="form-control form-control-sm" />
+                      </div>
+                      <!--Cargos-->
+                      <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Horario</label>
+                        <input id="exampleFormControlInput1" type="email" class="form-control form-control-sm" />
+                      </div>
+                      <!--Cargos-->
+                      <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Ubicacion</label>
+                        <input id="exampleFormControlInput1" type="email" class="form-control form-control-sm" />
+                      </div>
+                      <!--Cargos-->
+                      <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Experiencia</label>
+                        <input id="exampleFormControlInput1" type="email" class="form-control form-control-sm" />
                       </div>
 
                       <div class="d-grid gap-2 mx-auto">
-                        <button class="btn btn-primary" type="submit">Generar Pago</button>
+                        <button class="btn btn-primary" type="submit">Aceptar</button>
                       </div>
                     </div>
                   </form>
@@ -307,14 +378,4 @@ onMounted(() => {
   </div>
 </template>
 
-<style lang="css" scoped>
-input:invalid + span::after {
-  content: '✖';
-  padding-left: 5px;
-}
-
-input:valid + span::after {
-  content: '✓';
-  padding-left: 5px;
-}
-</style>
+<style lang="scss" scoped></style>

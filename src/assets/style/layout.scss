@@ -1,0 +1,41 @@
+/* Layout */
+
+.container-flex {
+    margin-top: 70px;
+    display: flex;
+    /* flex-wrap: wrap;*/
+    align-items: stretch;
+    justify-content: flex-start;
+    align-content: center;
+    /* border: 1px solid black;*/
+    /* height: calc(100vh - 10px);*/
+}
+
+.flex-container {
+    flex: auto;
+    flex-direction: row;
+    align-items: center;
+    align-self: center;
+    justify-content: center;
+    align-content: center;
+}
+
+.flex-item {
+    flex: auto;
+}
+
+.sidebar {
+    flex-grow: 1;
+    margin: auto;
+}
+
+.main {
+    transition: margin-left 0.5s;
+    padding: 20px;
+}
+
+.alert {
+    padding: 15px;
+    line-height: 5px;
+    margin: 0px 0px 10px;
+}
