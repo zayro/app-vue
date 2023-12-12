@@ -4,39 +4,59 @@ import NotFound from '../views/404/404.vue'
 
 import app from '../views/login/appView.vue'
 
-/** !Login
- * Route Path
+import Config from '../views/config/configView.vue'
+
+/**
+ * Components
  */
+import IndexComponent from '@/components/IndexComponent.vue'
+import AvatarComponent from '@/components/AvatarComponent.vue'
+import BackDropComponent from '@/components/BackDropComponent.vue'
+import SpinnerComponent from '@/components/SpinnerComponent.vue'
+import CardComponent from '@/components/CardComponent.vue'
+import UploadComponent from '@/components/UploadComponent.vue'
+
+// Components/Example
+import TableComponent from '@/components/example/TableComponent.vue'
+
+/**
+ * Views
+ */
+
 import loginView from '../views/login/v1/loginView.vue'
 import defaultView from '../views/login/defaultView.vue'
 import login from '../views/login/loginView.vue'
 import recoveryPass from '../views/login/retorePassword.vue'
 import sessionView from '../views/login/sessionView.vue'
 import createUserView from '../views/login/createUserView.vue'
-
 import MainView from '../views/Main/MainView.vue'
-import Avatar from '../views/Main/Avatar/AvatarComponent.vue'
-import Upload from '../views/Main/Avatar/uploadComponent.vue'
-import Config from '../views/config/configView.vue'
-
-import table from '../shared/tablePagination.vue'
-
 import HomeView from '../views/Main/Home/HomeView.vue'
 
-import Payment from '../views/Main/Payment/PaymentView.vue'
-import Expenditure from '../views/Main/Expenditure/ExpenditureView.vue'
-import reportPayment from '../views/Main/Report/reportPayment.vue'
-import reportExpenditure from '../views/Main/Report/reportExpenditure.vue'
-import reportApt from '../views/Main/Report/reportApt.vue'
-import reportBalance from '../views/Main/Report/reportBalance.vue'
-import reportGeneral from '../views/Main/Report/reportGeneral.vue'
+/**
+ * Molules
+ */
 
-import report from '../views/Main/Report/reportView.vue'
+// Edificio
+import Payment from '@/modules/Edificio/Payment/PaymentView.vue'
+import Expenditure from '@/modules/Edificio/Expenditure/ExpenditureView.vue'
+import reportPayment from '@/modules/Edificio/Report/reportPayment.vue'
+import reportExpenditure from '@/modules/Edificio/Report/reportExpenditure.vue'
+import reportApt from '@/modules/Edificio/Report/reportApt.vue'
+import reportBalance from '@/modules/Edificio/Report/reportBalance.vue'
+import reportGeneral from '@/modules/Edificio/Report/reportGeneral.vue'
+import report from '@/modules/Edificio/Report/reportView.vue'
+import InfoView from '@/views/Main/Home/InfoView.vue'
+import AboutView from '@/views/Main/Home/AboutView.vue'
 
-import InfoView from '../views/Main/Home/InfoView.vue'
-import AboutView from '../views/Main/Home/AboutView.vue'
+/**
+ * Services
+ */
 
 import { JwtDecodeToken } from '@/services/jwt'
+
+/**
+ * Storage
+ */
 
 import { useConfigStoreRef } from '@/stores/config'
 
@@ -54,13 +74,47 @@ const router = createRouter({
       component: loginView
     },
     {
-      path: '/demo',
-      name: 'demo',
+      path: '/components',
+      name: 'components',
+      component: IndexComponent,
       children: [
         {
+          path: 'avatar',
+          name: 'avatar',
+          component: AvatarComponent,
+          meta: { transition: 'slide-right' }
+        },
+        {
+          path: 'backDrop',
+          name: 'backDrop',
+          component: BackDropComponent,
+          meta: { transition: 'slide-right' }
+        },
+
+        {
+          path: 'spinner',
+          name: 'spinner',
+          component: SpinnerComponent,
+          meta: { transition: 'slide-right' }
+        },
+
+        {
+          path: 'upload',
+          name: 'upload',
+          component: UploadComponent,
+          meta: { transition: 'slide-right' }
+        },
+        {
           path: 'table',
-          name: 'table',
-          component: table
+          name: 'TableComponents',
+          component: TableComponent,
+          meta: { transition: 'slide-right' }
+        },
+        {
+          path: 'card',
+          name: 'CardComponent',
+          component: CardComponent,
+          meta: { transition: 'slide-right' }
         }
       ]
     },
@@ -92,8 +146,8 @@ const router = createRouter({
       ]
     },
     {
-      path: '/main',
-      name: 'main',
+      path: '/modulos',
+      name: 'modulos',
       component: MainView,
       meta: { transition: 'slide-right' },
       children: [
@@ -118,89 +172,91 @@ const router = createRouter({
           ]
         },
         {
-          path: 'avatar',
-          name: 'avatar',
-          component: Avatar,
-          meta: { transition: 'slide-right' }
-        },
-        {
-          path: 'upload',
-          name: 'upload',
-          component: Upload,
-          meta: { transition: 'slide-right' }
-        },
-        {
-          path: 'config',
-          name: 'config',
-          component: Config,
-          meta: { transition: 'slide-right' }
-        },
-        {
-          path: 'addPayment',
-          name: 'addPayment',
-          component: Payment,
-          meta: { transition: 'slide-right' }
-        },
-        {
-          path: 'addExpenditure',
-          name: 'addExpenditure',
-          component: Expenditure,
-          meta: { transition: 'slide-right' }
-        },
-        {
-          path: 'reportPayment',
-          name: 'reportPayment',
-          component: reportPayment
-        },
-        {
-          path: 'reportExpenditure',
-          name: 'reportExpenditure',
-          component: reportExpenditure
-        },
-        {
-          path: 'reportGeneral',
-          name: 'reportGeneral',
-          component: reportGeneral
-        },
-        {
-          path: 'reportApt',
-          name: 'reportApt',
-          component: reportApt
-        },
-        {
-          path: 'reportBalance',
-          name: 'reportBalance',
-          component: reportBalance
-        },
+          path: 'edificio',
+          name: 'edificio',
+          component: HomeView,
+          meta: { authRequired: false, transition: 'slide-left' },
+          // only authenticated users can create posts
+          children: [
+            {
+              path: 'config',
+              name: 'config',
+              component: Config,
+              meta: { transition: 'slide-right' }
+            },
+            {
+              path: 'addPayment',
+              name: 'addPayment',
+              component: Payment,
+              meta: { transition: 'slide-right' }
+            },
+            {
+              path: 'addExpenditure',
+              name: 'addExpenditure',
+              component: Expenditure,
+              meta: { transition: 'slide-right' }
+            },
+            {
+              path: 'reportPayment',
+              name: 'reportPayment',
+              component: reportPayment
+            },
+            {
+              path: 'reportExpenditure',
+              name: 'reportExpenditure',
+              component: reportExpenditure
+            },
+            {
+              path: 'reportGeneral',
+              name: 'reportGeneral',
+              component: reportGeneral
+            },
+            {
+              path: 'reportApt',
+              name: 'reportApt',
+              component: reportApt
+            },
+            {
+              path: 'reportBalance',
+              name: 'reportBalance',
+              component: reportBalance
+            },
 
-        {
-          path: 'report',
-          name: 'report',
-          component: report,
-          meta: { transition: 'slide-right' }
+            {
+              path: 'report',
+              name: 'report',
+              component: report,
+              meta: { transition: 'slide-right' }
+            }
+          ]
         }
       ]
     },
     {
-      path: '/home',
-      name: 'defaultVue',
-      meta: { authRequired: false, transition: 'slide-left' },
-      component: () => import('../views/Home/HomeView.vue'),
-      // only authenticated users can create posts
+      path: '/main',
+      name: 'main',
+      component: MainView,
+      meta: { transition: 'slide-right' },
       children: [
         {
           path: '',
-          name: 'defaultVueInfo',
-          meta: { authRequired: false },
-          component: () => import('../views/Home/InfoView.vue')
-        },
-        {
-          path: 'about',
-          name: 'defaultVueAbout',
-          // route level code-splitting
-          // this generates a separate chunk (About.[hash].js) for this route
-          // which is lazy-loaded when the route is visited.
-          component: () => import('../views/Home/AboutView.vue')
+          name: 'home',
+          component: HomeView,
+          meta: { authRequired: false, transition: 'slide-left' },
+          // only authenticated users can create posts
+          children: [
+            {
+              path: '',
+              name: 'info',
+              component: InfoView
+              // meta: { authRequired: true }
+            },
+            {
+              path: 'about',
+              name: 'about',
+              component: AboutView
+            }
+          ]
         }
       ]
     },
@@ -241,6 +297,8 @@ router.beforeEach((to, from, next) => {
       platform: navigator.platform,
       geolocation: navigator.geolocation
     }
+    console.log('🚧 - router.beforeEach - room:', room)
+    console.log('🚧 - router.beforeEach - client:', client)
 
     /*
      * TOKEN AUTH

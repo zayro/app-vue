@@ -5,6 +5,7 @@ import { http, httpFormData } from '@/services/http-axios'
 import CurrencyInput from '@/shared/Currency.vue'
 import { useConfigStoreRef } from '@/stores/config'
 import { getData } from '@/api/index'
+import Joi from 'joi'
 
 const confStore = useConfigStoreRef()
 
@@ -15,28 +16,39 @@ console.log('🚧 - txt', txt)
 const conf = inject('conf')
 console.log('🚧 - conf', conf)
 
-const load = ref()
+const load = ref(true)
 const comprobante = ref()
 const responseUpload = ref()
 const requestApt = ref()
 const periodos = ref()
+const infoPay = ref()
 
-const cleanInfoPay = {
+const initInfoPay = {
   id_apartamento: '',
   id_tipo_metodo_pago: '',
-  detalle_pago: [
-    {
-      valor: '',
-      fecha: {
-        month: new Date().getMonth(),
-        year: new Date().getFullYear()
-      }
-    }
-  ],
+  detalle_pago: [],
   comprobante: ''
 }
 
-const infoPay = ref(cleanInfoPay)
+infoPay.value = initInfoPay
+
+const schema = Joi.object({
+  id_apartamento: Joi.string().required(),
+  id_tipo_metodo_pago: Joi.string().required(),
+  detalle_pago: Joi.array()
+    .items(
+      Joi.object({
+        valor: Joi.number().required(),
+        fecha: Joi.object({
+          month: Joi.number().integer().min(0).max(12).required(),
+          // year: Joi.number().integer().min(1900).max(new Date().getFullYear()).required()
+          year: Joi.number().integer().min(1900).required()
+        }).required()
+      })
+    )
+    .required(),
+  comprobante: Joi.string().allow('')
+})
 
 const optionsCurrency = {
   currency: 'USD',
@@ -68,8 +80,22 @@ const execute = () => {
 execute()
 
 const saveData = () => {
+  load.value = false
+
   if (responseUpload.value) {
     infoPay.value.comprobante = responseUpload.value.filename
+  }
+
+  const result = schema.validate(infoPay.value)
+  console.log('🚧 - saveData - infoPay.value:', infoPay.value)
+
+  if (result.error) {
+    console.log(result.error.details)
+    swal('Wrong!', 'Somthing is Wrong!', 'warning')
+    return false
+    // throw new Error('Parameter is not a number!');
+  } else {
+    console.log('El objeto JSON es válido')
   }
 
   infoPay.value.detalle_pago = JSON.stringify(infoPay.value.detalle_pago)
@@ -84,14 +110,16 @@ const saveData = () => {
     .post('general/insert', payload)
     .then((response) => {
       console.log('🚧 - .then - response:', response)
-      swal('Good job!', 'Welcome to App!', 'success')
-      infoPay.value = cleanInfoPay
+      swal('Transaccion', 'Exitosa', 'success')
+      infoPay.value = initInfoPay
+      periodos.value = 0
       document.getElementById('pagos').reset()
     })
     .catch((error) => {
       console.log(error)
       swal('Wrong!', 'Somthing is Wrong!', 'error')
     })
+    .finally(() => (load.value = true))
 }
 
 const uploadImage = () => {
@@ -130,13 +158,10 @@ const previewFiles = (event) => {
 }
 
 watch(periodos, async (newValue, old) => {
-  for (let i = 0; i <= newValue; i++) {
-    if (infoPay.value.detalle_pago.length === 0 || infoPay.value.detalle_pago === '') {
-      infoPay.value.detalle_pago = []
-    }
-
+  infoPay.value.detalle_pago = []
+  for (let i = 0; i <= newValue - 1; i++) {
     infoPay.value.detalle_pago.push({
-      valor: '',
+      valor: 0,
       fecha: {
         month: new Date().getMonth(),
         year: new Date().getFullYear()
@@ -149,7 +174,6 @@ onBeforeMount(() => {
   load.value = false
 })
 
-// For demo purposes assign range from the current date
 onMounted(() => {
   load.value = true
 })
@@ -157,12 +181,14 @@ onMounted(() => {
 
 <template>
   <div>
-    <div v-show="load" id="flex-container">
-      <div id="main">
+    <!-- LOADING -->
+
+    <div v-show="load" class="flex-container">
+      <div class="main">
         <div class="d-flex flex-column">
           <div class="flex-item">
             <div class="card mb-3">
-              <div class="card-body">
+              <div class="card-body p-4">
                 <div class="card-tools">
                   <div class="card-title">Agregar Pago</div>
                 </div>
@@ -173,12 +199,27 @@ onMounted(() => {
                   <form id="pagos" action="pagos" name="pagos" @submit.prevent="saveData">
                     <div class="col-12">
                       <div class="mb-3">
+                        <!--                   <input
+                          id="select_apt"
+                          v-model="infoPay.id_apartamento"
+                          list="listApt"
+                          aria-label="Default select apt."
+                          required
+                          class="form-select form-select-sm"
+                        />
+                        <datalist id="listApt">
+                          <option v-for="item in requestApt" :key="item.id" :value="item.id">
+                            {{ item.piso }}
+                          </option>
+                        </datalist>
+ -->
                         <label for="select_apt" class="form-label">Apt</label>
                         <select
                           id="select_apt"
                           v-model="infoPay.id_apartamento"
                           class="form-select"
                           aria-label="Default select apt."
+                          required
                         >
                           <option v-for="item in requestApt" :key="item.id" :value="item.id">
                             {{ item.piso }}
@@ -187,12 +228,17 @@ onMounted(() => {
                       </div>
 
                       <div class="mb-3">
-                        <label for="periodos" class="form-label">Periodos a cancelar</label>
+                        <label for="periodos" class="form-label"
+                          >Periodos a cancelar
+                          <span class="validity"></span>
+                        </label>
                         <input
                           id="periodos"
                           v-model="periodos"
                           type="number"
                           min="1"
+                          max="10"
+                          step="1"
                           class="form-control"
                           name="periodos"
                           required
@@ -260,49 +306,13 @@ onMounted(() => {
 </template>
 
 <style lang="css" scoped>
-#main {
-  transition: margin-left 0.5s;
-  padding: 16px;
-  width: 90%;
+input:invalid + span::after {
+  content: '✖';
+  padding-left: 5px;
 }
 
-.card-body {
-  padding: 40px;
-}
-
-.flex-item {
-  -webkit-flex: auto;
-  flex: auto;
-}
-
-#flex-container {
-  margin-top: 80px;
-  display: flex;
-  -webkit-flex-direction: row;
-  flex-direction: row;
-  align-items: center;
-  align-self: center;
-  justify-content: center;
-  align-content: center;
-  /* height: 98vh; */
-}
-
-.card-tools {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-#flex-container {
-  margin-top: 80px;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-flex-direction: row;
-  flex-direction: row;
-  align-items: center;
-  align-self: center;
-  justify-content: center;
-  align-content: space-around;
-  /* height: 98vh; */
+input:valid + span::after {
+  content: '✓';
+  padding-left: 5px;
 }
 </style>

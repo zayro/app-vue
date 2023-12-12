@@ -1,7 +1,7 @@
 import faker from 'faker'
 
 const createUser = () => ({
-  id: faker.random.uuid(),
+  id: faker.datatype.uuid(),
   name: faker.name.findName(),
   surname: faker.name.middleName(),
   email: faker.internet.email(),

@@ -1,10 +1,10 @@
 <script setup>
 import WelcomeItem from './WelcomeItem.vue'
-import DocumentationIcon from '@/components/icons/IconDocumentation.vue'
-import ToolingIcon from '@/components/icons/IconTooling.vue'
-import EcosystemIcon from '@/components/icons/IconEcosystem.vue'
-import CommunityIcon from '@/components/icons/IconCommunity.vue'
-import SupportIcon from '@/components/icons/IconSupport.vue'
+import DocumentationIcon from '@/assets/icons/IconDocumentation.vue'
+import ToolingIcon from '@/assets/icons/IconTooling.vue'
+import EcosystemIcon from '@/assets/icons/IconEcosystem.vue'
+import CommunityIcon from '@/assets/icons/IconCommunity.vue'
+import SupportIcon from '@/assets/icons/IconSupport.vue'
 </script>
 
 <template>
@@ -31,7 +31,7 @@ import SupportIcon from '@/components/icons/IconSupport.vue'
     <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">VSCode</a>
     +
     <a href="https://github.com/johnsoncodehk/volar" target="_blank" rel="noopener">Volar</a>. If you need to test your
-    components and web pages, check out
+    assets and web pages, check out
     <a href="https://www.cypress.io/" target="_blank" rel="noopener">Cypress</a>
     and
     <a href="https://on.cypress.io/component" target="_blank">Cypress Component Testing</a>.

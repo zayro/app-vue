@@ -1,7 +1,3 @@
-<template>
-  <input ref="inputRef" type="text" />
-</template>
-
 <script>
 import { useCurrencyInput } from 'vue-currency-input'
 // eslint-disable-next-line vue/require-default-prop
@@ -18,3 +14,7 @@ export default {
   }
 }
 </script>
+
+<template>
+  <input ref="inputRef" type="text" />
+</template>

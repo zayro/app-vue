@@ -1,8 +1,7 @@
 <script setup>
 import { ref, onMounted, onBeforeMount, getCurrentInstance, inject } from 'vue'
 
-import Spinner from '../../shared/Spinner.vue'
-import NavBar from '../../shared/NavBar.vue'
+import NavBar from '@/shared/NavBar.vue'
 
 const conf = inject('conf')
 
@@ -31,9 +30,6 @@ onMounted(() => {
 
 <template>
   <div class="container-flex">
-    <!-- LOADING -->
-    <Spinner />
-
     <!-- NAVIGATION BAR -->
     <NavBar />
 

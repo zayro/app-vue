@@ -1,5 +1,5 @@
 <script setup>
-import { defineEmits, ref } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useConfigStoreRef } from '@/stores/config'
 
@@ -14,7 +14,7 @@ const clearSession = () => {
 
 const confStore = useConfigStoreRef()
 
-const conf = confStore.getInformation[0] || { first_name: 'Nombre', last_name: 'Usuario' }
+const conf = confStore.getInformation[0] || { first_name: 'Administrador', last_name: 'Usuario' }
 
 const fullname = conf.first_name + ' ' + conf.last_name
 
@@ -35,9 +35,9 @@ window.addEventListener('resize', () => {
 
 <template>
   <!-- Top Navigation Menu  -->
-  <nav class="navbar bg-body-tertiary fixed-top bg-custom">
+  <nav class="navbar fixed-top bg-custom">
     <div class="container-fluid">
-      <span class="brand font-lato shake-little">Gente Util Sas </span>
+      <span class="brand font-lato shake-little"> Software Empresarial </span>
 
       <div class="d-flex" role="search">
         <button class="btn btn-none-border me-2">

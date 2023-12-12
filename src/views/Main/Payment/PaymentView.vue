@@ -7,8 +7,6 @@ import { useConfigStoreRef } from '@/stores/config'
 import { getData } from '@/api/index'
 import Joi from 'joi'
 
-import Spinner from '@/shared/Spinner.vue'
-
 const confStore = useConfigStoreRef()
 
 console.log('🚧 - confStore:', confStore.getInformation[0])
@@ -217,7 +215,7 @@ onMounted(() => {
 <template>
   <div>
     <!-- LOADING -->
-    <Spinner :load="load.value" />
+
     <div v-show="load" class="flex-container">
       <div class="main">
         <ul class="nav nav-underline nav-fill">
@@ -234,7 +232,6 @@ onMounted(() => {
             <a class="nav-link disabled" aria-disabled="true">Disabled</a>
           </li>
         </ul>
-        <p>...</p>
 
         <div class="d-flex flex-column">
           <div class="flex-item">

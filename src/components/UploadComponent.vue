@@ -60,7 +60,7 @@
 <script setup>
 import FileUpload from 'vue-upload-component'
 import { ref } from 'vue'
-import { httpFormData, axios } from '@/services/http-axios.js'
+import { httpFormData } from '@/services/http-axios.js'
 
 const files = ref([])
 

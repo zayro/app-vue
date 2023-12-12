@@ -1,22 +1,21 @@
-<script>
-export default {
-  props: {
-    load: {
-      type: Boolean,
-      default: false
-    }
-  },
-  setup (props) {
-    console.log('Spinner ', props.load)
+<script setup>
+import { defineProps } from 'vue'
+
+const props = defineProps({
+  load: {
+    type: Boolean,
+    required: false,
+    default: true
   }
-}
+})
+console.log('🚧 - props:', props)
 </script>
 
 <template>
-  <div v-if="load" class="backdrop">
+  <div v-if="props?.load || true" class="backdrop">
     <div class="center-div">
       <div class="spinner"></div>
-      <div class="text-white">Cargando</div>
+      <div class="text-color-primary text-center text-uppercase fs-6 fw-semibold">Waiting ..</div>
     </div>
   </div>
 </template>
@@ -26,13 +25,16 @@ export default {
 * Spinner Loading
 */
 
+.text-color-primary {
+  color: #09f;
+}
+
 .spinner {
-  border: 4px solid rgba(0, 0, 0, 0.1);
+  border: 4px solid rgba(255, 255, 255, 0.925);
   width: 36px;
   height: 36px;
   border-radius: 50%;
   border-left-color: #09f;
-
   animation: spin 1s ease infinite;
 }
 
@@ -47,7 +49,7 @@ export default {
 }
 
 .backdrop {
-  z-index: 100;
+  z-index: 1031;
   width: 100vw;
   height: 100vh;
   background-color: rgb(104, 104, 104, 0.5);

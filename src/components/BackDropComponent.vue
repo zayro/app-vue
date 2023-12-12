@@ -1,18 +1,12 @@
-<script setup>
-import { defineEmits } from 'vue'
-
-const emit = defineEmits({
-  'close-sidebar': null
-})
-</script>
+<script setup></script>
 
 <template>
-  <div id="myCanvasNav" class="backdrop" style="width: 0%; opacity: 0" @click="emit('close-sidebar')"></div>
+  <div id="myCanvasNav" class="backdrop"></div>
 </template>
 
 <style>
 .backdrop {
-  height: 100%;
+  height: 100vh;
   position: fixed;
   z-index: 2030;
   top: 0;
