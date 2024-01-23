@@ -25,7 +25,7 @@ import TableComponent from '@/components/example/TableComponent.vue'
 
 import loginView from '../views/login/v1/loginView.vue'
 import defaultView from '../views/login/defaultView.vue'
-import login from '../views/login/loginView.vue'
+import loginV2 from '../views/login/v2/loginView.vue'
 import recoveryPass from '../views/login/retorePassword.vue'
 import sessionView from '../views/login/sessionView.vue'
 import createUserView from '../views/login/createUserView.vue'
@@ -35,6 +35,8 @@ import HomeView from '../views/Main/Home/HomeView.vue'
 /**
  * Molules
  */
+
+import Modules from '@/modules/Modules.vue'
 
 // Edificio
 import Payment from '@/modules/Edificio/Payment/PaymentView.vue'
@@ -48,11 +50,16 @@ import report from '@/modules/Edificio/Report/reportView.vue'
 import InfoView from '@/views/Main/Home/InfoView.vue'
 import AboutView from '@/views/Main/Home/AboutView.vue'
 
+// Usuario
+import UsuarioDatos from '@/modules/Usuario/UsuarioDatos.vue'
+import UsuarioOnline from '@/modules/Admin/UsuariosOnline.vue'
+
 /**
  * Services
  */
 
 import { JwtDecodeToken } from '@/services/jwt'
+import { ConnectWebSocket } from '@/services/websocket'
 
 /**
  * Storage
@@ -70,9 +77,15 @@ const router = createRouter({
     },
     {
       path: '/login-v1',
-      name: 'logiV1',
+      name: 'loginV1',
       component: loginView
     },
+    {
+      path: '/login-v2',
+      name: 'loginV2',
+      component: loginV2
+    },
+    // Components
     {
       path: '/components',
       name: 'components',
@@ -118,6 +131,7 @@ const router = createRouter({
         }
       ]
     },
+    // App
     {
       path: '/app',
       name: 'app',
@@ -126,7 +140,7 @@ const router = createRouter({
         {
           path: 'login',
           name: 'login',
-          component: login
+          component: loginV2
         },
         {
           path: 'recovery',
@@ -145,38 +159,16 @@ const router = createRouter({
         }
       ]
     },
+    // Modulos
     {
       path: '/modulos',
       name: 'modulos',
-      component: MainView,
+      component: Modules,
       meta: { transition: 'slide-right' },
       children: [
         {
-          path: '',
-          name: 'home',
-          component: HomeView,
-          meta: { authRequired: false, transition: 'slide-left' },
-          // only authenticated users can create posts
-          children: [
-            {
-              path: '',
-              name: 'info',
-              component: InfoView
-              // meta: { authRequired: true }
-            },
-            {
-              path: 'about',
-              name: 'about',
-              component: AboutView
-            }
-          ]
-        },
-        {
           path: 'edificio',
           name: 'edificio',
-          component: HomeView,
-          meta: { authRequired: false, transition: 'slide-left' },
-          // only authenticated users can create posts
           children: [
             {
               path: 'config',
@@ -229,32 +221,58 @@ const router = createRouter({
               meta: { transition: 'slide-right' }
             }
           ]
+        },
+        {
+          path: 'admin',
+          name: 'admin',
+          children: [
+            {
+              path: 'online',
+              name: 'online',
+              component: UsuarioOnline,
+              meta: { transition: 'slide-right' }
+            }
+          ]
+        },
+        {
+          path: 'usuario',
+          name: 'usuario',
+          children: [
+            {
+              path: 'agregar',
+              name: 'agregar',
+              component: UsuarioDatos,
+              meta: { transition: 'slide-right' }
+            }
+          ]
         }
       ]
     },
+    // Main
     {
       path: '/main',
       name: 'main',
       component: MainView,
-      meta: { transition: 'slide-right' },
+      meta: { authRequired: true, transition: 'slide-left' },
       children: [
         {
           path: '',
           name: 'home',
           component: HomeView,
-          meta: { authRequired: false, transition: 'slide-left' },
+          meta: { authRequired: true, transition: 'slide-left' },
           // only authenticated users can create posts
           children: [
             {
               path: '',
               name: 'info',
-              component: InfoView
-              // meta: { authRequired: true }
+              component: InfoView,
+              meta: { authRequired: true }
             },
             {
               path: 'about',
               name: 'about',
-              component: AboutView
+              component: AboutView,
+              meta: { authRequired: true }
             }
           ]
         }
@@ -268,37 +286,53 @@ const router = createRouter({
   ]
 })
 
+const socket = new ConnectWebSocket()
+
+let ws = null
+
+/**
+ * Valid Auth
+ */
+
 router.beforeEach((to, from, next) => {
-  console.log('🚧 - router.beforeEach - from:', from.name)
-  console.log('🚧 - router.beforeEach - to:', to.name)
   try {
     const store = useConfigStoreRef()
 
-    const instance = new JwtDecodeToken(store.token ? store.token : {})
+    console.log('🚧 - router.beforeEach - store:  --->', store)
+
+    const instance = new JwtDecodeToken(store.token ? store.token : null)
 
     if (instance.getTokenDecode() && instance.getTokenDecode() !== null) {
-      console.log(' connect to jwt ')
-      const { menu, information, permissions } = instance.getTokenDecode()
+      console.groupCollapsed('token')
+      console.log('Token decoded :: ', instance.getTokenDecode())
+      console.groupEnd()
+      const { menu, information, permissions, username } = instance.getTokenDecode()
+
+      console.log('🚧 - router.beforeEach - ws:', ws)
+      if (ws === null) {
+        ws = socket.connect(username)
+      }
+
       store.setConfig({ menu, information, permissions })
-    } else {
-      const permission = []
-      console.log('no connect to jwt ', permission)
     }
 
     /*
      * SOCKET
      */
 
-    // const username = information[0].username
-    const room = to.name
     const client = {
       appName: navigator.appName,
       appVersion: navigator.appVersion,
       platform: navigator.platform,
       geolocation: navigator.geolocation
     }
-    console.log('🚧 - router.beforeEach - room:', room)
-    console.log('🚧 - router.beforeEach - client:', client)
+
+    console.groupCollapsed('router')
+    console.log('🚧 - router.beforeEach - from:', from.name)
+    console.log('🚧 - router.beforeEach - to:', to.name)
+    console.log('🚧 - router.path:', to.path)
+    console.log('🚧 - Client - client:', client)
+    console.groupEnd()
 
     /*
      * TOKEN AUTH
@@ -327,32 +361,65 @@ router.beforeEach((to, from, next) => {
       }
     }
 
-    console.group('conf')
+    console.groupCollapsed('conf')
     console.log('🚧 - store:', store.token)
     console.log('🚧 - store:', store.conf)
     console.groupEnd()
 
-    console.group('Security')
+    console.groupCollapsed('Security')
+    console.log('router  ->', to.name)
     console.log('🚧 - router.beforeEach - to.meta.authRequired', to.meta.authRequired)
+    console.log('🚧 - router.beforeEach - instance.getToken()', instance.getToken())
+    console.log('🚧 - router.beforeEach - instance.isTokenExpired()', instance.isTokenExpired())
+    console.log('🚧 - router.beforeEach - instance.getTokenExpirationDate()', instance.getTokenExpirationDate())
     console.log('🚧 - router.beforeEach - instance.isTokenValid()', instance.isTokenValid())
     console.log('🚧 - router.beforeEach - hasAccess(to.name)', hasAccess(to.name))
     console.groupEnd()
 
-    console.log('router', to.name)
-
+    /**
+     *  Valida si tiene un token valido para que continue
+     */
     if ((to.name === 'login' || to.name === 'default') && instance.isTokenValid()) {
       // router.push({ name: 'home' })
       next({
         name: 'sessionView',
         replace: true
       })
-
-      // the route requires authentication
     }
 
     if (to.meta.authRequired === true) {
-      console.log('------------------ authRequired ------------------ ', to.meta.authRequired)
       if (instance.isTokenValid() && hasAccess(to.name)) {
+        console.log('------------------ authRequired ------------------ ', to.meta.authRequired)
+
+        try {
+          ws.onopen = function () {
+            console.log('[onopen] Conexión establecida')
+          }
+
+          if (ws.readyState === 1) {
+            socket.updateUser({
+              module: to.path
+            })
+          }
+
+          ws.onmessage = function (event) {
+            console.log('[onmessage] captura de mensajes', event.data)
+          }
+
+          ws.onclose = function (e) {
+            console.log('[onclose] se cierra conexion', e)
+            setTimeout(function () {
+              console.log('reconnect')
+              this.connect()
+            }, 1000)
+          }
+
+          ws.onerror = function (e) {
+            console.log('[error]', e)
+          }
+        } catch (error) {
+          console.error(error)
+        }
         return next()
       } else {
         next({
@@ -371,6 +438,15 @@ router.beforeEach((to, from, next) => {
       path: '/'
     })
   }
+})
+
+/**
+ * load Module
+ */
+
+router.afterEach((to, from, next) => {
+  console.log('🚧 - router.afterEach - from:', from)
+  console.log('🚧 - router.afterEach - to:', to)
 })
 
 export default router

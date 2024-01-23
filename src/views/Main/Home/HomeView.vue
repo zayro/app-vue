@@ -3,7 +3,7 @@ import { RouterLink } from 'vue-router'
 
 import { onMounted } from 'vue'
 
-console.group()
+console.groupCollapsed('info Vite')
 console.log('----------------------', import.meta.env.BASE_URL)
 console.log('----------------------', import.meta.env.VITE_DEBUG)
 console.groupEnd()

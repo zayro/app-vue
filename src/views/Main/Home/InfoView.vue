@@ -4,10 +4,12 @@ import { onMounted, onUnmounted } from 'vue'
 
 document.documentElement.style.setProperty('--animate-duration', '8s')
 
-onMounted(() => {})
+onMounted(() => {
+  console.log(' ----------- onMounted  InfoView -----------')
+})
 
 onUnmounted(() => {
-  console.log(' ----------- onUnmounted -----------')
+  console.log(' ----------- onUnmounted  InfoView-----------')
 })
 </script>
 

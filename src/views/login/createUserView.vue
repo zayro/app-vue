@@ -128,4 +128,4 @@ const create = () => {
   </div>
 </template>
 
-<style scoped lang="css" src="./login.css" />
+<!-- <style scoped lang="css" src="./login.css" /> -->

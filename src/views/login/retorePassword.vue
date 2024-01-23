@@ -67,7 +67,7 @@ const validateForm = computed(() => {
   </div>
 </template>
 
-<style scoped lang="css" src="./login.css"></style>
+<!-- <style scoped lang="css" src="./login.css"></style> -->
 
 <style scoped>
 #body {

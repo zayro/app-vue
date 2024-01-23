@@ -112,7 +112,7 @@ export class JwtDecodeToken {
    */
   getTokenExpirationDate () {
     try {
-      if (this.getToken() === null) {
+      if (this.getToken() === null || this.getToken() === '' || this.getToken().length === 0) {
         return null
       } else {
         const decoded = jwt_decode(this.getToken())
@@ -124,16 +124,18 @@ export class JwtDecodeToken {
         const date = new Date(0)
         date.setUTCSeconds(decoded.exp)
 
+        console.groupCollapsed('token')
         console.info('Token decoded :: ', decoded)
         console.info('Token decoded.exp :: ', decoded.exp)
         console.info('Time Created Token :: ', new Date(decoded.iat * 1000).toLocaleString())
         console.info('Time Expire Token :: ', new Date(decoded.exp * 1000).toLocaleString())
         console.info('Time Actually :: ', new Date(Date.now()).toLocaleString())
         console.info('date.getTime()  >  new Date().getTime():: ', date.getTime(), new Date().getTime())
+        console.groupEnd()
         return date
       }
     } catch (err) {
-      console.log(err)
+      console.error(err)
     }
   }
 

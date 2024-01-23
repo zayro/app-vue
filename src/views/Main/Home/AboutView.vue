@@ -2,11 +2,11 @@
 import { onUnmounted, onMounted } from 'vue'
 
 onMounted(() => {
-  console.log(' ----------- onMounted -----------')
+  console.log(' ----------- onMounted AboutView -----------')
 })
 
 onUnmounted(() => {
-  console.log(' ----------- onUnmounted -----------')
+  console.log(' ----------- onUnmounted AboutView -----------')
 })
 </script>
 

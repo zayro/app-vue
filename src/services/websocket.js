@@ -5,12 +5,12 @@ const SOCKET = CONSTANT.URL.SOCKET
 console.log(SOCKET)
 
 export class ConnectWebSocket {
-  connect () {
+  connect (ClientId = Date.now()) {
     // Crea un # para el cliente
-    const ClientId = Date.now()
+    // const ClientId = Date.now()
 
     // Realiza la conexion
-    this.ws = new WebSocket(`this.ws://localhost:4001/this.ws/json/${ClientId}`)
+    this.ws = new WebSocket(`ws://localhost:4000/ws/v1/json/${ClientId}`)
 
     return this.ws
     // Escuha los mensajes del Socket
@@ -38,8 +38,8 @@ export class ConnectWebSocket {
     */
   }
 
-  sendBroadcast (userId, message) {
-    const enviar = { userId, message, broadcast: true }
+  sendBroadcast (valueMessage) {
+    const enviar = { message: valueMessage, broadcast: true }
     console.log('sendMessage', JSON.stringify(enviar))
     this.ws.send(JSON.stringify(enviar))
   }
@@ -52,6 +52,12 @@ export class ConnectWebSocket {
 
   sendPrivate (userId, message) {
     const enviar = { userId, message, private: true }
+    console.log('sendMessage', JSON.stringify(enviar))
+    this.ws.send(JSON.stringify(enviar))
+  }
+
+  updateUser (message) {
+    const enviar = { updateUser: message }
     console.log('sendMessage', JSON.stringify(enviar))
     this.ws.send(JSON.stringify(enviar))
   }

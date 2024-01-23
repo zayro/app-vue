@@ -31,9 +31,12 @@ const login = () => {
   http
     .post('login', payload)
     .then((response) => {
-      swal('Ingreso Exitoso!', 'Bienvenido App!', 'success')
-      conf.setToken(response.data.token)
+      console.log('🚧 - .then - response:', response)
+      conf.setToken(response.data.data.token)
+      console.log('🚧 - .then - response.data.token:', response.data.data.token)
+      console.log(conf.token, 'getToken')
       router.push({ path: '/main/' })
+      swal('Ingreso Exitoso!', 'Bienvenido App!', 'success')
     })
     .catch((error) => {
       console.log('🚧 - login - error:', error)
@@ -65,7 +68,7 @@ onMounted(() => {
           <img :src="avatar" alt="..." class="card-img-login" width="150" />
 
           <div class="card-body">
-            <h3 class="card-title">Welcome, let's get started!</h3>
+            <h3 class="card-title">Welcome, let's get started! v3</h3>
             <form>
               <div class="form-group">
                 <label>Email address</label>

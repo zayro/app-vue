@@ -68,6 +68,12 @@ git rm env.local --cached
 - npm i serve -g
 - serve -s ./dist
 
+## Update Vue
+
+- npm install -g @vue/cli
+- npm update -g @vue/cli
+- vue upgrade
+
 ### Bibliografia
 
 - Background design subtlepatterns (<https://www.toptal.com/designers/subtlepatterns/>)

@@ -7,14 +7,16 @@ import router from './router'
 import { constant } from './i18n/en.js'
 import { conf } from './services/conf'
 
+/*
 import 'bootstrap'
 import '~bootstrap/dist/css/bootstrap.min.css'
+*/
 
 import 'csshake'
 // import './registerServiceWorker'
 
 // import './assets/style/global.scss'
-
+import '@/assets/style/styleBootstrap.scss'
 import '@/assets/style/layout.scss'
 import '@/assets/style/fonts.scss'
 import '@/assets/style/card.scss'
@@ -65,6 +67,9 @@ import {
   FaEdit
 } from 'oh-vue-icons/icons'
 
+// Import only the Bootstrap components we need
+import { Popover } from 'bootstrap'
+
 addIcons(
   BiPcDisplay,
   GiPayMoney,
@@ -101,6 +106,11 @@ addIcons(
   FaEdit,
   FaCamera
 )
+
+// Create an example popover
+document.querySelectorAll('[data-bs-toggle="popover"]').forEach((popover) => {
+  new Popover(popover)
+})
 
 const app = createApp(App)
 const pinia = createPinia()
