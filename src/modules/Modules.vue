@@ -29,11 +29,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="container-flex">
+  <div class="flex">
     <!-- NAVIGATION BAR -->
     <NavBar />
 
-    <div v-show="load" class="flex-item">
+    <div v-show="load" class="flex">
       <!-- ROUTING -->
       <router-view />
     </div>

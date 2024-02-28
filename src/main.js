@@ -7,27 +7,24 @@ import router from './router'
 import { constant } from './i18n/en.js'
 import { conf } from './services/conf'
 
-/*
-import 'bootstrap'
-import '~bootstrap/dist/css/bootstrap.min.css'
-*/
-
 import 'csshake'
 // import './registerServiceWorker'
 
-// import './assets/style/global.scss'
-import '@/assets/style/styleBootstrap.scss'
-import '@/assets/style/layout.scss'
-import '@/assets/style/fonts.scss'
-import '@/assets/style/card.scss'
-import '@/assets/style/form.scss'
-
 import VueDatePicker from '@vuepic/vue-datepicker'
-import '@vuepic/vue-datepicker/dist/main.css'
 
 import VueApexCharts from 'vue3-apexcharts'
 
 import piniaPersist from 'pinia-plugin-persist'
+
+import { VueQueryPlugin } from '@tanstack/vue-query'
+
+import PrimeVue from 'primevue/config'
+import 'primeflex/primeflex.css'
+// import 'primevue/resources/themes/lara-dark-teal/theme.css'
+import 'primeicons/primeicons.css'
+
+import IconField from 'primevue/iconfield'
+import InputIcon from 'primevue/inputicon'
 
 import { OhVueIcon, addIcons } from 'oh-vue-icons'
 import {
@@ -67,8 +64,7 @@ import {
   FaEdit
 } from 'oh-vue-icons/icons'
 
-// Import only the Bootstrap components we need
-import { Popover } from 'bootstrap'
+import './assets/global.css'
 
 addIcons(
   BiPcDisplay,
@@ -107,12 +103,9 @@ addIcons(
   FaCamera
 )
 
-// Create an example popover
-document.querySelectorAll('[data-bs-toggle="popover"]').forEach((popover) => {
-  new Popover(popover)
-})
-
 const app = createApp(App)
+
+// Handler State Data
 const pinia = createPinia()
 
 // Global Var
@@ -123,9 +116,16 @@ app.config.globalProperties.$globalVariable = 'Jimmy'
 app.provide('txt', constant)
 app.provide('conf', conf)
 
+app.component('InputIcon', InputIcon)
+app.component('IconField', IconField)
+
 app.use(VueApexCharts)
 
 pinia.use(piniaPersist)
+
+app.use(VueQueryPlugin)
+
+app.use(PrimeVue)
 
 app.use(pinia)
 

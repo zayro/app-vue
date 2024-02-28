@@ -17,9 +17,6 @@ onMounted(() => {
   <div id="body">
     <div id="home">
       <header>
-        <!-- <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" /> -->
-        <v-icon name="bi-pc-display" fill="black" scale="8" />
-
         <div class="wrapper">
           <div class="greetings">
             <h1 class="green">Bienvenido a tu App!</h1>

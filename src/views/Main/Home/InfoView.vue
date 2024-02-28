@@ -19,16 +19,7 @@ onUnmounted(() => {
   </main>
 </template>
 
-<style scoped src="@/assets/main.css"></style>
-
 <style scoped>
-#body {
-  max-width: 90%;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
-}
-
 a,
 .green {
   text-decoration: none;

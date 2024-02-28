@@ -16,6 +16,7 @@ window.onload = function () {
 </script>
 
 <template>
+  <!-- ROUTE -->
   <router-view v-slot="{ Component, route }">
     <!-- Use any custom transition and fallback to `fade` -->
     <transition :name="route.meta.transition || 'fade'">

@@ -11,7 +11,6 @@
     </div>
   </div>
 </template>
-<style scoped src="@/assets/main.css"></style>
 
 <style scoped>
 .item {
