@@ -20,7 +20,6 @@ import { VueQueryPlugin } from '@tanstack/vue-query'
 
 import PrimeVue from 'primevue/config'
 import 'primeflex/primeflex.css'
-// import 'primevue/resources/themes/lara-dark-teal/theme.css'
 import 'primeicons/primeicons.css'
 
 import IconField from 'primevue/iconfield'
@@ -64,7 +63,7 @@ import {
   FaEdit
 } from 'oh-vue-icons/icons'
 
-import './assets/global.css'
+import './assets/style/css/global.css'
 
 addIcons(
   BiPcDisplay,

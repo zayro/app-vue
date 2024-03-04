@@ -10,14 +10,18 @@ import Config from '../views/config/configView.vue'
  * Components
  */
 import IndexComponent from '@/components/IndexComponent.vue'
+import MainComponent from '@/components/MainComponent.vue'
 import AvatarComponent from '@/components/AvatarComponent.vue'
 import BackDropComponent from '@/components/BackDropComponent.vue'
 import SpinnerComponent from '@/components/SpinnerComponent.vue'
 import CardComponent from '@/components/CardComponent.vue'
 import UploadComponent from '@/components/UploadComponent.vue'
+import PanelComponent from '@/components/PanelComponent.vue'
+
+import DataTableFilter from '@/components/DataTable/DataTableFilter.vue'
 
 // Components/Example
-import TableComponent from '@/components/example/TableComponent.vue'
+import TableComponent from '@/components/DataTable/example/TableComponent.vue'
 
 /**
  * Views
@@ -92,6 +96,12 @@ const router = createRouter({
       component: IndexComponent,
       children: [
         {
+          path: '',
+          name: 'MainComponent',
+          component: MainComponent,
+          meta: { transition: 'slide-right' }
+        },
+        {
           path: 'avatar',
           name: 'avatar',
           component: AvatarComponent,
@@ -103,7 +113,6 @@ const router = createRouter({
           component: BackDropComponent,
           meta: { transition: 'slide-right' }
         },
-
         {
           path: 'spinner',
           name: 'spinner',
@@ -127,6 +136,18 @@ const router = createRouter({
           path: 'card',
           name: 'CardComponent',
           component: CardComponent,
+          meta: { transition: 'slide-right' }
+        },
+        {
+          path: 'panel',
+          name: 'PanelComponent',
+          component: PanelComponent,
+          meta: { transition: 'slide-right' }
+        },
+        {
+          path: 'DataTableFilter',
+          name: 'DataTableFilterComponent',
+          component: DataTableFilter,
           meta: { transition: 'slide-right' }
         }
       ]

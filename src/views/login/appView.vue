@@ -1,48 +1,24 @@
 <script>
 // IMAGE IMPORT
-
-import imgDark from '@/assets/img/background/congruent_outline.png'
-import imgLight from '@/assets/img/background/y-so-serious-white.png'
+import imgBodyBackGround from '@/assets/img/background/pattern5_black.png'
 
 export default {
   mounted () {
     document.body.style.overflowX = 'hidden'
     document.body.style.overflowY = 'hidden'
-
-    if (window.matchMedia('(prefers-color-scheme: light)').matches) {
-      document.body.style.backgroundImage = `url(${imgDark})`
-    } else {
-      // Viewport is greater than 700 pixels wide
-      document.body.style.backgroundImage = `url(${imgLight})`
-    }
     console.log('the component is now mounted.')
-    document.title = 'Login'
+    document.title = 'App'
+    document.body.style.backgroundImage = `url(${imgBodyBackGround})`
     // document.documentElement.style.setProperty('--animate-duration', '.9s');
   }
 }
 </script>
 
 <template>
-  <div class="container-flex">
-    <div class="routes">
+  <div class="flex align-items-center justify-content-between flex-column h-screen">
+    <div class="flex align-items-center justify-content-center h-full w-full">
       <!-- ROUTING -->
       <router-view />
     </div>
   </div>
 </template>
-
-<style lang="css" scoped>
-.container-flex {
-  display: flex; /* or inline-flex */
-  flex-direction: row;
-}
-
-.sidebar {
-  flex-grow: 1;
-  margin: auto;
-}
-.routes {
-  flex-grow: 2;
-  width: 100%;
-}
-</style>

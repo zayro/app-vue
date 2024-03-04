@@ -3,7 +3,7 @@ import { http } from '../services/http-axios'
 // Request
 
 /**
- *
+ * Admin Data Api
  * @returns {Json}
  */
 export const getData = async (url) => {

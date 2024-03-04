@@ -142,6 +142,6 @@ window.addEventListener('resize', () => {
   </nav>
 </template>
 <style lang="scss" scoped>
-@import '@/assets/style/var.scss';
-@import '@/assets/style/navbar.scss';
+@import '@/assets/style/scss/var.scss';
+@import '@/assets/style/scss/navbar.scss';
 </style>

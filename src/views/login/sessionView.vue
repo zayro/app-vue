@@ -1,7 +1,10 @@
 <script setup>
+import { onMounted } from 'vue'
 import { constant } from '@/i18n/en'
 import { useRouter } from 'vue-router'
 import { useConfigStoreRef } from '@/stores/config'
+
+const avatar = '/img/profile/avatar/user_256x256.png'
 
 const txt = constant
 
@@ -13,36 +16,54 @@ const clearSession = () => {
   store.resetAll()
   router.push({ path: '/' })
 }
+
+const Continue = () => {
+  router.push({ path: '/main' })
+}
+
+onMounted(() => {
+  document.body.style.overflowX = 'hidden'
+  document.body.style.overflowY = 'hidden'
+
+  console.log('the component is now mounted.')
+  document.title = 'Session'
+  // document.documentElement.style.setProperty('--animate-duration', '.9s');
+})
 </script>
 
+<!-- <style scoped lang="css" src="./login.css" /> -->
 <template>
-  <div class="container animate__animated animate__pulse animate__delay-5s">
-    <div class="container-login">
-      <div class="card-login p-3 mb-5 rounded">
-        <div class="card">
-          <div class="d-flex justify-content-start align-items-center"></div>
-          <div class="d-flex justify-content-center">
-            <div class="div-rounded-circle">
-              <v-icon name="fa-user-alt" fill="#686868" scale="5" />
-            </div>
-          </div>
+  <div class="flex flex-column text-center py-6 px-4 border-round md:w-4 lg:w-6">
+    <div class="text-center mb-5">
+      <Avatar :image="avatar" class="mr-2" />
+      <div class="text-900 text-3xl font-medium mb-3">{{ txt.COMPONENTS.session.title }}</div>
+      <span class="text-600 font-medium line-height-3">Don't have an account?</span>
+      <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Create today!</a>
+    </div>
 
-          <div class="card-body">
-            <h3 class="card-title">{{ txt.COMPONENTS.session.title }}</h3>
-            <form>
-              <hr />
-              <div class="d-flex justify-content-around btn-space-wrapper">
-                <RouterLink to="/main">
-                  <button type="button" class="btn btn-primary btn-lg">CONTINUE</button>
-                </RouterLink>
-                <button type="button" class="btn btn-danger btn-lg" @click="clearSession()">CLOSE</button>
-              </div>
-            </form>
-          </div>
-        </div>
+    <div class="flex align-items-center justify-content-center gap-3 mb-3">
+      <div class="flex w-full md:w-25rem">
+        <Button
+          type="button"
+          label="Cerrar"
+          severity="secondary"
+          class="w-10 m-1"
+          outlined
+          @click="clearSession"
+        ></Button>
+
+        <Button type="button" label="Continuar" class="w-10 m-1" @click="Continue"></Button>
       </div>
     </div>
   </div>
 </template>
+<style scoped="css">
+.p-avatar {
+  width: 120px;
+  height: 120px;
+}
 
-<!-- <style scoped lang="css" src="./login.css" /> -->
+body {
+  backdrop-filter: blur(2px);
+}
+</style>

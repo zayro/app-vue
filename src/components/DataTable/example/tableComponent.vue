@@ -3,7 +3,7 @@ import { ref, computed } from 'vue'
 
 import { createUsers } from '@/tools/DemoFaker'
 
-import tableComponent from '@/components/tableComponent.vue'
+import tableComponent from '@/components/DataTable/tableComponent.vue'
 
 const componentKey = ref(0)
 

@@ -53,6 +53,6 @@ function closeNav () {
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/style/var.scss';
-@import '@/assets/style/sidebar.scss';
+@import '@/assets/style/scss/var.scss';
+@import '@/assets/style/scss/sidebar.scss';
 </style>

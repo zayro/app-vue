@@ -5,8 +5,6 @@ import MenuComponent from '@/components/MenuComponent.vue'
 
 const conf = inject('conf')
 
-const load = ref()
-
 const app = getCurrentInstance()
 
 const progressBar = app.appContext.config.globalProperties.msg
@@ -20,12 +18,13 @@ console.log('----------------------', import.meta.env.BASE_URL)
 console.log('----------------------', import.meta.env.VITE_DEBUG)
 console.groupEnd()
 
+const blocked = ref(true)
+
 onBeforeMount(() => {
-  load.value = false
+  blocked.value = true
 })
 
 onMounted(() => {
-  load.value = true
   /*
   document.body.style.overflowX = 'hidden'
   document.body.style.overflowY = 'hidden'
@@ -36,39 +35,17 @@ onMounted(() => {
 
 <template>
   <!-- NAVIGATION BAR -->
-  <MenuComponent />
+  <MenuComponent :go-back="false" />
 
   <div class="container-flex">
-    <div class="flex flex-row justify-content-around">
-      <div class="flex p-3">
-        <Panel header="Header">
-          <p class="m-0">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-            anim id est laborum.
-          </p>
-        </Panel>
-      </div>
-      <div class="flex p-3">
-        <Panel header="Header">
-          <p class="m-0">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-            anim id est laborum.
-          </p>
-        </Panel>
-      </div>
-    </div>
+    <!-- ROUTING -->
+    <router-view />
   </div>
 </template>
 
 <style scoped="css">
 .container-flex {
-  padding: 20px;
+  padding: 60px;
   display: flex;
   /* flex-wrap: wrap;*/
   align-items: stretch;

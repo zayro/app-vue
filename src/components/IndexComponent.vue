@@ -1,6 +1,8 @@
 <script setup>
 import { RouterView } from 'vue-router'
 
+import MenuComponent from '@/components/MenuComponent.vue'
+
 window.addEventListener('offline', () => {
   console.log('offline')
 })
@@ -16,10 +18,29 @@ window.onload = function () {
 </script>
 
 <template>
-  <router-view v-slot="{ Component, route }">
-    <!-- Use any custom transition and fallback to `fade` -->
-    <transition :name="route.meta.transition || 'fade'">
-      <component :is="Component" />
-    </transition>
-  </router-view>
+  <!-- NAVIGATION BAR -->
+  <MenuComponent />
+
+  <div class="container-flex">
+    <router-view v-slot="{ Component, route }">
+      <!-- Use any custom transition and fallback to `fade` -->
+      <transition :name="route.meta.transition || 'fade'">
+        <component :is="Component" />
+      </transition>
+    </router-view>
+  </div>
 </template>
+
+<style scoped="css">
+.container-flex {
+  /* padding: 6rem 4rem 0; */
+  padding-top: 10px;
+  display: flex;
+  /* flex-wrap: wrap;*/
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  /* border: 1px solid black;*/
+  /* height: calc(100vh - 10px);*/
+}
+</style>

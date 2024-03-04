@@ -23,8 +23,8 @@ onMounted(() => {
   /*
   document.body.style.overflowX = 'hidden'
   document.body.style.overflowY = 'hidden'
-   */
   document.body.style.backgroundImage = `url(${imgBody})`
+  */
 })
 </script>
 
