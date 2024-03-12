@@ -2,32 +2,27 @@
 import { RouterView } from 'vue-router'
 
 import MenuComponent from '@/components/MenuComponent.vue'
-
-window.addEventListener('offline', () => {
-  console.log('offline')
-})
-window.addEventListener('online', () => {
-  console.log('online')
-})
-window.addEventListener('resize', () => {
-  console.log('innerWidth', window.innerWidth, 'innerHeight', window.innerHeight)
-})
-window.onload = function () {
-  console.log(' window.onload ')
-}
 </script>
 
 <template>
-  <!-- NAVIGATION BAR -->
-  <MenuComponent />
+  <div>
+    <!-- NAVIGATION BAR -->
+    <MenuComponent />
 
-  <div class="container-flex">
-    <router-view v-slot="{ Component, route }">
-      <!-- Use any custom transition and fallback to `fade` -->
-      <transition :name="route.meta.transition || 'fade'">
-        <component :is="Component" />
-      </transition>
-    </router-view>
+    <div class="container-flex">
+      <router-view v-slot="{ Component, route }">
+        <!-- Use any custom transition and fallback to `fade` <transition :name="route.meta.transition || 'fade'">  -->
+
+        <transition
+          enter-active-class="animate__animated animate__fadeIntLeft"
+          leave-active-class="animate__animated animate__fadeOutLeft"
+        >
+          <component :is="Component" />
+        </transition>
+
+        <!-- ROUTE END  -->
+      </router-view>
+    </div>
   </div>
 </template>
 

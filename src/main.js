@@ -18,12 +18,19 @@ import piniaPersist from 'pinia-plugin-persist'
 
 import { VueQueryPlugin } from '@tanstack/vue-query'
 
+/**
+ * !SECTION
+ *  Theme App
+ */
 import PrimeVue from 'primevue/config'
 import 'primeflex/primeflex.css'
 import 'primeicons/primeicons.css'
 
 import IconField from 'primevue/iconfield'
 import InputIcon from 'primevue/inputicon'
+import Ripple from 'primevue/ripple'
+
+import devtools from '@vue/devtools'
 
 import { OhVueIcon, addIcons } from 'oh-vue-icons'
 import {
@@ -63,7 +70,14 @@ import {
   FaEdit
 } from 'oh-vue-icons/icons'
 
+import 'animate.css'
+
 import './assets/style/css/global.css'
+
+if (process.env.NODE_ENV === 'development') {
+  console.log('------- development -----------')
+  // devtools.connect()
+}
 
 addIcons(
   BiPcDisplay,
@@ -124,7 +138,8 @@ pinia.use(piniaPersist)
 
 app.use(VueQueryPlugin)
 
-app.use(PrimeVue)
+app.directive('ripple', Ripple)
+app.use(PrimeVue, { ripple: true })
 
 app.use(pinia)
 

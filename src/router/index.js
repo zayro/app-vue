@@ -56,6 +56,8 @@ import AboutView from '@/views/Main/Home/AboutView.vue'
 
 // Usuario
 import UsuarioDatos from '@/modules/Usuario/UsuarioDatos.vue'
+
+// Admin
 import UsuarioOnline from '@/modules/Admin/UsuariosOnline.vue'
 
 /**
@@ -99,7 +101,7 @@ const router = createRouter({
           path: '',
           name: 'MainComponent',
           component: MainComponent,
-          meta: { transition: 'slide-right' }
+          meta: { authRequired: true }
         },
         {
           path: 'avatar',
@@ -130,25 +132,25 @@ const router = createRouter({
           path: 'table',
           name: 'TableComponents',
           component: TableComponent,
-          meta: { transition: 'slide-right' }
+          meta: { authRequired: true }
         },
         {
           path: 'card',
           name: 'CardComponent',
           component: CardComponent,
-          meta: { transition: 'slide-right' }
+          meta: { authRequired: true }
         },
         {
           path: 'panel',
           name: 'PanelComponent',
           component: PanelComponent,
-          meta: { transition: 'slide-right' }
+          meta: { authRequired: true }
         },
         {
           path: 'DataTableFilter',
           name: 'DataTableFilterComponent',
           component: DataTableFilter,
-          meta: { transition: 'slide-right' }
+          meta: { authRequired: true }
         }
       ]
     },
@@ -251,7 +253,7 @@ const router = createRouter({
               path: 'online',
               name: 'online',
               component: UsuarioOnline,
-              meta: { transition: 'slide-right' }
+              meta: { authRequired: true }
             }
           ]
         },
@@ -263,22 +265,22 @@ const router = createRouter({
               path: 'agregar',
               name: 'agregar',
               component: UsuarioDatos,
-              meta: { transition: 'slide-right' }
+              meta: { authRequired: true }
             }
           ]
         }
       ]
     },
-    // Main
+    // VUE
     {
-      path: '/main',
-      name: 'main',
+      path: '/vue',
+      name: 'mainVue',
       component: MainView,
       meta: { authRequired: true, transition: 'slide-left' },
       children: [
         {
           path: '',
-          name: 'home',
+          name: 'homeVue',
           component: HomeView,
           meta: { authRequired: true, transition: 'slide-left' },
           // only authenticated users can create posts
@@ -296,6 +298,21 @@ const router = createRouter({
               meta: { authRequired: true }
             }
           ]
+        }
+      ]
+    },
+    // Main
+    {
+      path: '/main',
+      name: 'main',
+      component: MainView,
+      meta: { authRequired: true },
+      children: [
+        {
+          path: '',
+          name: 'HomeView',
+          component: HomeView,
+          meta: { authRequired: true }
         }
       ]
     },
@@ -329,7 +346,6 @@ router.beforeEach((to, from, next) => {
       console.groupEnd()
       const { menu, information, permissions, username } = instance.getTokenDecode()
 
-      console.log('🚧 - router.beforeEach - ws:', ws)
       if (ws === null) {
         ws = socket.connect(username)
       }
@@ -410,16 +426,18 @@ router.beforeEach((to, from, next) => {
 
     if (to.meta.authRequired === true) {
       if (instance.isTokenValid() && hasAccess(to.name)) {
-        console.log('------------------ authRequired ------------------ ', to.meta.authRequired)
-
         try {
           ws.onopen = function () {
             console.log('[onopen] Conexión establecida')
           }
 
+          console.log('------------------ authRequired ------------------ ', to.meta.authRequired)
+          console.log('------------------ pathName ------------------ ', to.path + '/' + to.name)
+          console.log('------------------ ws.readyState ------------------ ', ws.readyState)
+
           if (ws.readyState === 1) {
             socket.updateUser({
-              module: to.path
+              module: to.path + '/' + to.name
             })
           }
 

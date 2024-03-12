@@ -1,4 +1,4 @@
-import { http } from '../services/http-axios'
+import { http } from '@/services/http-axios'
 
 // Request
 
@@ -11,9 +11,9 @@ export const getData = async (url) => {
   return data
 }
 
-export const getDataFilter = async ({ url, From, Fields, Where }) => {
+export const getDataFilter = async ({ url, Query, Fields, Where }) => {
   const payload = {
-    from: From,
+    query: Query,
     fields: Fields,
     where: Where
   }

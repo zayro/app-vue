@@ -1,6 +1,6 @@
 <script setup>
 import { RouterView } from 'vue-router'
-
+import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
 window.addEventListener('offline', () => {
   console.log('offline')
 })
@@ -16,11 +16,16 @@ window.onload = function () {
 </script>
 
 <template>
-  <!-- ROUTE -->
-  <router-view v-slot="{ Component, route }">
-    <!-- Use any custom transition and fallback to `fade` -->
-    <transition :name="route.meta.transition || 'fade'">
+  <div>
+    <!-- ROUTE -->
+    <router-view v-slot="{ Component }">
+      <!-- Use any custom transition and fallback to `fade` <transition :name="route.meta.transition || 'fade'">  -->
+
       <component :is="Component" />
-    </transition>
-  </router-view>
+
+      <!-- ROUTE END  -->
+    </router-view>
+
+    <VueQueryDevtools />
+  </div>
 </template>

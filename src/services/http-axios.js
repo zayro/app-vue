@@ -43,14 +43,28 @@ const httpDownload = axios.create({
 http.interceptors.response.use(
   (res) => res,
   (err) => {
+    if (err.code === 'ERR_NETWORK') {
+      console.log('connection problems..')
+    } else if (err.code === 'ERR_CANCELED') {
+      console.log('connection canceled..')
+    }
+
     if (err.response.status === 404) {
       throw new Error(`${err.config.url} not found`)
     }
-    throw err
+    if (err.response.status === 401) {
+      localStorage.removeItem('accessToken')
+      throw new Error(`${err.config.url} not allowed `)
+    }
+    if (err.response.status === 505) {
+      throw new Error(`${err.config.url} server`)
+    }
+    return Promise.reject(err)
   }
 )
 
 // Add a request interceptor
+/*
 http.interceptors.request.use(
   (config) => {
     // Do something before request is sent
@@ -62,18 +76,6 @@ http.interceptors.request.use(
     return Promise.reject(error)
   }
 )
-
-// Add a response interceptor
-http.interceptors.response.use(
-  (response) => {
-    // Do something with response data
-    return response
-  },
-  (error) => {
-    // Do something with response error
-
-    return Promise.reject(error)
-  }
-)
+*/
 
 export { http, httpFormData, httpDownload, axios }

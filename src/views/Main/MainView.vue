@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onBeforeMount, getCurrentInstance, inject } from 'vue'
+import { getCurrentInstance, inject } from 'vue'
 
 import MenuComponent from '@/components/MenuComponent.vue'
 
@@ -17,35 +17,23 @@ console.groupCollapsed('info Vite')
 console.log('----------------------', import.meta.env.BASE_URL)
 console.log('----------------------', import.meta.env.VITE_DEBUG)
 console.groupEnd()
-
-const blocked = ref(true)
-
-onBeforeMount(() => {
-  blocked.value = true
-})
-
-onMounted(() => {
-  /*
-  document.body.style.overflowX = 'hidden'
-  document.body.style.overflowY = 'hidden'
-  document.body.style.backgroundImage = `url(${imgBody})`
-  */
-})
 </script>
 
 <template>
-  <!-- NAVIGATION BAR -->
-  <MenuComponent :go-back="false" />
+  <div>
+    <!-- NAVIGATION BAR -->
+    <MenuComponent :go-back="false" />
 
-  <div class="container-flex">
-    <!-- ROUTING -->
-    <router-view />
+    <div class="container-flex">
+      <!-- ROUTING -->
+      <router-view />
+    </div>
   </div>
 </template>
 
 <style scoped="css">
 .container-flex {
-  padding: 60px;
+  padding: 20px;
   display: flex;
   /* flex-wrap: wrap;*/
   align-items: stretch;

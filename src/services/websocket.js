@@ -61,4 +61,9 @@ export class ConnectWebSocket {
     console.log('sendMessage', JSON.stringify(enviar))
     this.ws.send(JSON.stringify(enviar))
   }
+
+  closeUser () {
+    console.log('closeUser: -----------')
+    this.ws.close()
+  }
 }

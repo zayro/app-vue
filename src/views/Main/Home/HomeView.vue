@@ -8,6 +8,7 @@ console.groupEnd()
 const router = useRouter()
 onMounted(() => {
   document.title = 'Home'
+  console.log('mounted HomeView')
 })
 
 const goComponents = () => {

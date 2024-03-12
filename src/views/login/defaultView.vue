@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, reactive, onMounted } from 'vue'
+import { computed, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import swal from 'sweetalert'
 
@@ -7,8 +7,6 @@ import { http } from '@/services/http-axios'
 import { useConfigStoreRef } from '@/stores/config'
 
 import imgBodyBackGround from '@/assets/img/background/pattern5_black.png'
-
-const visible = ref(false)
 
 const form = reactive({ username: '', password: '' })
 
@@ -108,6 +106,6 @@ onMounted(() => {
 }
 
 body {
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(4px);
 }
 </style>

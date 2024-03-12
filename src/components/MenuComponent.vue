@@ -52,15 +52,18 @@ const toggleTheme = () => {
 const items = ref([
   {
     label: 'Home',
-    icon: 'pi pi-home'
+    icon: 'pi pi-home',
+    href: 'HomeView'
   },
   {
     label: 'Features',
-    icon: 'pi pi-star'
+    icon: 'pi pi-star',
+    href: 'MainComponent'
   },
   {
     label: 'Projects',
     icon: 'pi pi-search',
+    href: '',
     items: [
       {
         label: 'Core',
@@ -83,6 +86,7 @@ const items = ref([
       {
         label: 'Templates',
         icon: 'pi pi-palette',
+        href: '',
         items: [
           {
             label: 'Apollo',
@@ -101,7 +105,12 @@ const items = ref([
   {
     label: 'Contact',
     icon: 'pi pi-envelope',
-    badge: 3
+    href: ''
+  },
+  {
+    label: 'Administrador',
+    icon: 'pi pi-briefcase',
+    href: 'online'
   }
 ])
 
@@ -122,6 +131,12 @@ const itemsUsuario = ref([
     }
   }
 ])
+
+const goComponents = (routeName) => {
+  console.log('🚧 - goComponents - routeName:', routeName)
+  //  router.push({ path: `${routeName}` })
+  router.push({ name: `${routeName}` })
+}
 
 const toggle = (event) => {
   menu.value.toggle(event)
@@ -151,7 +166,7 @@ const goBack = defineModel('goBack', { default: true })
       </template>
 
       <template #item="{ item, props, hasSubmenu, root }">
-        <a v-ripple class="flex align-items-center" v-bind="props.action">
+        <div v-ripple class="flex align-items-center" v-bind="props.action" @click="goComponents(item.href)">
           <span :class="item.icon" />
           <span class="ml-2">{{ item.label }}</span>
           <Badge v-if="item.badge" :class="{ 'ml-auto': !root, 'ml-2': root }" :value="item.badge" />
@@ -162,7 +177,7 @@ const goBack = defineModel('goBack', { default: true })
             v-if="hasSubmenu"
             :class="['pi pi-angle-down', { 'pi-angle-down ml-2': root, 'pi-angle-right ml-auto': !root }]"
           ></i>
-        </a>
+        </div>
       </template>
       <template #end>
         <div class="flex align-items-center gap-2">
