@@ -26,7 +26,7 @@ const login = () => {
     password: form.password
   }
   http
-    .post('login', payload)
+    .post('user/auth', payload)
     .then((response) => {
       console.log('🚧 - .then - response:', response)
       conf.setToken(response.data.data.token)
@@ -39,6 +39,14 @@ const login = () => {
       console.log('🚧 - login - error:', error)
       swal('Wrong!', 'Algo salio mal!', 'error')
     })
+}
+
+const goRouteCreate = () => {
+  router.push({ name: 'createUserView' })
+}
+
+const goRouteRecovery = () => {
+  router.push({ name: 'recoveryPass' })
 }
 
 onMounted(() => {
@@ -61,7 +69,9 @@ onMounted(() => {
           <Avatar :image="avatar" class="mr-2" />
           <div class="text-900 text-3xl font-medium mb-3">Welcome Back</div>
           <span class="text-600 font-medium line-height-3">Don't have an account?</span>
-          <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Create today!</a>
+          <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer" @click="goRouteCreate()"
+            >Create today!</a
+          >
         </div>
 
         <div class="flex align-items-center justify-content-center gap-3 mb-3">
@@ -95,6 +105,19 @@ onMounted(() => {
             <Button type="button" label="Sign Up" class="w-full" :disabled="!validateForm" @click="login"></Button>
           </div>
         </div>
+
+        <div class="flex align-items-center justify-content-center gap-2 mb-3">
+          <span class="font-medium text-600">
+            Did you forget your
+            <a
+              class="font-semibold cursor-pointer text-900 hover:text-primary transition-colors transition-duration-300"
+              @click="goRouteRecovery()"
+            >
+              password ?
+            </a>
+          </span>
+        </div>
+        <!-- close -->
       </div>
     </div>
   </div>

@@ -51,8 +51,8 @@ import reportApt from '@/modules/Edificio/Report/reportApt.vue'
 import reportBalance from '@/modules/Edificio/Report/reportBalance.vue'
 import reportGeneral from '@/modules/Edificio/Report/reportGeneral.vue'
 import report from '@/modules/Edificio/Report/reportView.vue'
-import InfoView from '@/views/Main/Home/InfoView.vue'
-import AboutView from '@/views/Main/Home/AboutView.vue'
+import InfoView from '@/views/init/InfoView.vue'
+import AboutView from '@/views/init/AboutView.vue'
 
 // Usuario
 import UsuarioDatos from '@/modules/Usuario/UsuarioDatos.vue'
