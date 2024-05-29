@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
 import App from './App.vue'
-import router from './router'
+import router from '@/router/security'
 
 import { constant } from './i18n/en.js'
 import { conf } from './services/conf'

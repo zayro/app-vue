@@ -41,5 +41,7 @@
   "typescript.suggest.objectLiteralMethodSnippets.enabled": false,
   "eslint.alwaysShowStatus": true,
   "html.format.wrapLineLength": 160,
-  "vue.codeActions.enabled": false
+  "vue.codeActions.enabled": false,
+  "editor.hideCursorInOverviewRuler": true,
+  "editor.rulers": [140]
 }

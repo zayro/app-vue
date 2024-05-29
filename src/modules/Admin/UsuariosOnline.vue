@@ -1,11 +1,18 @@
 <script setup>
 import { ref, onMounted, onUnmounted, reactive } from 'vue'
 
-import { ConnectWebSocket } from '@/services/websocket'
+import { useWebSocket } from '@/hook/useWebSocket'
 
-const socket = new ConnectWebSocket()
+import { usePouchDb } from '@/hook/usePouchDb'
+
+const { ws, getListUser, closeConnectSocked } = useWebSocket('admin')
+
+const { db } = usePouchDb()
 
 const userOnline = ref({})
+
+const load = ref(true)
+
 const userOnlineSelected = reactive({
   user: '',
   history: [
@@ -17,57 +24,52 @@ const userOnlineSelected = reactive({
 })
 const userListFind = ref()
 
-// parent component:
 const searchUser = ref()
 
-try {
-  let ws = null
+db.value.info().then(function (info) {
+  console.log('🚧 - info:', info)
+})
 
-  if (ws === null) {
-    ws = socket.connect('admin')
+ws.onmessage = (event) => {
+  console.log('🚧 - socket event:', event)
+
+  const dataSocket = JSON.parse(event.data)
+  if (dataSocket?.users) {
+    userOnline.value = dataSocket.users
+    userListFind.value = dataSocket.users
   }
-
-  ws.onopen = function () {
-    console.log('[onopen] Conexión establecida')
-  }
-
-  do {
-    console.log('🧹  - ws.readyState:', ws.readyState)
-  } while (ws.readyState === 1)
-
-  if (ws.readyState === 1) {
-    console.log('🧹  - ws.readyState:', ws.readyState)
-
-    const enviar = { listUser: true }
-    ws.send(JSON.stringify(enviar))
-  }
-
-  ws.onmessage = (event) => {
-    console.log('socket admin:', event)
-    const dataSocket = JSON.parse(event.data)
-    if (dataSocket?.users) {
-      userOnline.value = dataSocket.users
-      userListFind.value = dataSocket.users
-    }
-
-    if (dataSocket?.user) {
-      socket.getListUser()
-    }
-  }
-
-  ws.onerror = function (e) {
-    console.log('[error]', e)
-  }
-} catch (error) {
-  console.error(error)
 }
 
-const load = ref(true)
+/*
+
+db.value
+  .changes({
+    since: 'now',
+    live: true,
+    include_docs: true
+  })
+  .on('change', function (change) {
+    console.log('🚧 - change:', change)
+    // handle change
+  })
+  .on('complete', function (complete) {
+    console.log('🚧 - setup:', complete)
+    // changes() was canceled
+  })
+  .on('denied', function (denied) {
+    console.log('🚧 - denied:', denied)
+    // a document failed to replicate (e.g. due to permissions)
+  })
+  .on('error', function (err) {
+    console.log('🚧 - err:', err)
+  })
+
+  */
 
 const updateListUser = () => {
   userOnlineSelected.user = ''
   userOnlineSelected.history = []
-  socket.getListUser()
+  getListUser()
 }
 
 // Definimos una función para buscar personas mayores de 30 años
@@ -93,22 +95,10 @@ function listUserFind (valor) {
   }
 }
 
-function getListUser () {
-  socket.getListUser()
-}
-
-function closeConnectSocked () {
-  socket.closeUser()
-}
-
 onMounted(() => {
   console.log('🚧 - onMounted - onMounted: Online')
   document.title = 'Online'
   load.value = true
-  setTimeout(() => {
-    console.log('Delayed for 1 second.')
-    getListUser()
-  }, '1000')
 })
 
 onUnmounted(() => {

@@ -68,7 +68,7 @@ const onSubmit = handleSubmit((values) => {
       <Avatar :image="avatar" class="mr-2" />
       <div class="text-900 text-3xl font-medium mb-3">Create New User</div>
       <span class="text-600 font-medium line-height-3">Register</span>
-      <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Let's get started</a>
+      <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer" @click="goRouteLogin()">Go back to Login</a>
     </div>
     <form id="createUser" name="createUser" autocomplete="on" @submit="onSubmit">
       <div class="flex flex-column align-items-center justify-content-center gap-2 mb-3">

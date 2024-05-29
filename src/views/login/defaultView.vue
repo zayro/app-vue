@@ -1,45 +1,20 @@
 <script setup>
 import { computed, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import swal from 'sweetalert'
-
-import { http } from '@/services/http-axios'
-import { useConfigStoreRef } from '@/stores/config'
-
+import { useFetchUser } from '@/hook/useFetchUser'
 import imgBodyBackGround from '@/assets/img/background/pattern5_black.png'
 
 const form = reactive({ username: '', password: '' })
 
 const avatar = '/img/profile/avatar/user_256x256.png'
 
-const conf = useConfigStoreRef()
 const router = useRouter()
 
 // check if both password and email have been set for enabling login button
 const validateForm = computed(() => {
   return form.username !== '' && form.password !== ''
 })
-
-const login = () => {
-  const payload = {
-    username: form.username,
-    password: form.password
-  }
-  http
-    .post('user/auth', payload)
-    .then((response) => {
-      console.log('🚧 - .then - response:', response)
-      conf.setToken(response.data.data.token)
-      console.log('🚧 - .then - response.data.token:', response.data.data.token)
-      console.log(conf.token, 'getToken')
-      router.push({ path: '/main/' })
-      swal('Ingreso Exitoso!', 'Bienvenido App!', 'success')
-    })
-    .catch((error) => {
-      console.log('🚧 - login - error:', error)
-      swal('Wrong!', 'Algo salio mal!', 'error')
-    })
-}
+const { fetchLogin } = useFetchUser()
 
 const goRouteCreate = () => {
   router.push({ name: 'createUserView' })
@@ -52,12 +27,9 @@ const goRouteRecovery = () => {
 onMounted(() => {
   document.body.style.overflowX = 'hidden'
   document.body.style.overflowY = 'hidden'
-
   document.body.style.backgroundImage = `url(${imgBodyBackGround})`
-
-  console.log('the component is now mounted.')
   document.title = 'Login'
-  // document.documentElement.style.setProperty('--animate-duration', '.9s');
+  document.documentElement.style.setProperty('--animate-duration', '.9s')
 })
 </script>
 
@@ -102,7 +74,13 @@ onMounted(() => {
 
         <div class="flex align-items-center justify-content-center gap-3 mb-3">
           <div class="flex w-full md:w-25rem">
-            <Button type="button" label="Sign Up" class="w-full" :disabled="!validateForm" @click="login"></Button>
+            <Button
+              type="button"
+              label="Sign Up"
+              class="w-full"
+              :disabled="!validateForm"
+              @click="fetchLogin(form)"
+            ></Button>
           </div>
         </div>
 

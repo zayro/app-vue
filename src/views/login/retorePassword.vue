@@ -45,26 +45,6 @@ const goRouteLogin = () => {
 const validateForm = computed(() => {
   return form.password !== '' && form.email !== ''
 })
-
-const create = () => {
-  const payload = {
-    username: form.username,
-    password: form.password,
-    email: form.email
-  }
-  http
-    .post('new/user', payload)
-    .then((response) => {
-      console.log(':rocket: ~ .then ~ response', response.data)
-      swal('Good job!', 'You clicked the button!', 'success')
-
-      router.push({ path: '/login' })
-    })
-    .catch((error) => {
-      console.log(error)
-      swal('Wrong!', 'You clicked the button!', 'error')
-    })
-}
 </script>
 
 <template>
@@ -72,8 +52,8 @@ const create = () => {
     <div class="text-center mb-5">
       <Avatar :image="avatar" class="mr-2" />
       <div class="text-900 text-3xl font-medium mb-3">Recovery Password</div>
-      <span class="text-600 font-medium line-height-3">User</span>
-      <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Let's get started</a>
+      <span class="text-600 font-medium line-height-3">Go back to</span>
+      <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer" @click="goRouteLogin()">Login</a>
     </div>
     <form id="createUser" name="createUser" autocomplete="on" @submit="onSubmit">
       <!-- Email -->
