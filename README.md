@@ -36,6 +36,7 @@ npm i @vue/cli-service -g
 
 ```
 npm install -g serve
+npm install -g pnpm
 ```
 
 ```
@@ -73,6 +74,7 @@ git rm env.local --cached
 - npm install -g @vue/cli
 - npm update -g @vue/cli
 - vue upgrade
+ 
 
 ### Bibliografia
 

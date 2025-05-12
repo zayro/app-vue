@@ -1,6 +1,7 @@
 <template>
   <div id="flex-container">
     <div class="upload">
+
       <ul v-if="files.length">
         <li v-for="file in files" :key="file.id">
           <span>{{ file.name }}</span> - <span> <img :src="file.blob" width="50" height="50" /></span> -
@@ -12,13 +13,14 @@
           <span> <a href="#" @click.prevent="$refs.upload.remove(file)">Remove</a></span>
         </li>
       </ul>
+
       <ul v-else>
-        <td colspan="7">
+
           <div class="text-center p-5">
             <h4>Drop files anywhere to upload<br />or</h4>
             <label for="file" class="btn btn-lg btn-primary">Select Files</label>
           </div>
-        </td>
+
       </ul>
 
       <div v-show="$refs.upload && $refs.upload.dropActive" class="drop-active">
